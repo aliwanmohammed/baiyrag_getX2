@@ -1,0 +1,71 @@
+name: bhm_supermarket
+description: "A production-ready supermarket app"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  local_auth: ^3.0.2
+  flutter:
+    sdk: flutter
+  
+  url_launcher: ^6.3.0
+  
+  lottie: ^3.3.1
+  shared_preferences: ^2.5.3
+
+  flutter_secure_storage: ^10.3.1
+
+  pretty_dio_logger: ^1.4.0
+
+  flutter_localizations:
+    sdk: flutter
+
+  image_picker: ^1.1.2
+  # State Management
+  get: ^4.7.2
+
+  # Navigation
+  go_router: ^17.3.0
+
+  # UI & Fonts
+  google_fonts: ^8.1.0
+  cupertino_icons: ^1.0.8
+  flutter_map: ^8.3.1
+  latlong2: ^0.10.1
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
+
+  # Networking (ready for Laravel API)
+  dio: ^5.9.0
+  cached_network_image: ^3.4.1
+  flutter_staggered_grid_view: ^0.7.0
+  mobile_scanner: ^7.4.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/logos/
+    - assets/images/banners/
+    - assets/images/categories/
+    - assets/images/products/
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logos/bhm_logo.png"
+  # adaptive_icon_background: "#FFFFFF"
+  # adaptive_icon_foreground: "assets/images/logos/bhm_logo.png"
+  # min_sdk_android: 21
