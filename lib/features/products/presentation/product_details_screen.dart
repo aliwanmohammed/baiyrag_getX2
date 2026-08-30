@@ -316,7 +316,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   "رقم الصنف",
                                   currentProduct.uniqueNumber,
                                 ),
-                                _DetailRow("الباركود", currentProduct.barcode),
+                                if (currentProduct.defaultUnit != null)
+                                  _DetailRow(
+                                    "باركود الوحدة الافتراضية",
+                                    currentProduct.defaultUnit!.barcode,
+                                  ),
                                 _DetailRow(
                                   "القسم",
                                   currentProduct.categoryName,

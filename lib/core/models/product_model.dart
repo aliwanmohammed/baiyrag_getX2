@@ -17,8 +17,6 @@ class ProductModel {
   final String categoryNameAr;
   final String categoryNameEn;
 
-  final String barcode;
-
   /// السعر الافتراضي = سعر أول وحدة.
   final double price;
 
@@ -42,7 +40,6 @@ class ProductModel {
     required this.descriptionEn,
     required this.images,
     required this.price,
-    required this.barcode,
     required this.units,
     this.favoriteId,
     this.isAvailable = true,
@@ -111,7 +108,6 @@ class ProductModel {
       nameEn: JsonParser.string(json['name_en']),
       descriptionAr: JsonParser.string(json['description_ar']),
       descriptionEn: JsonParser.string(json['description_en']),
-      barcode: JsonParser.string(json['barcode']),
       images: parsedImages,
       units: parsedUnits,
       price: firstUnit?.price ?? 0,
@@ -131,7 +127,6 @@ class ProductModel {
       'name_en': nameEn,
       'description_ar': descriptionAr,
       'description_en': descriptionEn,
-      'barcode': barcode,
       'images': images,
       'price': price,
       'favorite_id': favoriteId,
@@ -153,7 +148,6 @@ class ProductModel {
     List<ProductUnitModel>? units,
     String? favoriteId,
     bool? isAvailable,
-    String? barcode,
     String? categoryNameAr,
     String? categoryNameEn,
   }) {
@@ -172,7 +166,6 @@ class ProductModel {
       units: units ?? this.units,
       favoriteId: favoriteId ?? this.favoriteId,
       isAvailable: isAvailable ?? this.isAvailable,
-      barcode: barcode ?? this.barcode,
     );
   }
 }

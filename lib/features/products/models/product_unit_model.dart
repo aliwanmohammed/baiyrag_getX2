@@ -7,6 +7,7 @@ class ProductUnitModel {
   final String nameEn;
 
   final int quantity;
+  final String barcode;
   final double price;
 
   final int soldQuantityLast2Days;
@@ -21,6 +22,7 @@ class ProductUnitModel {
     this.nameAr = '',
     this.nameEn = '',
     this.quantity = 0,
+    required this.barcode,
     required this.price,
     this.soldQuantityLast2Days = 0,
     this.buyersCountLast2Days = 0,
@@ -40,6 +42,7 @@ class ProductUnitModel {
       nameAr: JsonParser.string(json['name_ar']),
       nameEn: JsonParser.string(json['name_en']),
       quantity: JsonParser.intValue(json['quantity']),
+      barcode: JsonParser.string(json['barcode']),
       price: JsonParser.doubleValue(json['price']),
       soldQuantityLast2Days: JsonParser.intValue(
         json['sold_quantity_last_2_days'],
@@ -65,6 +68,7 @@ class ProductUnitModel {
       'name_ar': nameAr,
       'name_en': nameEn,
       'quantity': quantity,
+      'barcode': barcode,
       'price': price,
       'sold_quantity_last_2_days': soldQuantityLast2Days,
       'buyers_count_last_2_days': buyersCountLast2Days,
@@ -80,6 +84,7 @@ class ProductUnitModel {
         'id: $id, '
         'unitName: $unitName, '
         'quantity: $quantity, '
+        'barcode: $barcode, '
         'price: $price, '
         'soldQuantityLast2Days: $soldQuantityLast2Days, '
         'buyersCountLast2Days: $buyersCountLast2Days'

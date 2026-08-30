@@ -100,27 +100,32 @@ class BarcodeScannerController extends GetxController {
 
       final items = response.data!.items;
 
-      // 1. Search for exact barcode match on ProductModel
+      // The barcode belongs to the product unit, not the product itself.
       ProductModel? matchedProduct;
       int matchedUnitIndex = 0;
 
       for (final product in items) {
-        if (product.barcode.trim() == barcode) {
+        final index = product.units.indexWhere(
+          (unit) => unit.barcode.trim() == barcode,
+        );
+        if (index >= 0) {
           matchedProduct = product;
+          matchedUnitIndex = index;
           break;
         }
       }
 
-      // 2. If not matched on top-level barcode, check uniqueNumber or first matching product
+      // Keep unique_number lookup as a fallback supported by the existing search flow.
       matchedProduct ??= items.firstWhere(
         (p) => p.uniqueNumber.trim() == barcode,
         orElse: () => items.first,
       );
 
-      // If units are loaded, identify primary/first unit
       if (matchedProduct.units.isNotEmpty) {
-        _selectedUnitIndex = matchedUnitIndex;
-        _selectedUnit = matchedProduct.units[matchedUnitIndex];
+        _selectedUnitIndex = matchedUnitIndex < matchedProduct.units.length
+            ? matchedUnitIndex
+            : 0;
+        _selectedUnit = matchedProduct.units[_selectedUnitIndex];
       } else {
         _selectedUnitIndex = 0;
         _selectedUnit = null;
