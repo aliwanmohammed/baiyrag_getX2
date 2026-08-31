@@ -38,6 +38,9 @@ import '../../features/coupons/domain/repositories/coupon_repository.dart';
 import '../../features/admin/data/datasources/admin_reports_remote_datasource.dart';
 import '../../features/admin/data/repositories/admin_reports_repository_impl.dart';
 import '../../features/admin/domain/repositories/admin_reports_repository.dart';
+import '../../features/info/data/datasources/info_remote_datasource.dart';
+import '../../features/info/data/repositories/info_repository_impl.dart';
+import '../../features/info/domain/repositories/info_repository.dart';
 
 /// GetX dependency composition root.
 ///
@@ -128,6 +131,13 @@ class DependencyInjection {
     Get.lazyPut<CouponRepository>(
       () => CouponRepositoryImpl(
         CouponRemoteDataSource(Get.find<ApiClient>().dio),
+      ),
+      fenix: true,
+    );
+
+    Get.lazyPut<InfoRepository>(
+      () => InfoRepositoryImpl(
+        InfoRemoteDataSource(Get.find<ApiClient>().dio),
       ),
       fenix: true,
     );

@@ -213,14 +213,7 @@ class AuthRemoteDataSource extends BaseRemoteDataSource {
       );
 
       final map = JsonParser.map(response.data);
-
-      final user = JsonParser.map(map['user']);
-      final tokenWrapper = JsonParser.map(map['token']);
-      final tokenOriginal = JsonParser.map(tokenWrapper['original']);
-
-      final accessToken = JsonParser.string(
-        tokenOriginal['access_token'],
-      );
+      final accessToken = _extractAccessToken(map);
 
       if (accessToken.isEmpty) {
         return ApiResponse.failure(
@@ -229,8 +222,23 @@ class AuthRemoteDataSource extends BaseRemoteDataSource {
         );
       }
 
+      // Current backend response:
+      // {
+      //   access_token: '...',
+      //   user: {...}
+      // }
+      // Older backend response may wrap user/token in nested objects.
+      final userMap = _extractUserMap(map);
+
+      if (userMap.isEmpty) {
+        return ApiResponse.failure(
+          'تم تسجيل الدخول لكن بيانات المستخدم غير مكتملة',
+          statusCode: response.statusCode,
+        );
+      }
+
       final userModel = UserModel.fromJson({
-        ...user,
+        ...userMap,
         'token': accessToken,
       });
 
@@ -240,7 +248,7 @@ class AuthRemoteDataSource extends BaseRemoteDataSource {
       );
     } on DioException catch (e) {
       return apiResponseFromDioError(e);
-    } catch (_) {
+    } catch (e) {
       return ApiResponse.failure(
         'فشل تحليل بيانات تسجيل الدخول',
       );
@@ -275,11 +283,12 @@ class AuthRemoteDataSource extends BaseRemoteDataSource {
 
   Future<ApiResponse<UserModel>> me() async {
     try {
-      final response = await dio.post(
-        ApiEndpoints.me,
-      );
+      final response = await dio.post(ApiEndpoints.me);
 
-      final map = JsonParser.map(response.data);
+      final root = JsonParser.map(response.data);
+      final map = root['data'] is Map
+          ? JsonParser.map(root['data'])
+          : root;
       final storedToken = await SecureStorageService.instance.readToken();
 
       return ApiResponse.success(
@@ -296,5 +305,40 @@ class AuthRemoteDataSource extends BaseRemoteDataSource {
         'فشل تحليل بيانات المستخدم',
       );
     }
+  }
+
+  String _extractAccessToken(Map<String, dynamic> root) {
+    final direct = JsonParser.string(root['access_token']);
+    if (direct.isNotEmpty) return direct;
+
+    final data = JsonParser.map(root['data']);
+    final dataToken = JsonParser.string(data['access_token']);
+    if (dataToken.isNotEmpty) return dataToken;
+
+    final token = JsonParser.map(root['token']);
+    final tokenDirect = JsonParser.string(token['access_token']);
+    if (tokenDirect.isNotEmpty) return tokenDirect;
+
+    final original = JsonParser.map(token['original']);
+    return JsonParser.string(original['access_token']);
+  }
+
+  Map<String, dynamic> _extractUserMap(Map<String, dynamic> root) {
+    final direct = JsonParser.map(root['user']);
+    if (direct.isNotEmpty) return direct;
+
+    final data = JsonParser.map(root['data']);
+    final nested = JsonParser.map(data['user']);
+    if (nested.isNotEmpty) return nested;
+
+    // Some responses return the user itself at the root/data level.
+    if (data.containsKey('id') || data.containsKey('email')) {
+      return data;
+    }
+    if (root.containsKey('id') || root.containsKey('email')) {
+      return root;
+    }
+
+    return const {};
   }
 }

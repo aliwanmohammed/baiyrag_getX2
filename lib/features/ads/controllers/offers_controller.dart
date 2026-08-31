@@ -35,6 +35,19 @@ class OffersController extends GetxController {
 
   /// The offers API already calculates fixed and percentage discounts in
   /// [OfferProductUnitModel.price]. Gift offers do not alter an item's price.
+  /// Returns true when the given product unit is covered by an active offer
+  /// whose date window is currently valid.
+  bool hasApplicableOfferForUnit({
+    required String productId,
+    required String unitId,
+  }) {
+    return _offers.any((offer) =>
+        _isApplicable(offer) &&
+        offer.productUnits.any(
+          (unit) => unit.productId == productId && unit.unitId == unitId,
+        ));
+  }
+
   OfferProductUnitModel? productUnitOffer({
     required String productId,
     required String unitId,

@@ -45,6 +45,7 @@ import '../../../../core/models/product_model.dart';
 import '../../../../core/network/api_response.dart';
 import '../../../../core/pagination/pagination_meta.dart';
 import '../../../../core/utils/json_parser.dart';
+import '../../models/product_upsert_request.dart';
 
 class ProductRemoteDataSource extends BaseRemoteDataSource {
   ProductRemoteDataSource(super.dio);
@@ -85,6 +86,35 @@ class ProductRemoteDataSource extends BaseRemoteDataSource {
           ProductModel.fromJson,
         );
       },
+    );
+  }
+
+  // ===========================================================================
+  // Create Product
+  // ===========================================================================
+
+  Future<ApiResponse<ProductModel>> createProduct(
+    ProductUpsertRequest request,
+  ) {
+    return postEnvelope<ProductModel>(
+      ApiEndpoints.products,
+      data: request.toJson(),
+      parser: (json) => ProductModel.fromJson(JsonParser.map(json)),
+    );
+  }
+
+  // ===========================================================================
+  // Update Product
+  // ===========================================================================
+
+  Future<ApiResponse<ProductModel>> updateProduct(
+    String id,
+    ProductUpsertRequest request,
+  ) {
+    return putEnvelope<ProductModel>(
+      ApiEndpoints.product(id),
+      data: request.toJson(),
+      parser: (json) => ProductModel.fromJson(JsonParser.map(json)),
     );
   }
 

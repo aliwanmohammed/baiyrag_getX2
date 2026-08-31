@@ -47,6 +47,16 @@ class ApiEndpoints {
   // Notifications
   static const notifications = '/notifications';
 
+  // Content Management
+  static const aboutUs = '/about-us';
+  static String aboutUsItem(String id) => '/about-us/$id';
+  static const contactInfos = '/contact-infos';
+  static String contactInfo(String id) => '/contact-infos/$id';
+  static const faqs = '/faqs';
+  static String faq(String id) => '/faqs/$id';
+  static const privacyPolicies = '/privacy-policies';
+  static String privacyPolicy(String id) => '/privacy-policies/$id';
+
   // Admin
   static const adminReports = '/admin/reports';
   // Reports

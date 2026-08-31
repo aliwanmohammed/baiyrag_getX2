@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/models/product_model.dart';
 import '../../products/domain/repositories/product_repository.dart';
+import '../../ads/controllers/offers_controller.dart';
 
 enum HomeLoadState {
   initial,
@@ -14,7 +15,9 @@ enum HomeLoadState {
 }
 
 class HomeController extends GetxController {
-  HomeController(this._repository);
+  HomeController(this._repository, this._offersController);
+
+  final OffersController _offersController;
 
   @override
   void onInit() {
@@ -88,9 +91,10 @@ class HomeController extends GetxController {
 
     try {
       if (_selectedCategory.isNotEmpty) {
-        // إذا كان هناك قسم محدد، نحتاج فقط منتجات هذا القسم
+        final isSpecialOffers = _selectedCategory == 'special_offers';
+
         final response = await _repository.getProducts(
-          categoryId: _selectedCategory,
+          categoryId: isSpecialOffers ? null : _selectedCategory,
           page: 1,
         );
 
@@ -104,7 +108,28 @@ class HomeController extends GetxController {
           return;
         }
 
-        _products = List<ProductModel>.from(response.data!.items);
+        final loaded = List<ProductModel>.from(response.data!.items);
+
+        if (isSpecialOffers) {
+          _products = loaded
+              .map((product) {
+                final offerUnits = product.units.where((unit) {
+                  return _offersController.hasApplicableOfferForUnit(
+                    productId: product.id,
+                    unitId: unit.id,
+                  );
+                }).toList();
+
+                return offerUnits.isEmpty
+                    ? null
+                    : product.copyWith(units: offerUnits);
+              })
+              .whereType<ProductModel>()
+              .toList();
+        } else {
+          _products = loaded;
+        }
+
         _flashDeals = [];
         _bestSellerProducts = [];
         _recommendedProducts = [];

@@ -15,6 +15,7 @@ import '../../features/checkout/controllers/checkout_controller.dart';
 import '../../features/delivery/controllers/delivery_controller.dart';
 import '../../features/favorites/controllers/favorites_controller.dart';
 import '../../features/home/controllers/home_controller.dart';
+import '../../features/info/controllers/info_controller.dart';
 import '../../features/navigation/controllers/navigation_controller.dart';
 import '../../features/orders/controllers/orders_controller.dart';
 import '../../features/products/controllers/product_controller.dart';
@@ -76,7 +77,7 @@ class AppBindings extends Bindings {
     );
 
     Get.lazyPut<HomeController>(
-      () => HomeController(Get.find()),
+      () => HomeController(Get.find(), Get.find()),
       fenix: true,
     );
 
@@ -126,6 +127,11 @@ class AppBindings extends Bindings {
         Get.find(),
         Get.find(),
       ),
+      fenix: true,
+    );
+
+    Get.lazyPut<InfoController>(
+      () => InfoController(Get.find()),
       fenix: true,
     );
 

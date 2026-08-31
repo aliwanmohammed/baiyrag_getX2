@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:bhm_supermarket/features/admin/presentation/admin_reports_screen.dart';
 import 'package:bhm_supermarket/features/orders/models/order_model.dart';
 import 'package:go_router/go_router.dart';
@@ -122,34 +123,33 @@ class AppRouter {
           GoRoute(
             path: AppRoutes.aboutUs,
             builder: (_, __) => const StaticInfoScreen(
-              title: 'من نحن',
-              content:
-                  'بيرق مول هو سوبر ماركت إلكتروني يوفر جميع احتياجاتكم من المنتجات الغذائية ومستلزمات المنزل، مع خدمة توصيل سريعة وموثوقة لجميع المناطق.',
+              type: InfoPageType.aboutUs,
             ),
           ),
           GoRoute(
             path: AppRoutes.contactUs,
-            builder: (_, __) => StaticInfoScreen.contactUs(),
+            builder: (_, __) => const StaticInfoScreen(
+              type: InfoPageType.contactUs,
+            ),
           ),
           GoRoute(
             path: AppRoutes.faq,
             builder: (_, __) => const StaticInfoScreen(
-              title: 'الأسئلة الشائعة',
-              content: 'سيتم إضافة الأسئلة الشائعة قريباً.',
+              type: InfoPageType.faq,
             ),
           ),
           GoRoute(
             path: AppRoutes.privacyPolicy,
             builder: (_, __) => const StaticInfoScreen(
-              title: 'سياسة الخصوصية',
-              content: 'سيتم إضافة سياسة الخصوصية قريباً.',
+              type: InfoPageType.privacyPolicy,
             ),
           ),
           GoRoute(
             path: AppRoutes.termsOfUse,
-            builder: (_, __) => const StaticInfoScreen(
-              title: 'شروط الاستخدام',
-              content: 'سيتم إضافة شروط الاستخدام قريباً.',
+            builder: (_, __) => const Scaffold(
+              body: Center(
+                child: Text('شروط الاستخدام'),
+              ),
             ),
           ),
           GoRoute(

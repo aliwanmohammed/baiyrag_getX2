@@ -1,7 +1,8 @@
-﻿import '../../../../core/pagination/pagination_meta.dart';
+import '../../../../core/pagination/pagination_meta.dart';
 import 'package:bhm_supermarket/core/models/product_model.dart';
 import '../../../../core/network/api_response.dart';
 import '../../domain/repositories/product_repository.dart';
+import '../../models/product_upsert_request.dart';
 import '../datasources/product_remote_datasource.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -31,5 +32,20 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<ApiResponse<ProductModel>> getProductById(String id) {
     return _remote.fetchProduct(id);
+  }
+
+  @override
+  Future<ApiResponse<ProductModel>> createProduct(
+    ProductUpsertRequest request,
+  ) {
+    return _remote.createProduct(request);
+  }
+
+  @override
+  Future<ApiResponse<ProductModel>> updateProduct(
+    String id,
+    ProductUpsertRequest request,
+  ) {
+    return _remote.updateProduct(id, request);
   }
 }

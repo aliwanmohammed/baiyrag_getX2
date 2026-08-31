@@ -64,7 +64,19 @@ class SecureStorageService {
     if (raw == null || raw.isEmpty) return null;
     try {
       final map = jsonDecode(raw) as Map<String, dynamic>;
-      final token = await readToken();
+      final storedToken = await readToken();
+      final profileToken = map['token']?.toString();
+      final token = (storedToken != null && storedToken.isNotEmpty)
+          ? storedToken
+          : ((profileToken != null && profileToken.isNotEmpty) ? profileToken : null);
+
+      // Migrate older cached profiles that already contained the token.
+      if ((storedToken == null || storedToken.isEmpty) &&
+          token != null &&
+          token.isNotEmpty) {
+        await saveToken(token);
+      }
+
       return UserModel.fromJson({...map, 'token': token});
     } catch (_) {
       return null;

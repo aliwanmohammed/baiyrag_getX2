@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../home/controllers/home_controller.dart';
 import '../controllers/category_controller.dart';
-import 'package:go_router/go_router.dart';
-import '../../../app/router/app_routes.dart';
 import '../../../core/models/category_model.dart';
 import 'category_chip.dart';
 
@@ -58,13 +56,7 @@ class CategoriesPinned extends StatelessWidget {
             return CategoryChip(
               category: category,
               selected: homeController.selectedCategory == category.id,
-              onTap: () {
-                if (category.id == 'special_offers') {
-                  context.push('${AppRoutes.categories}/special_offers?name=${Uri.encodeComponent('العروض')}');
-                } else {
-                  homeController.selectCategory(category.id);
-                }
-              },
+              onTap: () => homeController.selectCategory(category.id),
             );
           },
         ),

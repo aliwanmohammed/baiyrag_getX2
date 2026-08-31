@@ -53,9 +53,16 @@ class AuthInterceptor extends Interceptor {
       return;
     }
 
+    // A 401 from a public/catalog/content endpoint must never log the
+    // customer out. This is especially important when the backend has a
+    // route-level auth configuration issue (for example /about-us).
+    if (!_isSessionProtectedPath(path)) {
+      handler.next(err);
+      return;
+    }
+
     // Critical Guest rule:
-    // No stored token = this is a normal unauthenticated guest request.
-    // Do NOT clear storage and do NOT navigate to Login.
+    // No stored token = this is a normal unauthenticated request.
     final token = await SecureStorageService.instance.readToken();
 
     if (token == null || token.isEmpty) {
@@ -63,8 +70,8 @@ class AuthInterceptor extends Interceptor {
       return;
     }
 
-    // A real token exists and the server rejected it.
-    // Treat that as an expired/invalid session.
+    // A 401 from a genuinely protected endpoint means the current token
+    // has been rejected. Treat it as an expired/invalid session.
     await SecureStorageService.instance.clearAll();
 
     if (!_redirectingToLogin) {
@@ -97,4 +104,34 @@ class AuthInterceptor extends Interceptor {
 
     handler.next(err);
   }
+
+  bool _isSessionProtectedPath(String path) {
+    final normalized = path.toLowerCase();
+
+    const exactProtected = {
+      '/me',
+      '/logout',
+      '/refresh',
+      '/orders',
+      '/my-orders',
+      '/favorites',
+      '/notifications',
+      '/addresses',
+      '/locations',
+      '/checkout',
+      '/profile',
+    };
+
+    if (exactProtected.contains(normalized)) return true;
+
+    // Protected resource families.
+    return normalized.startsWith('/orders/') ||
+        normalized.startsWith('/favorites/') ||
+        normalized.startsWith('/addresses/') ||
+        normalized.startsWith('/locations/') ||
+        normalized.startsWith('/notifications/') ||
+        normalized.startsWith('/checkout/') ||
+        normalized.startsWith('/delivery/');
+  }
+
 }

@@ -65,6 +65,17 @@ class ProductModel {
     return units.isNotEmpty ? units.first : null;
   }
 
+  /// Returns the unit whose barcode exactly matches [barcode].
+  /// Barcode belongs to the product unit, never to the parent product.
+  ProductUnitModel? findUnitByBarcode(String barcode) {
+    final normalized = barcode.trim();
+    if (normalized.isEmpty) return null;
+    for (final unit in units) {
+      if (unit.barcode.trim() == normalized) return unit;
+    }
+    return null;
+  }
+
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     final parsedUnits = JsonParser.list(
       json['units'],

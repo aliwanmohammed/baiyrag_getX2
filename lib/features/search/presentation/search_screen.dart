@@ -69,6 +69,39 @@ class _SearchBody extends StatelessWidget {
       return const RecentSearches();
     }
 
+    // Do not hide API failures behind the generic "no results" state.
+    // This is especially important for diagnosing authentication/backend
+    // issues while the search endpoint is being integrated.
+    if (!controller.isLoading && controller.error != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.xl),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppIcon(
+                Icons.error_outline_rounded,
+                color: Theme.of(context).colorScheme.error,
+                size: AppIconSize.large,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                controller.error!,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              FilledButton.icon(
+                onPressed: () => controller.search(controller.query),
+                icon: const Icon(Icons.refresh),
+                label: const Text('إعادة المحاولة'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (!controller.isLoading && controller.results.isEmpty) {
       return EmptySearch(query: controller.query);
     }

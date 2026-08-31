@@ -115,11 +115,26 @@ class BarcodeScannerController extends GetxController {
         }
       }
 
-      // Keep unique_number lookup as a fallback supported by the existing search flow.
-      matchedProduct ??= items.firstWhere(
-        (p) => p.uniqueNumber.trim() == barcode,
-        orElse: () => items.first,
-      );
+      // unique_number is a separate product identifier, so it is a safe
+      // fallback only when it matches exactly. Never select an arbitrary
+      // search result for a barcode that was not found in a unit.
+      if (matchedProduct == null) {
+        for (final product in items) {
+          if (product.uniqueNumber.trim() == barcode) {
+            matchedProduct = product;
+            break;
+          }
+        }
+      }
+
+      if (matchedProduct == null) {
+        _state = ScannerState.notFound;
+        _errorMessage = 'لم يتم العثور على وحدة مرتبطة بالرمز: $barcode';
+        _scannedProduct = null;
+        _selectedUnit = null;
+        update();
+        return null;
+      }
 
       if (matchedProduct.units.isNotEmpty) {
         _selectedUnitIndex = matchedUnitIndex < matchedProduct.units.length

@@ -2,7 +2,7 @@ name: bhm_supermarket
 description: "A production-ready supermarket app"
 publish_to: 'none'
 
-version: 1.0.1+2
+version: 1.0.1+5
 
 environment:
   sdk: '>=3.5.0 <4.0.0'

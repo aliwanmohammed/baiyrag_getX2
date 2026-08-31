@@ -89,41 +89,66 @@ class FavoritesController extends GetxController {
   }
 
   Future<void> loadFromServer() async {
-    if (!_auth.isLoggedIn) {
+    if (!_auth.isLoggedIn || _isLoading) {
       return;
     }
+
     _isLoading = true;
-
     update();
 
-    final response = await _repository.getFavorites();
+    try {
+      final response = await _repository.getFavorites();
 
-    response.fold(
-      onSuccess: (products) async {
-        _ids.clear();
-        _idsSet.clear();
+      if (!response.isSuccess || response.data == null) {
+        return;
+      }
 
-        _cache.clear();
-        _favoriteIds.clear();
-        for (final product in products) {
-          _ids.add(product.id);
-          _idsSet.add(product.id);
+      _ids.clear();
+      _idsSet.clear();
+      _cache.clear();
+      _favoriteIds.clear();
 
-          _cache[product.id] = product;
+      // The favorites endpoint may return a lightweight product without
+      // unit prices. Since price belongs to the unit, hydrate such products
+      // from the canonical product endpoint before exposing them to the UI.
+      final products = response.data!;
+      final hydrated = await Future.wait(
+        products.map((product) async {
+          final hasUsableUnitPrice = product.units.any(
+            (unit) => unit.price > 0 || unit.finalPrice > 0,
+          );
 
-          if (product.favoriteId != null) {
-            _favoriteIds[product.id] = product.favoriteId!;
+          if (product.units.isNotEmpty && hasUsableUnitPrice) {
+            return product;
           }
+
+          final detail = await _productRepository.getProductById(product.id);
+          if (detail.isSuccess && detail.data != null) {
+            return detail.data!.copyWith(favoriteId: product.favoriteId);
+          }
+
+          return product;
+        }),
+      );
+
+      for (final product in hydrated) {
+        _ids.add(product.id);
+        _idsSet.add(product.id);
+        _cache[product.id] = product;
+
+        if (product.favoriteId != null) {
+          _favoriteIds[product.id] = product.favoriteId!;
         }
+      }
 
-        await _saveFavorites();
-      },
-      onError: (_) {},
-    );
-
-    _isLoading = false;
-
-    update();
+      await _saveFavorites();
+    } catch (e, stackTrace) {
+      debugPrint('[FavoritesController] sync error: $e');
+      debugPrintStack(stackTrace: stackTrace);
+    } finally {
+      _isLoading = false;
+      update();
+    }
   }
 
   Future<void> toggle(String productId) async {
