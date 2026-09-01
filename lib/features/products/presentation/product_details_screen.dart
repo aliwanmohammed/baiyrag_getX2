@@ -104,6 +104,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
     final error = controller.error;
 
+    // First load must always occupy the page with a real loading state.
+    if (controller.isLoading && currentProduct == null) {
+      return const Scaffold(
+        body: AppLoading.fullPage(message: 'جاري تحميل المنتج...'),
+      );
+    }
+
+    if (error != null && currentProduct == null) {
+      return Scaffold(
+        body: AppEmptyState(
+          icon: Icons.error_outline_rounded,
+          title: 'تعذر تحميل المنتج',
+          subtitle: error,
+          actionLabel: 'إعادة المحاولة',
+          onAction: () => controller.loadProduct(widget.productId),
+        ),
+      );
+    }
+
     final offerUnit = selected == null
         ? null
         : Get.find<OffersController>().productUnitOffer(

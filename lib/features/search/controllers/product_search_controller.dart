@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/models/product_model.dart';
+import '../../../core/design_system/components/feedback/app_error_message.dart';
 import '../../products/domain/repositories/product_repository.dart';
 
 class ProductSearchController extends GetxController {
@@ -96,9 +97,11 @@ class ProductSearchController extends GetxController {
           'status=${response.statusCode}, message=${response.message}',
         );
         _results = [];
-        _error = response.message.isNotEmpty
-            ? response.message
-            : 'تعذر تنفيذ البحث. حاول مرة أخرى.';
+        _error = AppErrorMessage.from(
+          message: response.message,
+          statusCode: response.statusCode,
+          fallback: 'تعذر تنفيذ البحث. حاول مرة أخرى.',
+        );
       }
     } catch (error, stackTrace) {
       if (request != _requestId) return;

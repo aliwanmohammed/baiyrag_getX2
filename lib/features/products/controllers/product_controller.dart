@@ -275,6 +275,13 @@ class ProductController extends GetxController {
 
         _paginationMeta = response.data!.meta;
         _error = null;
+
+        if (categoryId.isEmpty) {
+          _applyOfferFilter();
+          while (_products.isEmpty && hasNextPage) {
+            await loadMore();
+          }
+        }
       } else {
         if (refresh) {
           _products = [];
@@ -341,11 +348,17 @@ class ProductController extends GetxController {
       }
 
       if (response.isSuccess && response.data != null) {
-        _products.addAll(
-          response.data!.items,
-        );
+        final existingIds = _products.map((p) => p.id).toSet();
+        for (final product in response.data!.items) {
+          if (existingIds.add(product.id)) {
+            _products.add(product);
+          }
+        }
 
         _paginationMeta = response.data!.meta;
+        if (_currentCategoryId.isEmpty) {
+          _applyOfferFilter();
+        }
       }
     } catch (e, stackTrace) {
       if (requestId != _listRequestId) {
@@ -361,4 +374,33 @@ class ProductController extends GetxController {
       }
     }
   }
+
+  void _applyOfferFilter() {
+    _products = _products
+        .map((product) {
+          final offerUnits = product.units
+              .where((unit) => unit.offer != null && _isOfferActive(unit.offer!.startDate, unit.offer!.endDate))
+              .toList();
+          return offerUnits.isEmpty
+              ? null
+              : product.copyWith(units: offerUnits);
+        })
+        .whereType<ProductModel>()
+        .toList();
+  }
+
+  bool _isOfferActive(String? startDate, String? endDate) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final start = startDate == null ? null : DateTime.tryParse(startDate);
+    final end = endDate == null ? null : DateTime.tryParse(endDate);
+    if (start != null && today.isBefore(DateTime(start.year, start.month, start.day))) {
+      return false;
+    }
+    if (end != null && today.isAfter(DateTime(end.year, end.month, end.day))) {
+      return false;
+    }
+    return true;
+  }
+
 }

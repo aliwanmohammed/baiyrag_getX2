@@ -12,6 +12,8 @@ import '../../../app/theme/app_radius.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../core/design_system/patterns/app_responsive.dart';
 import '../../../core/design_system/components/feedback/app_empty_state.dart';
+import '../../../core/design_system/components/feedback/app_error_state.dart';
+import '../../../core/design_system/components/feedback/app_loading.dart';
 import '../../ads/models/offer_model.dart';
 import '../../ads/controllers/offers_controller.dart';
 import '../controllers/cart_controller.dart';
@@ -62,6 +64,22 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
 
+    if (cart.isLoading && cart.isEmpty) {
+      return const Scaffold(
+        body: AppLoading.fullPage(message: 'جاري تحميل السلة...'),
+      );
+    }
+
+    if (cart.error != null && cart.isEmpty) {
+      return Scaffold(
+        body: AppErrorState(
+          title: 'تعذر تحميل السلة',
+          message: cart.error!,
+          onRetry: cart.loadFromServer,
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppPageHeader(
@@ -110,14 +128,26 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: AppConstrainedContent(
         child: cart.isEmpty
-            ? AppEmptyState(
-                icon: Icons.shopping_bag_outlined,
-                title: 'السلة فارغة',
-                subtitle: 'أضف منتجات من الصفحة الرئيسية',
-                actionLabel: 'تسوق الآن',
-                onAction: () {
-                  Get.find<NavigationController>().changeTab(0);
-                },
+            ? RefreshIndicator(
+                onRefresh: cart.loadFromServer,
+                color: colorScheme.primary,
+                child: ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  children: [
+                    SizedBox(
+                      height: 420,
+                      child: AppEmptyState(
+                        icon: Icons.shopping_bag_outlined,
+                        title: 'السلة فارغة',
+                        subtitle: 'أضف منتجات من الصفحة الرئيسية',
+                        actionLabel: 'تسوق الآن',
+                        onAction: () {
+                          Get.find<NavigationController>().changeTab(0);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               )
             : Column(
                 children: [

@@ -3,15 +3,21 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/router/app_navigator.dart';
 import '../../../app/router/app_routes.dart';
+import '../../api/api_endpoints.dart';
 import '../../services/secure_storage_service.dart';
 
-/// Adds the stored Bearer token when one exists.
+/// Adds the stored Bearer token and transparently refreshes an expired token.
 ///
-/// Important for Guest mode:
-/// A 401 does NOT automatically mean "login required".
-/// Only treat it as an expired session when a local token actually exists.
+/// The backend issues short-lived access tokens (the current response exposes
+/// `expires_in: 3600`), so a valid stored session must not be treated as a
+/// logout merely because the access token expired.
 class AuthInterceptor extends Interceptor {
+  AuthInterceptor(this._dio);
+
+  final Dio _dio;
+
   static bool _redirectingToLogin = false;
+  Future<String?>? _refreshFuture;
 
   @override
   Future<void> onRequest(
@@ -19,7 +25,6 @@ class AuthInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     final storage = SecureStorageService.instance;
-
     final token = await storage.readToken();
 
     if (token != null && token.isNotEmpty) {
@@ -28,9 +33,7 @@ class AuthInterceptor extends Interceptor {
       options.headers.remove('Authorization');
     }
 
-    final language = await storage.readLanguage();
-    options.headers['Accept-Language'] = language;
-
+    options.headers['Accept-Language'] = await storage.readLanguage();
     handler.next(options);
   }
 
@@ -44,41 +47,105 @@ class AuthInterceptor extends Interceptor {
       return;
     }
 
-    final path = err.requestOptions.path;
-    final isLogoutRequest = path == '/logout' || path.endsWith('/logout');
+    final path = _normalize(err.requestOptions.path);
 
-    // Logout 401 is not a navigation event.
-    if (isLogoutRequest) {
+    // Login/logout/refresh 401s are not session-refresh candidates.
+    if (path == '/login' || path == '/logout' || path == '/refresh') {
       handler.next(err);
       return;
     }
 
-    // A 401 from a public/catalog/content endpoint must never log the
-    // customer out. This is especially important when the backend has a
-    // route-level auth configuration issue (for example /about-us).
     if (!_isSessionProtectedPath(path)) {
       handler.next(err);
       return;
     }
 
-    // Critical Guest rule:
-    // No stored token = this is a normal unauthenticated request.
-    final token = await SecureStorageService.instance.readToken();
+    final storage = SecureStorageService.instance;
+    final token = await storage.readToken();
 
+    // Guest request: a 401 is simply an unauthenticated response.
     if (token == null || token.isEmpty) {
       handler.next(err);
       return;
     }
 
-    // A 401 from a genuinely protected endpoint means the current token
-    // has been rejected. Treat it as an expired/invalid session.
+    // Never retry the same request more than once.
+    if (err.requestOptions.extra['authRetry'] == true) {
+      await _expireSessionAndRedirect();
+      handler.next(err);
+      return;
+    }
+
+    try {
+      final refreshedToken = await _refreshAccessToken();
+
+      if (refreshedToken == null || refreshedToken.isEmpty) {
+        await _expireSessionAndRedirect();
+        handler.next(err);
+        return;
+      }
+
+      final retryOptions = err.requestOptions;
+      retryOptions.headers['Authorization'] = 'Bearer $refreshedToken';
+      retryOptions.extra['authRetry'] = true;
+
+      final response = await _dio.fetch<dynamic>(retryOptions);
+      handler.resolve(response);
+      return;
+    } catch (_) {
+      await _expireSessionAndRedirect();
+      handler.next(err);
+    }
+  }
+
+  Future<String?> _refreshAccessToken() {
+    final existing = _refreshFuture;
+    if (existing != null) return existing;
+
+    final future = _performRefresh();
+    _refreshFuture = future;
+
+    future.whenComplete(() {
+      if (identical(_refreshFuture, future)) {
+        _refreshFuture = null;
+      }
+    });
+
+    return future;
+  }
+
+  Future<String?> _performRefresh() async {
+    try {
+      final response = await _dio.post(
+        ApiEndpoints.refresh,
+        options: Options(
+          extra: const {'authRefreshRequest': true},
+        ),
+      );
+
+      final data = response.data;
+      if (data is! Map) return null;
+
+      final token = data['access_token']?.toString();
+      if (token == null || token.isEmpty) return null;
+
+      await SecureStorageService.instance.saveToken(token);
+      return token;
+    } on DioException {
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> _expireSessionAndRedirect() async {
     await SecureStorageService.instance.clearAll();
 
-    if (!_redirectingToLogin) {
-      _redirectingToLogin = true;
+    if (_redirectingToLogin) return;
+    _redirectingToLogin = true;
 
+    try {
       final context = rootNavigatorKey.currentContext;
-
       if (context != null && context.mounted) {
         final router = GoRouter.of(context);
         final currentLocation = router.state.uri.toString();
@@ -88,30 +155,20 @@ class AuthInterceptor extends Interceptor {
 
         if (!isAlreadyLogin) {
           final redirect = Uri.encodeComponent(currentLocation);
-
-          context.go(
-            '${AppRoutes.login}?redirect=$redirect',
-          );
+          context.go('${AppRoutes.login}?redirect=$redirect');
         }
       }
-
-      // Prevent multiple simultaneous 401 responses
-      // from causing repeated navigation.
+    } finally {
       Future<void>.delayed(const Duration(milliseconds: 400), () {
         _redirectingToLogin = false;
       });
     }
-
-    handler.next(err);
   }
 
   bool _isSessionProtectedPath(String path) {
-    final normalized = path.toLowerCase();
-
     const exactProtected = {
       '/me',
       '/logout',
-      '/refresh',
       '/orders',
       '/my-orders',
       '/favorites',
@@ -120,18 +177,28 @@ class AuthInterceptor extends Interceptor {
       '/locations',
       '/checkout',
       '/profile',
+      '/cart',
     };
 
-    if (exactProtected.contains(normalized)) return true;
+    if (exactProtected.contains(path)) return true;
 
-    // Protected resource families.
-    return normalized.startsWith('/orders/') ||
-        normalized.startsWith('/favorites/') ||
-        normalized.startsWith('/addresses/') ||
-        normalized.startsWith('/locations/') ||
-        normalized.startsWith('/notifications/') ||
-        normalized.startsWith('/checkout/') ||
-        normalized.startsWith('/delivery/');
+    return path.startsWith('/orders/') ||
+        path.startsWith('/favorites/') ||
+        path.startsWith('/addresses/') ||
+        path.startsWith('/locations/') ||
+        path.startsWith('/notifications/') ||
+        path.startsWith('/checkout/') ||
+        path.startsWith('/delivery/') ||
+        path == '/cart';
   }
 
+  String _normalize(String path) {
+    final value = path.trim().toLowerCase();
+    if (value.isEmpty) return '/';
+    final withoutQuery = value.split('?').first;
+    if (withoutQuery.length > 1 && withoutQuery.endsWith('/')) {
+      return withoutQuery.substring(0, withoutQuery.length - 1);
+    }
+    return withoutQuery;
+  }
 }

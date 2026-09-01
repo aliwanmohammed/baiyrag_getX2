@@ -39,9 +39,4 @@ class OrderRemoteDataSource extends BaseRemoteDataSource {
     );
   }
 
-  Future<ApiResponse<Map<String, dynamic>>> trackOrder(String orderNumber) =>
-      getEnvelope<Map<String, dynamic>>(
-        ApiEndpoints.orderTrack(orderNumber),
-        parser: (json) => JsonParser.map(json),
-      );
 }

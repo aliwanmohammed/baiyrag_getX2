@@ -22,7 +22,6 @@ class AppRoutes {
   static const addresses = '/addresses';
   static const settings = '/settings';
   static const orderSuccess = '/order-success';
-  static const orderTracking = '/order-tracking/:orderNumber';
   static const scanner = '/scanner';
 
   // Static Info

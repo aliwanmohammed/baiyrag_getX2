@@ -5,9 +5,7 @@ import 'package:bhm_supermarket/core/design_system/components/app_icon.dart';
 import 'package:bhm_supermarket/core/design_system/patterns/app_responsive.dart';import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:flutter/material.dart';import 'package:get/get.dart';
 import '../controllers/product_controller.dart';
-import '../../ads/controllers/offers_controller.dart';
 import '../../../core/models/product_model.dart';
-import '../models/product_unit_model.dart';
 import '../../../core/design_system/components/feedback/app_empty_state.dart';
 import '../../../core/design_system/components/feedback/app_loading.dart';
 import '../widgets/products_grid.dart';
@@ -156,7 +154,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   Widget _buildBody(ProductController controller) {
     if (widget.categoryId == 'special_offers') {
       if (controller.isLoading && controller.products.isEmpty) {
-        return const Center(child: AppLoading());
+        return const Center(child: AppLoading.fullPage(message: 'جاري تحميل المنتجات...'));
       }
 
       if (controller.error != null && controller.products.isEmpty) {
@@ -169,24 +167,17 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
         );
       }
 
-      final offersController = Get.find<OffersController>();
-      final List<ProductModel> offerProducts = [];
-
-      for (final product in controller.products) {
-        final offerUnits = <ProductUnitModel>[];
-        for (final unit in product.units) {
-          final hasOffer = offersController.offers.any((offer) =>
-              offer.isActive &&
-              offer.productUnits.any(
-                  (u) => u.productId == product.id && u.unitId == unit.id));
-          if (hasOffer) {
-            offerUnits.add(unit);
-          }
-        }
-        if (offerUnits.isNotEmpty) {
-          offerProducts.add(product.copyWith(units: offerUnits));
-        }
-      }
+      final List<ProductModel> offerProducts = controller.products
+          .map((product) {
+            final offerUnits = product.units
+                .where((unit) => unit.offer != null)
+                .toList();
+            return offerUnits.isEmpty
+                ? null
+                : product.copyWith(units: offerUnits);
+          })
+          .whereType<ProductModel>()
+          .toList();
 
       final filtered = _applyFilters(offerProducts);
       if (filtered.isEmpty) {
@@ -251,7 +242,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     }
 
     if (controller.isLoading && controller.products.isEmpty) {
-      return const Center(child: AppLoading());
+      return const Center(child: AppLoading.fullPage(message: 'جاري تحميل المنتجات...'));
     }
 
     if (controller.error != null && controller.products.isEmpty) {
@@ -271,14 +262,29 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     );
 
     if (filtered.isEmpty) {
-      return const AppEmptyState(
-        icon: Icons.inventory_2_rounded,
-        title: 'لا توجد منتجات',
-        subtitle: 'لا توجد منتجات في هذا القسم حالياً',
+      return RefreshIndicator(
+        onRefresh: () => controller.loadCategory(widget.categoryId, refresh: true),
+        color: Theme.of(context).colorScheme.primary,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height * .55,
+              child: const AppEmptyState(
+                icon: Icons.inventory_2_rounded,
+                title: 'لا توجد منتجات',
+                subtitle: 'لا توجد منتجات في هذا القسم حالياً',
+              ),
+            ),
+          ],
+        ),
       );
     }
 
-    return Column(
+    return RefreshIndicator(
+      onRefresh: () => controller.loadCategory(widget.categoryId, refresh: true),
+      color: Theme.of(context).colorScheme.primary,
+      child: Column(
       children: [
         Expanded(
           child: ProductsGrid(
@@ -300,6 +306,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
             ),
           ),
       ],
+      ),
     );
   }
 }

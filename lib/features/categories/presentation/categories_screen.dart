@@ -12,6 +12,7 @@ import '../../../app/widgets/app_cached_image.dart';
 import '../../../core/design_system/patterns/app_responsive.dart';
 import '../../../core/models/category_model.dart';
 import '../../../core/design_system/components/feedback/app_empty_state.dart';
+import '../../../core/design_system/components/feedback/app_error_state.dart';
 import '../../../core/design_system/components/feedback/app_loading.dart';
 import '../controllers/category_controller.dart';
 
@@ -34,18 +35,16 @@ class CategoriesScreen extends StatelessWidget {
     final controller = Get.find<CategoryController>();
 
     if (controller.isLoading) {
-      return const Scaffold(body: Center(child: AppLoading()));
+      return const Scaffold(body: AppLoading.fullPage(message: 'جاري تحميل الأقسام...'));
     }
 
     if (controller.error != null) {
       return Scaffold(
         appBar: const AppPageHeader(title: "الأقسام", showBack: false),
-        body: AppEmptyState(
-          icon: Icons.warning_rounded,
+        body: AppErrorState(
           title: "تعذر تحميل الأقسام",
-          subtitle: controller.error,
-          actionLabel: "إعادة المحاولة",
-          onAction: controller.reload,
+          message: controller.error ?? "تعذر تحميل الأقسام. حاول مرة أخرى.",
+          onRetry: controller.reload,
         ),
       );
     }
@@ -80,7 +79,10 @@ class CategoriesScreen extends StatelessWidget {
             int crossAxisCount = (constraints.maxWidth / 160).floor();
             if (crossAxisCount < 2) crossAxisCount = 2;
 
-            return GridView.builder(
+            return RefreshIndicator(
+              onRefresh: controller.reload,
+              color: Theme.of(context).colorScheme.primary,
+              child: GridView.builder(
               padding: const EdgeInsets.all(AppSpacing.lg),
               physics: const BouncingScrollPhysics(),
               itemCount: categories.length,
@@ -138,6 +140,7 @@ class CategoriesScreen extends StatelessWidget {
                   ),
                 );
               },
+              ),
             );
           },
         ),

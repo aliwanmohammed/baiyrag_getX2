@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../domain/repositories/order_repository.dart';
 import '../models/order_model.dart';
 import '../../auth/controllers/auth_controller.dart';
+import '../../../core/design_system/components/feedback/app_error_message.dart';
 
 class OrdersController extends GetxController {
   OrdersController(this._repository, this._auth);
@@ -45,10 +46,10 @@ class OrdersController extends GetxController {
         _currentPage = _hasMore ? 2 : 1;
         _error = null;
       } else {
-        _error = response.message;
+        _error = AppErrorMessage.from(message: response.message, statusCode: response.statusCode, fallback: 'تعذر تحميل الطلبات. حاول مرة أخرى.');
       }
     } catch (e) {
-      _error = 'حدث خطأ غير متوقع';
+      _error = 'تعذر تحميل الطلبات. حاول مرة أخرى.';
     } finally {
       _loading = false;
       update();

@@ -10,8 +10,7 @@ import '../../../app/widgets/app_cached_image.dart';
 import '../../../core/design_system/components/app_icon.dart';
 import '../../../core/models/product_model.dart';
 import '../../cart/controllers/cart_controller.dart';
-import '../../ads/models/offer_model.dart';
-import '../../ads/controllers/offers_controller.dart';
+import '../models/product_unit_offer_model.dart';
 import '../../../core/widgets/app_message.dart';
 import '../../favorites/controllers/favorites_controller.dart';
 import '../models/product_unit_model.dart';
@@ -98,8 +97,12 @@ class _ProductDetailsSheetState extends State<ProductDetailsSheet> {
       return;
     }
 
-    final unitPrice = selectedUnit.finalPrice > 0 ? selectedUnit.finalPrice : selectedUnit.price;
-    final originalPrice = selectedUnit.originalPrice > unitPrice ? selectedUnit.originalPrice : unitPrice;
+    final unitPrice = selectedUnit.finalPrice > 0
+        ? selectedUnit.finalPrice
+        : selectedUnit.price;
+    final originalPrice = selectedUnit.originalPrice > unitPrice
+        ? selectedUnit.originalPrice
+        : unitPrice;
 
     final response = await cart.addItem(
       product: widget.product,
@@ -136,15 +139,16 @@ class _ProductDetailsSheetState extends State<ProductDetailsSheet> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<ProductController>(
-    builder: (_) => GetBuilder<FavoritesController>(
-    builder: (_) => GetBuilder<CartController>(
-    builder: (_) => _buildGetX0(context))));
+    return GetBuilder<ProductController>(
+        builder: (_) => GetBuilder<FavoritesController>(
+            builder: (_) => GetBuilder<CartController>(
+                builder: (_) => _buildGetX0(context))));
   }
 
   Widget _buildGetX0(BuildContext context) {
     final controller = Get.find<ProductController>();
-    final isFavorite = Get.find<FavoritesController>().isFavorite(widget.product.id);
+    final isFavorite =
+        Get.find<FavoritesController>().isFavorite(widget.product.id);
 
     final units = controller.units;
     final selectedUnit = controller.selectedUnit;
@@ -210,7 +214,8 @@ class _ProductDetailsSheetState extends State<ProductDetailsSheet> {
                     ),
 
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          AppSpacing.lg, AppSpacing.md, AppSpacing.lg, 0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -225,8 +230,6 @@ class _ProductDetailsSheetState extends State<ProductDetailsSheet> {
                             widget.product.name,
                             style: AppTypography.headlineSmall,
                           ),
-
-
 
                           // الوصف
                           if (widget.product.description.isNotEmpty) ...[
@@ -249,7 +252,6 @@ class _ProductDetailsSheetState extends State<ProductDetailsSheet> {
                             _UnitsErrorState(error: controller.error!)
                           else if (units.isNotEmpty)
                             _UnitsSection(
-                              productId: widget.product.id,
                               units: units,
                               selectedIndex: controller.selectedUnitIndex,
                               onSelect: (i) =>
@@ -272,8 +274,13 @@ class _ProductDetailsSheetState extends State<ProductDetailsSheet> {
             if (selectedUnit != null)
               _BottomBar(
                 selectedUnit: selectedUnit,
-                price: selectedUnit.finalPrice > 0 ? selectedUnit.finalPrice : selectedUnit.price,
-                oldPrice: selectedUnit.originalPrice > (selectedUnit.finalPrice > 0 ? selectedUnit.finalPrice : selectedUnit.price)
+                price: selectedUnit.finalPrice > 0
+                    ? selectedUnit.finalPrice
+                    : selectedUnit.price,
+                oldPrice: selectedUnit.originalPrice >
+                        (selectedUnit.finalPrice > 0
+                            ? selectedUnit.finalPrice
+                            : selectedUnit.price)
                     ? selectedUnit.originalPrice
                     : null,
                 quantity: cartQuantity,
@@ -341,8 +348,9 @@ class _DragHandle extends StatelessWidget {
 // ══════════════════════════════════════════════════════════════════════════════
 
 class _ImageSection extends StatelessWidget {
-  final List<String> images;
   final String productId;
+
+  final List<String> images;
   final bool isFavorite;
   final int currentIndex;
   final PageController pageController;
@@ -516,13 +524,11 @@ class _CategoryChip extends StatelessWidget {
 // ══════════════════════════════════════════════════════════════════════════════
 
 class _UnitsSection extends StatelessWidget {
-  final String productId;
   final List<ProductUnitModel> units;
   final int selectedIndex;
   final ValueChanged<int> onSelect;
 
   const _UnitsSection({
-    required this.productId,
     required this.units,
     required this.selectedIndex,
     required this.onSelect,
@@ -530,13 +536,6 @@ class _UnitsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<OffersController>(
-    builder: (_) => _buildGetX1(context));
-  }
-
-  Widget _buildGetX1(BuildContext context) {
-    final offers = Get.find<OffersController>();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -548,50 +547,31 @@ class _UnitsSection extends StatelessWidget {
               color: AppColors.primary,
             ),
             const SizedBox(width: AppSpacing.xs),
-            Text(
-              'اختر الوحدة',
-              style: AppTypography.titleSmall,
-            ),
+            Text('اختر الوحدة', style: AppTypography.titleSmall),
             const SizedBox(width: 8),
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 2,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
                 color: AppColors.primary,
                 borderRadius: BorderRadius.circular(AppRadius.chip),
               ),
-              child: Text(
-                '${units.length}',
-                style: AppTypography.badge,
-              ),
+              child: Text('${units.length}', style: AppTypography.badge),
             ),
           ],
         ),
         const SizedBox(height: 12),
         ...List.generate(units.length, (i) {
           final unit = units[i];
-
-          final unitOfferUnit = offers.productUnitOffer(
-            productId: productId,
-            unitId: unit.id,
-          );
-          OfferModel? unitPromoOffer;
-          if (unitOfferUnit != null) {
-            try {
-              unitPromoOffer = offers.offers.firstWhere((o) => o.productUnits.any((u) => u.id == unitOfferUnit.id));
-            } catch (_) {}
-          }
-
+          final offer = unit.offer;
           final price = unit.finalPrice > 0 ? unit.finalPrice : unit.price;
-          final oldPrice = unit.originalPrice > price ? unit.originalPrice : null;
+          final oldPrice =
+              unit.originalPrice > price ? unit.originalPrice : null;
 
           return _UnitCard(
             unit: unit,
             price: price,
             oldPrice: oldPrice,
-            promoOffer: unitPromoOffer,
+            promoOffer: offer,
             isSelected: selectedIndex == i,
             onTap: () => onSelect(i),
           );
@@ -601,15 +581,11 @@ class _UnitsSection extends StatelessWidget {
   }
 }
 
-// ══════════════════════════════════════════════════════════════════════════════
-// _UnitCard
-// ══════════════════════════════════════════════════════════════════════════════
-
 class _UnitCard extends StatelessWidget {
   final ProductUnitModel unit;
   final double price;
   final double? oldPrice;
-  final OfferModel? promoOffer;
+  final ProductUnitOfferModel? promoOffer;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -642,101 +618,141 @@ class _UnitCard extends StatelessWidget {
             width: 1.5,
           ),
         ),
-        child: Row(
+        child: Column(
           children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 150),
-              width: 22,
-              height: 22,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isSelected ? AppColors.primary : AppColors.outline,
-                  width: 2,
+            Row(
+              children: [
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 150),
+                  width: 22,
+                  height: 22,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: isSelected ? AppColors.primary : AppColors.outline,
+                      width: 2,
+                    ),
+                    color: isSelected ? AppColors.primary : Colors.transparent,
+                  ),
+                  child: isSelected
+                      ? const AppIcon(Icons.check_rounded,
+                          size: AppIconSize.small, color: Colors.white)
+                      : null,
                 ),
-                color: isSelected ? AppColors.primary : Colors.transparent,
-              ),
-              child: isSelected
-                  ? const AppIcon(
-                      Icons.check_rounded,
-                      size: AppIconSize.small,
-                      color: Colors.white,
-                    )
-                  : null,
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        unit.unitName,
-                        style: AppTypography.titleSmall.copyWith(
-                          color: isSelected
-                              ? AppColors.primaryDark
-                              : AppColors.textPrimary,
-                        ),
-                      ),
-                      if (promoOffer != null) ...[
-                        const SizedBox(width: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                          decoration: BoxDecoration(
-                            color: promoOffer!.type == 'gift'
-                                ? Theme.of(context).colorScheme.tertiary
-                                : Theme.of(context).colorScheme.error,
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                          child: Text(
-                            promoOffer!.type == 'percentage'
-                                ? 'خصم'
-                                : promoOffer!.type == 'gift'
-                                    ? 'هدية'
-                                    : 'عرض خاص',
-                            style: AppTypography.caption.copyWith(
-                              color: promoOffer!.type == 'gift'
-                                  ? Theme.of(context).colorScheme.onTertiary
-                                  : Theme.of(context).colorScheme.onError,
-                              fontSize: 9,
-                              fontWeight: FontWeight.w700,
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              unit.unitName,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTypography.titleSmall.copyWith(
+                                color: isSelected
+                                    ? AppColors.primaryDark
+                                    : AppColors.textPrimary,
+                              ),
                             ),
                           ),
-                        ),
+                          if (promoOffer != null) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 4, vertical: 1),
+                              decoration: BoxDecoration(
+                                color: promoOffer!.isGift
+                                    ? Theme.of(context).colorScheme.tertiary
+                                    : Theme.of(context).colorScheme.error,
+                                borderRadius: BorderRadius.circular(2),
+                              ),
+                              child: Text(
+                                promoOffer!.isPercentage
+                                    ? 'خصم'
+                                    : promoOffer!.isGift
+                                        ? 'هدية'
+                                        : 'عرض خاص',
+                                style: AppTypography.caption.copyWith(
+                                  color: promoOffer!.isGift
+                                      ? Theme.of(context).colorScheme.onTertiary
+                                      : Theme.of(context).colorScheme.onError,
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      if (unit.quantity > 1) ...[
+                        const SizedBox(height: 2),
+                        Text('${unit.quantity}',
+                            style: AppTypography.bodySmall),
                       ],
                     ],
                   ),
-                  if (unit.quantity > 1) ...[
-                    const SizedBox(height: 2),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    if (hasDiscount)
+                      Text(
+                        '${oldPrice!.toStringAsFixed(2)} ر.ي',
+                        style: AppTypography.caption.copyWith(
+                          decoration: TextDecoration.lineThrough,
+                          color: AppColors.textHint,
+                        ),
+                      ),
                     Text(
-                      '${unit.quantity}',
-                      style: AppTypography.bodySmall,
+                      '${price.toStringAsFixed(2)} ر.ي',
+                      style: AppTypography.priceMedium.copyWith(
+                        color: isSelected
+                            ? AppColors.primaryDark
+                            : AppColors.price,
+                        fontSize: 17,
+                      ),
                     ),
                   ],
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                if (hasDiscount)
-                  Text(
-                    '${oldPrice!.toStringAsFixed(2)} ر.ي',
-                    style: AppTypography.caption.copyWith(
-                      decoration: TextDecoration.lineThrough,
-                      color: AppColors.textHint,
-                    ),
-                  ),
-                Text(
-                  '${price.toStringAsFixed(2)} ر.ي',
-                  style: AppTypography.priceMedium.copyWith(
-                    color: isSelected ? AppColors.primaryDark : AppColors.price,
-                    fontSize: 17,
-                  ),
                 ),
               ],
             ),
+            if (promoOffer?.isGift == true &&
+                promoOffer!.giftProductName.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.sm),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.tertiaryContainer,
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.card_giftcard_rounded,
+                      size: 17,
+                      color: Theme.of(context).colorScheme.onTertiaryContainer,
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    Expanded(
+                      child: Text(
+                        'هدية: ${promoOffer!.giftProductName}'
+                        '${promoOffer!.giftUnitName.isNotEmpty ? ' (${promoOffer!.giftUnitName})' : ''}'
+                        '${promoOffer!.giftQuantity > 0 ? ' × ${promoOffer!.giftQuantity}' : ''}',
+                        style: AppTypography.bodySmall.copyWith(
+                          color:
+                              Theme.of(context).colorScheme.onTertiaryContainer,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -987,7 +1003,8 @@ class _UnitsErrorState extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const AppIcon(Icons.error_outline_rounded, color: AppColors.error, size: AppIconSize.medium),
+          const AppIcon(Icons.error_outline_rounded,
+              color: AppColors.error, size: AppIconSize.medium),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
@@ -1015,7 +1032,8 @@ class _NoUnitsWarning extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const AppIcon(Icons.info_outline_rounded, color: AppColors.warning, size: AppIconSize.medium),
+          const AppIcon(Icons.info_outline_rounded,
+              color: AppColors.warning, size: AppIconSize.medium),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
@@ -1036,7 +1054,8 @@ class _UnavailableBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
     return Container(
-      padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, bottomPadding + AppSpacing.md),
+      padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.md,
+          AppSpacing.lg, bottomPadding + AppSpacing.md),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
@@ -1050,7 +1069,8 @@ class _UnavailableBottomBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const AppIcon(Icons.block_rounded, color: AppColors.textHint, size: AppIconSize.small),
+          const AppIcon(Icons.block_rounded,
+              color: AppColors.textHint, size: AppIconSize.small),
           const SizedBox(width: AppSpacing.xs),
           Text(
             'هذا المنتج غير متاح للشراء حالياً',

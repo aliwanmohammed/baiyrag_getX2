@@ -10,28 +10,45 @@ class ProductRepositoryImpl implements ProductRepository {
 
   final ProductRemoteDataSource _remote;
 
+  // In-memory cache for product details. This prevents repeated GET /products/{id}
+  // requests when multiple features need the same product during one app session.
+  final Map<String, ProductModel> _productCache = {};
+  final Map<String, Future<ApiResponse<ProductModel>>> _inFlight = {};
+
   @override
   Future<ApiResponse<PaginatedResult<List<ProductModel>>>> getProducts({
     String? categoryId,
     String? search,
     int page = 1,
-    bool? isBestSeller,
-    bool? isFlashDeal,
-    bool? isRecommended,
   }) {
     return _remote.fetchProducts(
       categoryId: categoryId,
       search: search,
       page: page,
-      isBestSeller: isBestSeller,
-      isFlashDeal: isFlashDeal,
-      isRecommended: isRecommended,
     );
   }
 
   @override
   Future<ApiResponse<ProductModel>> getProductById(String id) {
-    return _remote.fetchProduct(id);
+    final cached = _productCache[id];
+    if (cached != null) {
+      return Future.value(ApiResponse.success(cached));
+    }
+
+    final pending = _inFlight[id];
+    if (pending != null) return pending;
+
+    final request = _remote.fetchProduct(id);
+    _inFlight[id] = request;
+
+    return request.then((response) {
+      if (response.isSuccess && response.data != null) {
+        _productCache[id] = response.data!;
+      }
+      return response;
+    }).whenComplete(() {
+      _inFlight.remove(id);
+    });
   }
 
   @override

@@ -64,7 +64,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       body: SafeArea(
         child: GetBuilder<OrdersController>(builder: (controller) {
             if (controller.loading) {
-              return const Center(child: AppLoading());
+              return const AppLoading.fullPage(message: 'جاري تحميل الطلبات...');
             }
 
             if (controller.error != null && controller.orders.isEmpty) {

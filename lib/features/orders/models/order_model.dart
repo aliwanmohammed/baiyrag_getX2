@@ -10,6 +10,10 @@ class OrderModel {
 
   final AddressModel location;
 
+  /// Assigned driver, when the backend has assigned one.
+  /// Customer responses may legitimately return null while the order is pending.
+  final OrderDriverModel? deliveryDriver;
+
   final List<OrderItemModel> items;
 
   final double subtotal;
@@ -28,16 +32,19 @@ class OrderModel {
   final String status;
 
   OrderStatus get statusEnum => OrderStatusExt.fromString(status);
-  PaymentMethod get paymentMethodEnum => PaymentMethodExt.fromString(paymentMethod);
+  PaymentMethod get paymentMethodEnum =>
+      PaymentMethodExt.fromString(paymentMethod);
 
   final String? notes;
 
   final String createdAt;
+  final String? updatedAt;
 
   const OrderModel({
     required this.id,
     required this.orderNumber,
     required this.location,
+    this.deliveryDriver,
     required this.items,
     required this.subtotal,
     required this.deliveryFee,
@@ -49,6 +56,7 @@ class OrderModel {
     required this.status,
     this.notes,
     required this.createdAt,
+    this.updatedAt,
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
@@ -58,6 +66,11 @@ class OrderModel {
       location: AddressModel.fromJson(
         JsonParser.map(json['location']),
       ),
+      deliveryDriver: json['delivery_driver'] is Map
+          ? OrderDriverModel.fromJson(
+              Map<String, dynamic>.from(json['delivery_driver'] as Map),
+            )
+          : null,
       items: JsonParser.list(
         json['items'],
         OrderItemModel.fromJson,
@@ -90,6 +103,7 @@ class OrderModel {
       createdAt: JsonParser.string(
         json['created_at'],
       ),
+      updatedAt: json['updated_at']?.toString(),
     );
   }
 
@@ -107,6 +121,27 @@ class OrderModel {
       'status': status,
       'notes': notes,
       'created_at': createdAt,
+      'updated_at': updatedAt,
     };
+  }
+}
+
+class OrderDriverModel {
+  final String id;
+  final String name;
+  final String? phone;
+
+  const OrderDriverModel({
+    required this.id,
+    required this.name,
+    this.phone,
+  });
+
+  factory OrderDriverModel.fromJson(Map<String, dynamic> json) {
+    return OrderDriverModel(
+      id: JsonParser.string(json['id']),
+      name: JsonParser.string(json['name']),
+      phone: json['phone']?.toString(),
+    );
   }
 }

@@ -8,9 +8,6 @@ abstract class ProductRepository {
     String? categoryId,
     String? search,
     int page = 1,
-    bool? isBestSeller,
-    bool? isFlashDeal,
-    bool? isRecommended,
   });
 
   Future<ApiResponse<ProductModel>> getProductById(String id);

@@ -1,4 +1,5 @@
 import '../../../core/utils/json_parser.dart';
+import 'product_unit_offer_model.dart';
 
 class ProductUnitModel {
   final String id;
@@ -17,6 +18,9 @@ class ProductUnitModel {
   final double discount;
   final double finalPrice;
 
+  /// Offer attached to this exact unit by the backend.
+  final ProductUnitOfferModel? offer;
+
   const ProductUnitModel({
     required this.id,
     this.nameAr = '',
@@ -29,6 +33,7 @@ class ProductUnitModel {
     this.originalPrice = 0,
     this.discount = 0,
     this.finalPrice = 0,
+    this.offer,
   });
 
   /// اسم الوحدة حسب اللغة الحالية.
@@ -59,6 +64,11 @@ class ProductUnitModel {
       finalPrice: JsonParser.doubleValue(
         json['final_price'],
       ),
+      offer: json['offer'] is Map
+          ? ProductUnitOfferModel.fromJson(
+              Map<String, dynamic>.from(json['offer'] as Map),
+            )
+          : null,
     );
   }
 
@@ -75,6 +85,23 @@ class ProductUnitModel {
       'original_price': originalPrice,
       'discount': discount,
       'final_price': finalPrice,
+      if (offer != null) 'offer': {
+        'id': int.tryParse(offer!.id) ?? offer!.id,
+        'type': offer!.type,
+        'value': offer!.value,
+        'buy_quantity': offer!.buyQuantity,
+        'gift_quantity': offer!.giftQuantity,
+        'gift_product': {
+          'product_id': offer!.giftProductId,
+          'unit_id': offer!.giftUnitId,
+          'product_name_ar': offer!.giftProductNameAr,
+          'product_name_en': offer!.giftProductNameEn,
+          'unit_name_ar': offer!.giftUnitNameAr,
+          'unit_name_en': offer!.giftUnitNameEn,
+        },
+        'start_date': offer!.startDate,
+        'end_date': offer!.endDate,
+      },
     };
   }
 
@@ -87,7 +114,7 @@ class ProductUnitModel {
         'barcode: $barcode, '
         'price: $price, '
         'soldQuantityLast2Days: $soldQuantityLast2Days, '
-        'buyersCountLast2Days: $buyersCountLast2Days'
+        'buyersCountLast2Days: $buyersCountLast2Days, '
         ')';
   }
 }

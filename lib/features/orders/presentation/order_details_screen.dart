@@ -1,5 +1,6 @@
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_spacing.dart';
@@ -11,14 +12,47 @@ import '../models/order_status.dart';
 // unused
 import '../utils/payment_method_text.dart';
 import '../widgets/order_progress.dart';
+import '../controllers/orders_controller.dart';
 
-class OrderDetailsScreen extends StatelessWidget {
+class OrderDetailsScreen extends StatefulWidget {
   final OrderModel order;
 
   const OrderDetailsScreen({
     super.key,
     required this.order,
   });
+
+  @override
+  State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
+}
+
+class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+  late OrderModel _order;
+
+  @override
+  void initState() {
+    super.initState();
+    _order = widget.order;
+  }
+
+  Future<void> _refresh() async {
+    final controller = Get.find<OrdersController>();
+    await controller.reload();
+
+    if (!mounted) return;
+
+    OrderModel? updated;
+    for (final item in controller.orders) {
+      if (item.id == _order.id || item.orderNumber == _order.orderNumber) {
+        updated = item;
+        break;
+      }
+    }
+
+    if (updated != null) {
+      setState(() => _order = updated!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +65,11 @@ class OrderDetailsScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: AppConstrainedContent(
-          child: ListView(
+          child: RefreshIndicator(
+            onRefresh: _refresh,
+            color: colorScheme.primary,
+            child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.all(AppSpacing.md),
             children: [
               // ================================================================
@@ -46,25 +84,25 @@ class OrderDetailsScreen extends StatelessWidget {
                 child: ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
                   title: Text(
-                    order.orderNumber,
+                    _order.orderNumber,
                     style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  subtitle: Text(order.createdAt, style: AppTypography.bodyMedium),
+                  subtitle: Text(_order.createdAt, style: AppTypography.bodyMedium),
                   trailing: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: AppSpacing.md,
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: order.statusEnum.color.withValues(
+                      color: _order.statusEnum.color.withValues(
                         alpha: .15,
                       ),
                       borderRadius: BorderRadius.circular(AppRadius.xxl),
                     ),
                     child: Text(
-                      order.statusEnum.label,
+                      _order.statusEnum.label,
                       style: AppTypography.labelLarge.copyWith(
-                        color: order.statusEnum.color,
+                        color: _order.statusEnum.color,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -85,7 +123,7 @@ class OrderDetailsScreen extends StatelessWidget {
               const SizedBox(height: AppSpacing.md),
 
               OrderProgress(
-                status: order.status,
+                status: _order.status,
               ),
 
               const SizedBox(height: AppSpacing.xl),
@@ -105,30 +143,30 @@ class OrderDetailsScreen extends StatelessWidget {
                     children: [
                       _infoRow(
                         'رقم الطلب',
-                        order.orderNumber,
+                        _order.orderNumber,
                         colorScheme,
                       ),
                       _infoRow(
                         'طريقة الدفع',
-                        paymentMethodText(order.paymentMethod),
+                        paymentMethodText(_order.paymentMethod),
                         colorScheme,
                       ),
                       _infoRow(
                         'حالة الدفع',
-                        order.paymentStatus.toLowerCase() == 'pending'
+                        _order.paymentStatus.toLowerCase() == 'pending'
                             ? 'قيد الانتظار'
-                            : order.paymentStatus,
+                            : _order.paymentStatus,
                         colorScheme,
                       ),
                       _infoRow(
                         'العنوان',
-                        order.location.address,
+                        _order.location.address,
                         colorScheme,
                       ),
-                      if (order.notes != null && order.notes!.trim().isNotEmpty)
+                      if (_order.notes != null && _order.notes!.trim().isNotEmpty)
                         _infoRow(
                           'ملاحظات',
-                          order.notes!,
+                          _order.notes!,
                           colorScheme,
                         ),
                     ],
@@ -148,7 +186,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
               const SizedBox(height: AppSpacing.sm),
 
-              ...order.items.map(
+              ..._order.items.map(
                 (item) => Padding(
                   padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                   child: Container(
@@ -233,28 +271,28 @@ class OrderDetailsScreen extends StatelessWidget {
                       // المجموع قبل الخصم
                       _priceRow(
                         'المجموع',
-                        order.subtotal,
+                        _order.subtotal,
                       ),
 
                       // رسوم التوصيل
                       _priceRow(
                         'التوصيل',
-                        order.deliveryFee,
+                        _order.deliveryFee,
                       ),
 
                       // الخصم العام
-                      if (order.discount > 0)
+                      if (_order.discount > 0)
                         _priceRow(
                           'الخصم',
-                          -order.discount,
+                          -_order.discount,
                           color: AppColors.success,
                         ),
 
                       // خصم الكوبون
-                      if (order.couponDiscount > 0)
+                      if (_order.couponDiscount > 0)
                         _priceRow(
                           'خصم الكوبون',
-                          -order.couponDiscount,
+                          -_order.couponDiscount,
                           color: AppColors.success,
                         ),
 
@@ -266,7 +304,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       // الإجمالي النهائي القادم من Backend
                       _priceRow(
                         'الإجمالي',
-                        order.total,
+                        _order.total,
                         bold: true,
                       ),
                     ],
@@ -276,6 +314,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
               const SizedBox(height: AppSpacing.xxl),
             ],
+          ),
           ),
         ),
       ),

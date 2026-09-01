@@ -77,7 +77,7 @@ class AppBindings extends Bindings {
     );
 
     Get.lazyPut<HomeController>(
-      () => HomeController(Get.find(), Get.find()),
+      () => HomeController(Get.find()),
       fenix: true,
     );
 

@@ -5,6 +5,8 @@ import '../../../app/theme/app_spacing.dart';
 import '../../../app/theme/app_typography.dart';
 import '../../../core/design_system/components/app_icon.dart';
 import '../../../core/design_system/components/feedback/app_empty_state.dart';
+import '../../../core/design_system/components/feedback/app_error_state.dart';
+import '../../../core/design_system/components/feedback/app_loading.dart';
 import '../../../core/design_system/patterns/app_responsive.dart';
 import '../../../core/widgets/app_message.dart';
 import '../../cart/controllers/cart_controller.dart';
@@ -46,6 +48,22 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     final cartProv = Get.find<CartController>();
     final favProducts = favoritesController.products;
     final colorScheme = Theme.of(context).colorScheme;
+
+    if (favoritesController.isLoading && favProducts.isEmpty) {
+      return const Scaffold(
+        body: AppLoading.fullPage(message: 'جاري تحميل المفضلة...'),
+      );
+    }
+
+    if (favoritesController.error != null && favProducts.isEmpty) {
+      return Scaffold(
+        body: AppErrorState(
+          title: 'تعذر تحميل المفضلة',
+          message: favoritesController.error!,
+          onRetry: favoritesController.loadFromServer,
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -106,17 +124,29 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         ],
       ),
       body: AppConstrainedContent(
-        child: favProducts.isEmpty
-            ? const AppEmptyState(
-                icon: Icons.favorite_rounded,
-                title: 'المفضلة فارغة',
-                subtitle: 'اضغط على قلب أي منتج لإضافته هنا',
-              )
-            : ProductsGrid(
-                products: favProducts,
-                shrinkWrap: false,
-                physics: const AlwaysScrollableScrollPhysics(),
-              ),
+        child: RefreshIndicator(
+          onRefresh: favoritesController.loadFromServer,
+          color: colorScheme.primary,
+          child: favProducts.isEmpty
+              ? ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  children: const [
+                    SizedBox(
+                      height: 420,
+                      child: AppEmptyState(
+                        icon: Icons.favorite_rounded,
+                        title: 'المفضلة فارغة',
+                        subtitle: 'اضغط على قلب أي منتج لإضافته هنا',
+                      ),
+                    ),
+                  ],
+                )
+              : ProductsGrid(
+                  products: favProducts,
+                  shrinkWrap: false,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                ),
+        ),
       ),
     );
   }

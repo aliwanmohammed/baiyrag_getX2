@@ -31,7 +31,7 @@ class ApiClient {
       ),
     );
 
-    dio.interceptors.add(AuthInterceptor());
+    dio.interceptors.add(AuthInterceptor(dio));
 
     if (kDebugMode) {
       dio.interceptors.add(

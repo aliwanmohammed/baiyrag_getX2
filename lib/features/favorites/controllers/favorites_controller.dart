@@ -29,8 +29,10 @@ class FavoritesController extends GetxController {
   final Map<String, String> _favoriteIds = {};
 
   bool _isLoading = false;
+  String? _error;
 
   bool get isLoading => _isLoading;
+  String? get error => _error;
 
   List<String> get ids => List.unmodifiable(_ids);
   List<ProductModel> get products =>
@@ -94,12 +96,14 @@ class FavoritesController extends GetxController {
     }
 
     _isLoading = true;
+    _error = null;
     update();
 
     try {
       final response = await _repository.getFavorites();
 
       if (!response.isSuccess || response.data == null) {
+        _error = response.message.isNotEmpty ? response.message : 'تعذر تحميل المفضلة';
         return;
       }
 
@@ -143,6 +147,7 @@ class FavoritesController extends GetxController {
 
       await _saveFavorites();
     } catch (e, stackTrace) {
+      _error = 'تعذر تحميل المفضلة. حاول مرة أخرى.';
       debugPrint('[FavoritesController] sync error: $e');
       debugPrintStack(stackTrace: stackTrace);
     } finally {

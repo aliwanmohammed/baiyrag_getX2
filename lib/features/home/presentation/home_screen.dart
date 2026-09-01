@@ -17,7 +17,7 @@ import '../controllers/home_controller.dart';
 import '../widgets/home_banner.dart';
 import '../widgets/home_header.dart';
 import '../widgets/home_search_bar.dart';
-import '../widgets/product_section.dart';
+import '../../products/widgets/products_grid.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -124,14 +124,12 @@ class _HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<HomeController>(
-    builder: (_) => _buildGetX1(context));
+    return GetBuilder<HomeController>(
+      builder: (controller) => _buildBody(context, controller),
+    );
   }
 
-  Widget _buildGetX1(BuildContext context) {
-    final controller = Get.find<HomeController>();
-
-    // ── أول تحميل — spinner ─────────────────────────────────────────────────
+  Widget _buildBody(BuildContext context, HomeController controller) {
     if (controller.state == HomeLoadState.loading ||
         controller.state == HomeLoadState.initial) {
       return const CustomScrollView(
@@ -139,13 +137,12 @@ class _HomeBody extends StatelessWidget {
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,
-            child: Center(child: AppLoading()),
+            child: AppLoading.fullPage(message: 'جاري تحميل المنتجات...'),
           ),
         ],
       );
     }
 
-    // ── فشل التحميل ويجب ألا تكون هناك بيانات قديمة (أول محاولة) ──────────
     if (controller.state == HomeLoadState.error && controller.products.isEmpty) {
       return CustomScrollView(
         physics: const BouncingScrollPhysics(
@@ -157,20 +154,19 @@ class _HomeBody extends StatelessWidget {
             child: AppErrorState(
               title: 'تعذر تحميل المنتجات',
               message: controller.error ?? 'تحقق من اتصالك بالإنترنت وأعد المحاولة',
-              onRetry: () => Get.find<HomeController>().loadProducts(),
+              onRetry: () => controller.loadProducts(),
             ),
           ),
         ],
       );
     }
 
-    // ── نجاح التحميل + لا يوجد منتجات (حقاً فارغ من الـ Backend) ──────────
     if (controller.state == HomeLoadState.empty) {
       return CustomScrollView(
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        slivers: [
+        slivers: const [
           SliverFillRemaining(
             hasScrollBody: false,
             child: AppEmptyState(
@@ -183,97 +179,83 @@ class _HomeBody extends StatelessWidget {
       );
     }
 
-    // ── success أو refreshing (نعرض البيانات الموجودة) ─────────────────────
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(
-        parent: AlwaysScrollableScrollPhysics(),
-      ),
-      slivers: [
-        // banner خطأ صغير عند فشل refresh (البيانات القديمة ما زالت ظاهرة)
-        if (controller.state == HomeLoadState.error)
-          SliverToBoxAdapter(
-            child: Container(
-              color: Colors.orange.shade50,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: [
-                  const AppIcon(Icons.warning_amber_rounded,
-                      color: Colors.orange, size: AppIconSize.small),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'تعذر تحديث المنتجات — تعرض بيانات قديمة',
-                      style: AppTypography.bodySmall.copyWith(
-                        color: Colors.orange,
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.depth == 0 &&
+            notification.metrics.pixels >=
+                notification.metrics.maxScrollExtent - 500 &&
+            controller.hasNextPage &&
+            !controller.isFetchingMore) {
+          controller.loadMore();
+        }
+        return false;
+      },
+      child: CustomScrollView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
+        slivers: [
+          if (controller.state == HomeLoadState.error)
+            SliverToBoxAdapter(
+              child: Container(
+                color: Colors.orange.shade50,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  children: [
+                    const AppIcon(
+                      Icons.warning_amber_rounded,
+                      color: Colors.orange,
+                      size: AppIconSize.small,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'تعذر تحديث المنتجات — تعرض بيانات قديمة',
+                        style: AppTypography.bodySmall.copyWith(
+                          color: Colors.orange,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 70,
-                    child: AppButton(
-                      variant: AppButtonVariant.text,
-                      size: AppButtonSize.small,
-                      text: 'إعادة',
-                      onPressed: () => Get.find<HomeController>().reload(),
+                    SizedBox(
+                      width: 70,
+                      child: AppButton(
+                        variant: AppButtonVariant.text,
+                        size: AppButtonSize.small,
+                        text: 'إعادة',
+                        onPressed: controller.reload,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+            ),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(6, 4, 6, AppSpacing.xxl),
+            sliver: SliverToBoxAdapter(
+              child: ProductsGrid(
+                products: controller.products,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
               ),
             ),
           ),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(
-            6.0, // small outer padding to maximize product card width
-            4,
-            6.0,
-            AppSpacing.xxl,
-          ),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate([
-              // ============================================================
-              // HOME MODE
-              // لا يوجد قسم محدد ولا بحث
-              // ============================================================
-              if (controller.selectedCategory.isEmpty) ...[
-                if (controller.flashDeals.isNotEmpty) ...[
-                  ProductSection(
-                    title: 'العروض 🔥',
-                    products: controller.flashDeals,
+          if (controller.isFetchingMore)
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(AppSpacing.lg),
+                child: Center(
+                  child: SizedBox(
+                    width: 28,
+                    height: 28,
+                    child: AppLoading(size: 28),
                   ),
-                  const SizedBox(height: AppSpacing.lg),
-                ],
-                if (controller.bestSellerProducts.isNotEmpty) ...[
-                  ProductSection(
-                    title: 'الأكثر مبيعاً 🔥',
-                    products: controller.bestSellerProducts,
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                ],
-                if (controller.recommendedProducts.isNotEmpty) ...[
-                  ProductSection(
-                    title: 'خصيصاً لك 🔥',
-                    products: controller.recommendedProducts,
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                ],
-              ],
-
-              // ============================================================
-              // PRODUCTS / CATEGORY / SEARCH MODE
-              // ============================================================
-              if (controller.products.isNotEmpty)
-                ProductSection(
-                  title: controller.selectedCategory.isNotEmpty
-                      ? 'منتجات القسم'
-                      : 'جميع المنتجات',
-                  products: controller.products,
                 ),
-
-              const SizedBox(height: AppSpacing.xxl),
-            ]),
-          ),
-        ),
-      ],
+              ),
+            ),
+          if (!controller.hasNextPage && controller.products.isNotEmpty)
+            const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.xl)),
+        ],
+      ),
     );
   }
 }

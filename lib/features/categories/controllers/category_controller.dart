@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/models/category_model.dart';
+import '../../../core/design_system/components/feedback/app_error_message.dart';
 import '../domain/repositories/category_repository.dart';
 
 class CategoryController extends GetxController {
@@ -82,11 +83,11 @@ class CategoryController extends GetxController {
         _categories = response.data!;
         _error = null;
       } else {
-        _error = response.message;
+        _error = AppErrorMessage.from(message: response.message, statusCode: response.statusCode, fallback: 'تعذر تحميل الأقسام. حاول مرة أخرى.');
       }
     } catch (e) {
       stopwatch.stop();
-      _error = 'تعذر تحميل الأقسام';
+      _error = 'تعذر تحميل الأقسام. حاول مرة أخرى.';
       debugPrint(
         '[CategoryController] ERROR CATEGORIES '
         '(duration=${stopwatch.elapsedMilliseconds}ms, error=$e)',

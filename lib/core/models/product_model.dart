@@ -82,7 +82,6 @@ class ProductModel {
       ProductUnitModel.fromJson,
     );
 
-    final firstUnit = parsedUnits.isNotEmpty ? parsedUnits.first : null;
 
     final parsedImages = <String>[];
     final rawImages = json['images'];
@@ -121,7 +120,7 @@ class ProductModel {
       descriptionEn: JsonParser.string(json['description_en']),
       images: parsedImages,
       units: parsedUnits,
-      price: firstUnit?.price ?? 0,
+      price: parsedUnits.isNotEmpty ? parsedUnits.first.price : 0,
       favoriteId: json['favorite_id']?.toString(),
       isAvailable: JsonParser.boolValue(json['status'] ?? true),
     );

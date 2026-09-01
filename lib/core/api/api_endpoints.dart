@@ -23,7 +23,6 @@ class ApiEndpoints {
   // Orders
   static const orders = '/orders';
   static String order(String id) => '/orders/$id';
-  static String orderTrack(String orderNumber) => '/orders/$orderNumber/track';
 
   // Users
   static const users = '/users';

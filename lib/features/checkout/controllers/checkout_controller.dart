@@ -82,7 +82,22 @@ class CheckoutController extends GetxController {
   Future<CheckoutActionResult> placeOrder() async {
     if (couponNeedsRecheck) return const CheckoutActionResult.failure('تغيرت محتويات السلة، يرجى إعادة التحقق من الكوبون.', title: 'انتهت صلاحية الكوبون');
     if (_address.selectedAddress == null) return const CheckoutActionResult.addressRequired();
-    if (_cart.isEmpty) return const CheckoutActionResult.failure('السلة فارغة');
+    if (_cart.isEmpty) {
+      return const CheckoutActionResult.failure('السلة فارغة');
+    }
+
+    final orderItems = [
+      for (final item in _cart.items)
+        {
+          'product_id': item.product.id,
+          'unit_id': item.unit.id,
+          'quantity': item.quantity,
+        },
+    ];
+
+    if (orderItems.isEmpty) {
+      return const CheckoutActionResult.failure('يجب إضافة منتج واحد على الأقل');
+    }
     if (_isPlacing) return const CheckoutActionResult.failure('يوجد طلب قيد الإرسال');
 
     _isPlacing = true;
@@ -93,10 +108,7 @@ class CheckoutController extends GetxController {
         paymentMethod: _paymentMethod.apiValue,
         notes: notesTextController.text.trim().isEmpty ? null : notesTextController.text.trim(),
         couponCode: _appliedCouponCode,
-        items: [
-          for (final item in _cart.items)
-            {'product_id': item.product.id, 'unit_id': item.unit.id, 'quantity': item.quantity},
-        ],
+        items: orderItems,
       );
       if (!response.success) {
         return CheckoutActionResult.failure(response.message.isEmpty ? 'فشل إنشاء الطلب، حاول مرة أخرى' : response.message, title: 'فشل إرسال الطلب');

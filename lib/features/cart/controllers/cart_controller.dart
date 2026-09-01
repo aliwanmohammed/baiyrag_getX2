@@ -39,9 +39,11 @@ class CartController extends GetxController {
 
   bool _busy = false;
   bool _isLoading = false;
+  String? _error;
   bool _isMerging = false;
 
   bool get isLoading => _isLoading;
+  String? get error => _error;
   bool get isMerging => _isMerging;
 
   List<CartItemModel> get items => List.unmodifiable(_items);
@@ -147,6 +149,7 @@ class CartController extends GetxController {
     }
 
     _isLoading = true;
+    _error = null;
     _notify();
 
     try {
@@ -161,6 +164,7 @@ class CartController extends GetxController {
           await _saveCart();
         },
         onError: (message) {
+          _error = message.isNotEmpty ? message : 'تعذر تحميل السلة';
           debugPrint('Cart server load failed: $message');
         },
       );

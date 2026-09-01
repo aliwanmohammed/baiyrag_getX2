@@ -54,7 +54,15 @@ class NotificationsScreen extends StatelessWidget {
                 title: 'لا توجد إشعارات',
                 subtitle: 'لا توجد إشعارات حالياً',
               )
-            : ListView.separated(
+            : RefreshIndicator(
+                onRefresh: () async {
+                  // Notifications API response is not wired in this project yet.
+                  // Keep the gesture ready without inventing a backend contract.
+                  await Future<void>.delayed(const Duration(milliseconds: 350));
+                },
+                color: colorScheme.primary,
+                child: ListView.separated(
+                physics: const AlwaysScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(AppSpacing.md),
                 itemCount: notifications.length,
                 separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
@@ -113,6 +121,7 @@ class NotificationsScreen extends StatelessWidget {
                   );
                 },
               ),
+                ),
       ),
     );
   }

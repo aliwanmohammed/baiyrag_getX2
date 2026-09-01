@@ -17,7 +17,6 @@ import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/orders/presentation/order_success_screen.dart';
-import '../../features/orders/presentation/order_tracking_screen.dart';
 import '../../features/orders/presentation/orders_screen.dart';
 import '../../features/search/presentation/search_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
@@ -115,12 +114,6 @@ class AppRouter {
                 orderNumber: (state.extra as String?) ?? '0000'),
           ),
           GoRoute(
-            path: AppRoutes.orderTracking,
-            builder: (_, state) => OrderTrackingScreen(
-              orderNumber: state.pathParameters['orderNumber'] ?? '0000',
-            ),
-          ),
-          GoRoute(
             path: AppRoutes.aboutUs,
             builder: (_, __) => const StaticInfoScreen(
               type: InfoPageType.aboutUs,
@@ -163,7 +156,11 @@ class AppRouter {
           GoRoute(
             path: AppRoutes.orderDetails,
             builder: (_, state) {
-              return OrderDetailsScreen(order: state.extra as OrderModel);
+              final extra = state.extra;
+              if (extra is OrderModel) {
+                return OrderDetailsScreen(order: extra);
+              }
+              return const OrdersScreen();
             },
           ),
           GoRoute(
