@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_spacing.dart';
@@ -13,7 +14,7 @@ class NotificationModel {
   final DateTime date;
   final bool read;
 
-  const NotificationModel({
+  NotificationModel({
     required this.title,
     required this.body,
     required this.date,
@@ -30,14 +31,14 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final notifications = <NotificationModel>[
       NotificationModel(
-        title: 'عرض خاص اليوم!',
-        body: 'خصم 20% على جميع منتجات الألبان حتى نهاية اليوم.',
-        date: DateTime.now().subtract(const Duration(hours: 2)),
+        title: lang.t('today_special_offer'),
+        body: lang.t('today_offer_body'),
+        date: DateTime.now().subtract(Duration(hours: 2)),
       ),
       NotificationModel(
-        title: 'تم شحن طلبك',
-        body: 'طلبك رقم #1042 خرج للتوصيل الآن.',
-        date: DateTime.now().subtract(const Duration(days: 1)),
+        title: lang.t('order_shipped_notification'),
+        body: lang.t('order_out_for_delivery_body'),
+        date: DateTime.now().subtract(Duration(days: 1)),
         read: true,
       ),
     ];
@@ -46,26 +47,26 @@ class NotificationsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      appBar: const AppPageHeader(title: 'الإشعارات'),
+      appBar: AppPageHeader(title: lang.t('notifications')),
       body: AppConstrainedContent(
         child: notifications.isEmpty
-            ? const AppEmptyState(
+            ? AppEmptyState(
                 icon: Icons.notifications_off_outlined,
-                title: 'لا توجد إشعارات',
-                subtitle: 'لا توجد إشعارات حالياً',
+                title: lang.t('no_notifications'),
+                subtitle: lang.t('no_notifications_current'),
               )
             : RefreshIndicator(
                 onRefresh: () async {
                   // Notifications API response is not wired in this project yet.
                   // Keep the gesture ready without inventing a backend contract.
-                  await Future<void>.delayed(const Duration(milliseconds: 350));
+                  await Future<void>.delayed(Duration(milliseconds: 350));
                 },
                 color: colorScheme.primary,
                 child: ListView.separated(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(AppSpacing.md),
+                physics: AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.all(AppSpacing.md),
                 itemCount: notifications.length,
-                separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
+                separatorBuilder: (_, __) => SizedBox(height: AppSpacing.sm),
                 itemBuilder: (context, index) {
                   final n = notifications[index];
                   return Card(
@@ -82,7 +83,7 @@ class NotificationsScreen extends StatelessWidget {
                     child: Material(
                       color: n.read ? Colors.transparent : colorScheme.primary.withValues(alpha: 0.06),
                       child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
+                        contentPadding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.md,
                           vertical: AppSpacing.xs,
                         ),
@@ -98,7 +99,7 @@ class NotificationsScreen extends StatelessWidget {
                           ),
                         ),
                         subtitle: Padding(
-                          padding: const EdgeInsets.only(top: AppSpacing.xs),
+                          padding: EdgeInsets.only(top: AppSpacing.xs),
                           child: Text(
                             n.body,
                             style: AppTypography.bodyMedium.copyWith(

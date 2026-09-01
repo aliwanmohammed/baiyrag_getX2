@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'dart:async';
 
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
@@ -156,7 +157,7 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen>
         final order = changedOrders.first;
 
         _showNotification(
-          'تحديث الطلب',
+          lang.t('order_updated'),
           'تم تحديث حالة الطلب #${order.orderNumber} إلى ${_statusLabel(order.status)}',
         );
       }
@@ -196,15 +197,15 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen>
     messenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 4),
-        margin: const EdgeInsets.all(AppSpacing.lg),
+        duration: Duration(seconds: 4),
+        margin: EdgeInsets.all(AppSpacing.lg),
         content: Row(
           children: [
             AppIcon(
               Icons.notifications_active_outlined,
               color: colorScheme.onInverseSurface,
             ),
-            const SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -217,7 +218,7 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen>
                       color: colorScheme.onInverseSurface,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  SizedBox(height: 2),
                   Text(
                     message,
                     style: AppTypography.bodySmall.copyWith(
@@ -236,19 +237,19 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen>
   String _statusLabel(String status) {
     switch (status) {
       case 'pending':
-        return 'قيد الانتظار';
+        return lang.t('pending');
       case 'confirmed':
-        return 'تم التأكيد';
+        return lang.t('confirmed_status');
       case 'processing':
-        return 'قيد التجهيز';
+        return lang.t('processing');
       case 'shipped':
-        return 'خرج للتوصيل';
+        return lang.t('out_for_delivery');
       case 'delivered':
-        return 'تم التسليم';
+        return lang.t('delivered');
       case 'cancelled':
-        return 'ملغي';
+        return lang.t('cancelled');
       default:
-        return status.isEmpty ? 'غير محددة' : status;
+        return status.isEmpty ? lang.t('unspecified') : status;
     }
   }
 
@@ -274,13 +275,13 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen>
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      appBar: const AppPageHeader(
-        title: 'سجل التوصيل',
+      appBar: AppPageHeader(
+        title: lang.t('delivery_history'),
         showBack: false,
       ),
       body: AppConstrainedContent(
         child: controller.isLoading && controller.orders.isEmpty
-            ? const Center(child: AppLoading())
+            ? Center(child: AppLoading())
             : controller.error != null && controller.orders.isEmpty
                 ? AppErrorState(
                     message: controller.error!,
@@ -291,8 +292,8 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen>
                     child: Column(
                       children: [
                         Container(
-                          margin: const EdgeInsets.all(AppSpacing.md),
-                          padding: const EdgeInsets.all(AppSpacing.lg),
+                          margin: EdgeInsets.all(AppSpacing.md),
+                          padding: EdgeInsets.all(AppSpacing.lg),
                           decoration: BoxDecoration(
                             color: colorScheme.primary.withValues(
                               alpha: 0.08,
@@ -306,15 +307,15 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen>
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               _SummaryItem(
-                                'إجمالي الطلبات',
+                                lang.t('total_orders'),
                                 '${history.length}',
                               ),
                               _SummaryItem(
-                                'مُسلَّمة',
+                                lang.t('delivered_feminine'),
                                 '${history.where((o) => o.status == 'delivered').length}',
                               ),
                               _SummaryItem(
-                                'ملغاة',
+                                lang.t('cancelled_feminine'),
                                 '${history.where((o) => o.status == 'cancelled').length}',
                               ),
                             ],
@@ -323,23 +324,23 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen>
                         Expanded(
                           child: history.isEmpty
                               ? ListView(
-                                  physics: const AlwaysScrollableScrollPhysics(),
-                                  children: const [
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                  children: [
                                     SizedBox(height: 160),
                                     AppEmptyState(
-                                      title: 'لا يوجد سجل توصيل',
+                                      title: lang.t('no_delivery_history'),
                                       icon: Icons.history,
                                     ),
                                   ],
                                 )
                               : ListView.separated(
-                                  physics: const AlwaysScrollableScrollPhysics(),
-                                  padding: const EdgeInsets.symmetric(
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                  padding: EdgeInsets.symmetric(
                                     horizontal: AppSpacing.md,
                                   ),
                                   itemCount: history.length,
                                   separatorBuilder: (_, __) =>
-                                      const SizedBox(height: AppSpacing.sm),
+                                      SizedBox(height: AppSpacing.sm),
                                   itemBuilder: (_, i) {
                                     return _HistoryTile(
                                       order: history[i],
@@ -381,7 +382,7 @@ class _SummaryItem extends StatelessWidget {
             color: colorScheme.primary,
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         Text(
           label,
           style: AppTypography.bodySmall.copyWith(
@@ -426,7 +427,7 @@ class _HistoryTile extends StatelessWidget {
           context,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.md),
+          padding: EdgeInsets.all(AppSpacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -441,7 +442,7 @@ class _HistoryTile extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 5,
                     ),
@@ -461,9 +462,9 @@ class _HistoryTile extends StatelessWidget {
                           size: AppIconSize.small,
                           color: badgeColor,
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4),
                         Text(
-                          isDelivered ? 'تم التسليم' : 'ملغي',
+                          isDelivered ? lang.t('delivered') : lang.t('cancelled'),
                           style: AppTypography.labelSmall.copyWith(
                             color: badgeColor,
                             fontWeight: FontWeight.bold,
@@ -474,7 +475,7 @@ class _HistoryTile extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               if (order.customerName.isNotEmpty)
                 Row(
                   children: [
@@ -483,7 +484,7 @@ class _HistoryTile extends StatelessWidget {
                       size: AppIconSize.medium,
                       color: colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(width: AppSpacing.sm),
+                    SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Text(
                         order.customerName,
@@ -494,7 +495,7 @@ class _HistoryTile extends StatelessWidget {
                     ),
                   ],
                 ),
-              if (order.customerName.isNotEmpty) const SizedBox(height: AppSpacing.sm),
+              if (order.customerName.isNotEmpty) SizedBox(height: AppSpacing.sm),
               if (order.address.isNotEmpty)
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -504,7 +505,7 @@ class _HistoryTile extends StatelessWidget {
                       size: AppIconSize.medium,
                       color: colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(width: AppSpacing.sm),
+                    SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Text(
                         order.address,
@@ -517,9 +518,9 @@ class _HistoryTile extends StatelessWidget {
                     ),
                   ],
                 ),
-              const SizedBox(height: AppSpacing.md),
-              const Divider(height: 1),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
+              Divider(height: 1),
+              SizedBox(height: AppSpacing.md),
               Row(
                 children: [
                   Expanded(
@@ -530,7 +531,7 @@ class _HistoryTile extends StatelessWidget {
                           size: AppIconSize.small,
                           color: colorScheme.onSurfaceVariant,
                         ),
-                        const SizedBox(width: AppSpacing.xs),
+                        SizedBox(width: AppSpacing.xs),
                         Flexible(
                           child: Text(
                             order.createdAt ?? '—',

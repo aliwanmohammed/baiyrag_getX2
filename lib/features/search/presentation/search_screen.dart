@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,12 +26,12 @@ class SearchScreen extends StatelessWidget {
     final ProductSearchController controller = Get.find<ProductSearchController>();
 
     return Scaffold(
-      appBar: const AppPageHeader(title: "البحث"),
+      appBar: AppPageHeader(title: lang.t('search')),
       body: AppConstrainedContent(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: EdgeInsets.fromLTRB(
                 AppSpacing.lg,
                 AppSpacing.md,
                 AppSpacing.lg,
@@ -45,10 +46,10 @@ class SearchScreen extends StatelessWidget {
               ),
             ),
             AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
+              duration: Duration(milliseconds: 250),
               child: controller.isLoading
-                  ? const LinearProgressIndicator(minHeight: 2)
-                  : const SizedBox(height: 2),
+                  ? LinearProgressIndicator(minHeight: 2)
+                  : SizedBox(height: 2),
             ),
             Expanded(child: _SearchBody(controller: controller)),
           ],
@@ -67,7 +68,7 @@ class _SearchBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (controller.query.isEmpty) {
-      return const RecentSearches();
+      return RecentSearches();
     }
 
     // Do not hide API failures behind the generic "no results" state.
@@ -75,7 +76,7 @@ class _SearchBody extends StatelessWidget {
     // issues while the search endpoint is being integrated.
     if (!controller.isLoading && controller.error != null) {
       return AppErrorState(
-        title: 'تعذر تنفيذ البحث',
+        title: lang.t('search_error'),
         message: controller.error!,
         onRetry: () => controller.search(controller.query),
       );
@@ -88,7 +89,7 @@ class _SearchBody extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: EdgeInsets.fromLTRB(
             AppSpacing.lg,
             AppSpacing.sm,
             AppSpacing.lg,
@@ -101,9 +102,9 @@ class _SearchBody extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
                 size: AppIconSize.medium,
               ),
-              const SizedBox(width: AppSpacing.sm),
+              SizedBox(width: AppSpacing.sm),
               Text(
-                "${controller.results.length} منتج",
+                lang.t('products_count', {'count': controller.results.length}),
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ],
@@ -116,13 +117,13 @@ class _SearchBody extends StatelessWidget {
               if (crossAxisCount < 2) crossAxisCount = 2;
 
               return GridView.builder(
-                padding: const EdgeInsets.fromLTRB(
+                padding: EdgeInsets.fromLTRB(
                   AppSpacing.lg,
                   0,
                   AppSpacing.lg,
                   AppSpacing.xxl,
                 ),
-                physics: const BouncingScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 itemCount: controller.results.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,

@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'delivery_home_screen.dart';
 import 'delivery_history_screen.dart';
@@ -14,7 +15,7 @@ class DeliveryMainScreen extends StatefulWidget {
 class _DeliveryMainScreenState extends State<DeliveryMainScreen> {
   int _index = 0;
 
-  final _screens = const [
+  final _screens = [
     DeliveryHomeScreen(),
     DeliveryHistoryScreen(),
     DeliveryEarningsScreen(),
@@ -30,22 +31,22 @@ class _DeliveryMainScreenState extends State<DeliveryMainScreen> {
         onTap: (i) => setState(() => _index = i),
         selectedItemColor: Theme.of(context).colorScheme.primary,
         type: BottomNavigationBarType.fixed,
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: AppIcon(Icons.home_outlined, size: AppIconSize.medium),
-            label: 'الرئيسية',
+            label: lang.t('home'),
           ),
           BottomNavigationBarItem(
             icon: AppIcon(Icons.history_outlined, size: AppIconSize.medium),
-            label: 'السجل',
+            label: lang.t('history'),
           ),
           BottomNavigationBarItem(
             icon: AppIcon(Icons.attach_money, size: AppIconSize.medium),
-            label: 'الأرباح',
+            label: lang.t('my_earnings'),
           ),
           BottomNavigationBarItem(
             icon: AppIcon(Icons.person_outline, size: AppIconSize.medium),
-            label: 'حسابي',
+            label: lang.t('profile'),
           ),
         ],
       ),

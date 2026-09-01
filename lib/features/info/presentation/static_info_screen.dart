@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -54,13 +55,13 @@ class _StaticInfoScreenState extends State<StaticInfoScreen> {
   String get _title {
     switch (widget.type) {
       case InfoPageType.aboutUs:
-        return 'من نحن';
+        return lang.t('about_us');
       case InfoPageType.contactUs:
-        return 'اتصل بنا';
+        return lang.t('contact_us');
       case InfoPageType.faq:
-        return 'الأسئلة الشائعة';
+        return lang.t('faq');
       case InfoPageType.privacyPolicy:
-        return 'سياسة الخصوصية';
+        return lang.t('privacy_policy');
     }
   }
 
@@ -72,13 +73,13 @@ class _StaticInfoScreenState extends State<StaticInfoScreen> {
       body: GetBuilder<InfoController>(
         builder: (controller) {
           if (controller.isLoading && _isEmpty(controller)) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           }
 
           if (controller.errorMessage != null && _isEmpty(controller)) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.xl),
+                padding: EdgeInsets.all(AppSpacing.xl),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -87,11 +88,11 @@ class _StaticInfoScreenState extends State<StaticInfoScreen> {
                       textAlign: TextAlign.center,
                       style: AppTypography.bodyLarge,
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     FilledButton.icon(
                       onPressed: _load,
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('إعادة المحاولة'),
+                      icon: Icon(Icons.refresh),
+                      label: Text(lang.t('retry')),
                     ),
                   ],
                 ),
@@ -145,12 +146,12 @@ class _AboutUsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (items.isEmpty) return const _EmptyContent();
+    if (items.isEmpty) return _EmptyContent();
     return ListView.separated(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      physics: AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.all(AppSpacing.lg),
       itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.lg),
+      separatorBuilder: (_, __) => SizedBox(height: AppSpacing.lg),
       itemBuilder: (_, i) {
         final item = items[i];
         return _ContentCard(
@@ -171,12 +172,12 @@ class _ContactContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (items.isEmpty) return const _EmptyContent();
+    if (items.isEmpty) return _EmptyContent();
     return ListView.separated(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+      physics: AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
       itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
+      separatorBuilder: (_, __) => SizedBox(height: AppSpacing.sm),
       itemBuilder: (_, i) {
         final item = items[i];
         return ListTile(
@@ -187,7 +188,7 @@ class _ContactContent extends StatelessWidget {
           ),
           title: Text(item.title(_isArabic), style: AppTypography.titleMedium),
           subtitle: Text(item.value(_isArabic)),
-          contentPadding: const EdgeInsets.symmetric(
+          contentPadding: EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
             vertical: AppSpacing.xs,
           ),
@@ -221,18 +222,18 @@ class _FaqContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (items.isEmpty) return const _EmptyContent();
+    if (items.isEmpty) return _EmptyContent();
     return ListView.separated(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(AppSpacing.md),
+      physics: AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.all(AppSpacing.md),
       itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
+      separatorBuilder: (_, __) => SizedBox(height: AppSpacing.sm),
       itemBuilder: (_, i) {
         final item = items[i];
         return Card(
           child: ExpansionTile(
             title: Text(item.question(_isArabic), style: AppTypography.titleMedium),
-            childrenPadding: const EdgeInsets.fromLTRB(
+            childrenPadding: EdgeInsets.fromLTRB(
               AppSpacing.lg,
               0,
               AppSpacing.lg,
@@ -260,12 +261,12 @@ class _PrivacyContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (items.isEmpty) return const _EmptyContent();
+    if (items.isEmpty) return _EmptyContent();
     return ListView.separated(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      physics: AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.all(AppSpacing.lg),
       itemCount: items.length,
-      separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.lg),
+      separatorBuilder: (_, __) => SizedBox(height: AppSpacing.lg),
       itemBuilder: (_, i) {
         final item = items[i];
         return _ContentCard(
@@ -289,12 +290,12 @@ class _ContentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
+        padding: EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(title, style: AppTypography.titleLarge),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             child,
           ],
         ),
@@ -308,10 +309,10 @@ class _EmptyContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Padding(
         padding: EdgeInsets.all(AppSpacing.xl),
-        child: Text('لا توجد بيانات متاحة حاليًا'),
+        child: Text(lang.t('no_data_available')),
       ),
     );
   }

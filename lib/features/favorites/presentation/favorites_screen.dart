@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -50,15 +51,15 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     final colorScheme = Theme.of(context).colorScheme;
 
     if (favoritesController.isLoading && favProducts.isEmpty) {
-      return const Scaffold(
-        body: AppLoading.fullPage(message: 'جاري تحميل المفضلة...'),
+      return Scaffold(
+        body: AppLoading.fullPage(message: lang.t('loading_favorites')),
       );
     }
 
     if (favoritesController.error != null && favProducts.isEmpty) {
       return Scaffold(
         body: AppErrorState(
-          title: 'تعذر تحميل المفضلة',
+          title: lang.t('favorites_load_error'),
           message: favoritesController.error!,
           onRetry: favoritesController.loadFromServer,
         ),
@@ -71,11 +72,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('المفضلة'),
+            Text(lang.t('favorites')),
             if (favProducts.isNotEmpty) ...[
-              const SizedBox(width: AppSpacing.sm),
+              SizedBox(width: AppSpacing.sm),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
                 decoration: BoxDecoration(
                   color: colorScheme.error,
                   borderRadius: BorderRadius.circular(10),
@@ -112,12 +113,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 }
                 AppMessage.success(
                   context,
-                  'تمت إضافة ${favProducts.length} منتج للسلة',
+                  lang.t('favorites_added_count', {'count': favProducts.length}),
                 );
               },
               icon: AppIcon(Icons.shopping_cart_outlined, size: AppIconSize.small),
               label: Text(
-                'نقل الكل للسلة',
+                lang.t('move_all_to_cart'),
                 style: AppTypography.labelLarge,
               ),
             ),
@@ -129,14 +130,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           color: colorScheme.primary,
           child: favProducts.isEmpty
               ? ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  children: const [
+                  physics: AlwaysScrollableScrollPhysics(),
+                  children: [
                     SizedBox(
                       height: 420,
                       child: AppEmptyState(
                         icon: Icons.favorite_rounded,
-                        title: 'المفضلة فارغة',
-                        subtitle: 'اضغط على قلب أي منتج لإضافته هنا',
+                        title: lang.t('favorites_empty'),
+                        subtitle: lang.t('favorites_hint'),
                       ),
                     ),
                   ],
@@ -144,7 +145,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               : ProductsGrid(
                   products: favProducts,
                   shrinkWrap: false,
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: AlwaysScrollableScrollPhysics(),
                 ),
         ),
       ),

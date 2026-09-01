@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -42,7 +43,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
 
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1800),
+      duration: Duration(milliseconds: 1800),
     )..repeat(reverse: true);
 
     _scanLineAnimation = Tween<double>(begin: 0.05, end: 0.95).animate(
@@ -101,10 +102,10 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
       // Not found
       AppMessage.error(
         context,
-        controller.errorMessage ?? 'لم يتم العثور على منتج بهذا الباركود',
+        controller.errorMessage ?? lang.t('no_product_for_barcode_generic'),
       );
 
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(Duration(seconds: 1));
       if (mounted) {
         setState(() {
           _isProcessing = false;
@@ -160,7 +161,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
             },
             errorBuilder: (context, error) {
               return _buildCameraFallback(
-                message: 'تعذر تشغيل كاميرا المسح. يمكنك إدخال الباركود يدويًا.',
+                message: lang.t('scanner_camera_error'),
               );
             },
           ),
@@ -171,7 +172,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
           // 3. Top App Bar Header
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: AppSpacing.md,
                 vertical: AppSpacing.sm,
               ),
@@ -183,7 +184,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      icon: const AppIcon(
+                      icon: AppIcon(
                         Icons.arrow_forward_rounded,
                         color: Colors.white,
                         size: AppIconSize.medium,
@@ -195,21 +196,21 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
                       },
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'ماسح الباركود',
+                          lang.t('barcode_scanner'),
                           style: AppTypography.headlineSmall.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          'وجّه الكاميرا نحو باركود المنتج',
+                          lang.t('point_camera_barcode'),
                           style: AppTypography.bodySmall.copyWith(
                             color: Colors.white.withValues(alpha: 0.8),
                           ),
@@ -243,7 +244,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
               color: Colors.black.withValues(alpha: 0.7),
               child: Center(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.xl,
                     vertical: AppSpacing.lg,
                   ),
@@ -260,21 +261,21 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const AppLoading(
+                      AppLoading(
                         type: AppLoadingType.ring,
                         size: 36,
                         color: AppColors.primary,
                       ),
-                      const SizedBox(height: AppSpacing.md),
+                      SizedBox(height: AppSpacing.md),
                       Text(
-                        'جاري البحث عن المنتج...',
+                        lang.t('searching_product'),
                         style: AppTypography.bodyMedium.copyWith(
                           fontWeight: FontWeight.bold,
                           color: colorScheme.onSurface,
                         ),
                       ),
                       if (controller.lastScannedBarcode != null) ...[
-                        const SizedBox(height: AppSpacing.xs),
+                        SizedBox(height: AppSpacing.xs),
                         Text(
                           controller.lastScannedBarcode!,
                           style: AppTypography.labelSmall.copyWith(
@@ -296,7 +297,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
             right: 20,
             child: SafeArea(
               child: Container(
-                padding: const EdgeInsets.all(AppSpacing.md),
+                padding: EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.65),
                   borderRadius: BorderRadius.circular(AppRadius.xl),
@@ -308,8 +309,8 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
                   children: [
                     Expanded(
                       child: AppButton(
-                        text: 'إدخال الباركود يدويًا',
-                        icon: const AppIcon(
+                        text: lang.t('enter_barcode_manual'),
+                        icon: AppIcon(
                           Icons.keyboard_alt_outlined,
                           size: AppIconSize.small,
                           color: Colors.white,
@@ -397,7 +398,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
         child: Container(
           width: cornerSize,
           height: cornerSize,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
               top: BorderSide(color: color, width: thickness),
               left: BorderSide(color: color, width: thickness),
@@ -415,7 +416,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
         child: Container(
           width: cornerSize,
           height: cornerSize,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
               top: BorderSide(color: color, width: thickness),
               right: BorderSide(color: color, width: thickness),
@@ -433,7 +434,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
         child: Container(
           width: cornerSize,
           height: cornerSize,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(color: color, width: thickness),
               left: BorderSide(color: color, width: thickness),
@@ -451,7 +452,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
         child: Container(
           width: cornerSize,
           height: cornerSize,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(color: color, width: thickness),
               right: BorderSide(color: color, width: thickness),
@@ -468,24 +469,24 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
   Widget _buildCameraFallback({required String message}) {
     return Container(
       color: Colors.grey.shade900,
-      padding: const EdgeInsets.all(AppSpacing.xl),
+      padding: EdgeInsets.all(AppSpacing.xl),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: EdgeInsets.all(AppSpacing.lg),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: const AppIcon(
+              child: AppIcon(
                 Icons.camera_alt_outlined,
                 color: Colors.white,
                 size: AppIconSize.large,
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             Text(
               message,
               textAlign: TextAlign.center,
@@ -493,10 +494,10 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
                 color: Colors.white.withValues(alpha: 0.9),
               ),
             ),
-            const SizedBox(height: AppSpacing.xl),
+            SizedBox(height: AppSpacing.xl),
             AppButton(
-              text: 'إدخال الباركود يدويًا',
-              icon: const AppIcon(
+              text: lang.t('enter_barcode_manual'),
+              icon: AppIcon(
                 Icons.keyboard_alt_outlined,
                 size: AppIconSize.small,
                 color: Colors.white,

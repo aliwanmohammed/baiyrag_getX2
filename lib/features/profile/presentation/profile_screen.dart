@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/features/address/controllers/address_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -75,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   left: AppSpacing.xl,
                   right: AppSpacing.xl,
                 ),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [AppColors.primaryLight, AppColors.primaryDark], // Intentional visual identity exception
                     begin: Alignment.topRight,
@@ -109,108 +110,108 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.sm),
+                    SizedBox(height: AppSpacing.sm),
                     Text(
-                      user?.name ?? 'المستخدم',
+                      user?.name ?? lang.t('user'),
                       style: AppTypography.titleLarge.copyWith(
                         color: colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(height: AppSpacing.xs),
                     Text(
                       user?.phone ?? user?.email ?? '',
                       style: AppTypography.bodyMedium.copyWith(
                         color: colorScheme.onPrimary.withValues(alpha: 0.85),
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     // Stats
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _StatBadge('${ordersController.orders.length}', 'طلب'),
-                        const SizedBox(width: AppSpacing.md),
+                        _StatBadge('${ordersController.orders.length}', lang.t('order')),
+                        SizedBox(width: AppSpacing.md),
                         _StatBadge(
                           '${addressController.addresses.length}',
-                          'عناوين',
+                          lang.t('addresses'),
                         ),
-                        const SizedBox(width: AppSpacing.md),
-                        _StatBadge('${favoritesController.ids.length}', 'مفضلة'),
+                        SizedBox(width: AppSpacing.md),
+                        _StatBadge('${favoritesController.ids.length}', lang.t('favorites')),
                       ],
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
                 child: Column(
                   children: [
-                    _MenuSection('حسابي', [
+                    _MenuSection(lang.t('profile'), [
                       _MenuItem(
                         Icons.receipt_long_outlined,
-                        'طلباتي',
+                        lang.t('orders'),
                         AppColors.info, // Semantic colors that match specific info roles
                         () => context.push(AppRoutes.orders),
                       ),
                       _MenuItem(
                         Icons.favorite_border_rounded,
-                        'المفضلة',
+                        lang.t('favorites'),
                         colorScheme.error,
                         () => context.push(AppRoutes.favorites),
                       ),
                       _MenuItem(
                         Icons.location_on_outlined,
-                        'عناوين التوصيل',
+                        lang.t('delivery_addresses'),
                         AppColors.success, // Semantic success
                         () => context.push(AppRoutes.addresses),
                       ),
                       _MenuItem(
                         Icons.notifications_outlined,
-                        'الإشعارات',
+                        lang.t('notifications'),
                         AppColors.accent, // Semantic accent
                         () => context.push(AppRoutes.notifications),
                       ),
                       _MenuItem(
                         Icons.settings_outlined,
-                        'الإعدادات',
+                        lang.t('settings'),
                         colorScheme.onSurfaceVariant,
                         () => context.push(AppRoutes.settings),
                       ),
                     ]),
 
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
 
-                    _MenuSection('الدعم والمعلومات', [
+                    _MenuSection(lang.t('support_info'), [
                       _MenuItem(
                         Icons.info_outline,
-                        'من نحن',
+                        lang.t('about_us'),
                         colorScheme.primary,
                         () => context.push(AppRoutes.aboutUs),
                       ),
                       _MenuItem(
                         Icons.phone_outlined,
-                        'اتصل بنا',
+                        lang.t('contact_us'),
                         AppColors.info,
                         () => context.push(AppRoutes.contactUs),
                       ),
                       _MenuItem(
                         Icons.help_outline_rounded,
-                        'الأسئلة الشائعة',
+                        lang.t('faq'),
                         AppColors.accent,
                         () => context.push(AppRoutes.faq),
                       ),
                       _MenuItem(
                         Icons.privacy_tip_outlined,
-                        'سياسة الخصوصية',
+                        lang.t('privacy_policy'),
                         colorScheme.onSurfaceVariant,
                         () => context.push(AppRoutes.privacyPolicy),
                       ),
                     ]),
 
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
 
                     // Logout
                     GestureDetector(
@@ -220,12 +221,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: AppRadius.xlRadius,
                           ),
-                          title: const Text('تسجيل الخروج'),
-                          content: const Text('هل تريد تسجيل الخروج من حسابك؟'),
+                          title: Text(lang.t('logout')),
+                          content: Text(lang.t('logout_confirm_account')),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(ctx),
-                              child: const Text('إلغاء'),
+                              child: Text(lang.t('cancel')),
                             ),
                             ElevatedButton(
                               onPressed: () async {
@@ -238,15 +239,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: colorScheme.error,
-                                minimumSize: const Size(80, 40),
+                                minimumSize: Size(80, 40),
                               ),
-                              child: const Text('خروج'),
+                              child: Text(lang.t('exit')),
                             ),
                           ],
                         ),
                       ),
                       child: Container(
-                        padding: const EdgeInsets.all(AppSpacing.md),
+                        padding: EdgeInsets.all(AppSpacing.md),
                         decoration: BoxDecoration(
                           color: colorScheme.error.withValues(alpha: 0.06),
                           borderRadius: AppRadius.lgRadius,
@@ -257,9 +258,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Row(
                           children: [
                             AppIcon(Icons.logout_rounded, color: colorScheme.error, size: AppIconSize.medium),
-                            const SizedBox(width: AppSpacing.sm),
+                            SizedBox(width: AppSpacing.sm),
                             Text(
-                              'تسجيل الخروج',
+                              lang.t('logout'),
                               style: AppTypography.titleSmall.copyWith(
                                 color: colorScheme.error,
                                 fontWeight: FontWeight.bold,
@@ -270,14 +271,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     Text(
-                      'البيرق هايبر ماركت v1.0.0',
+                      lang.t('app_version_full'),
                       style: AppTypography.labelSmall.copyWith(
                         color: colorScheme.outline,
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.xl),
+                    SizedBox(height: AppSpacing.xl),
                   ],
                 ),
               ),
@@ -297,7 +298,7 @@ class _StatBadge extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       decoration: BoxDecoration(
         color: colorScheme.onPrimary.withValues(alpha: 0.2),
         borderRadius: AppRadius.mdRadius,
@@ -344,7 +345,7 @@ class _MenuSection extends StatelessWidget {
       children: [
         Padding(
           // CRITICAL FIX: Replaced `only(right: 4)` with directional start padding
-          padding: const EdgeInsetsDirectional.only(start: AppSpacing.xs, bottom: AppSpacing.sm),
+          padding: EdgeInsetsDirectional.only(start: AppSpacing.xs, bottom: AppSpacing.sm),
           child: Text(
             title,
             style: AppTypography.labelLarge.copyWith(
@@ -391,7 +392,7 @@ class _MenuSection extends StatelessWidget {
                         size: AppIconSize.small,
                         directionSensitive: true,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
+                      contentPadding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.md,
                         vertical: AppSpacing.xs,
                       ),

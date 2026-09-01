@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/features/orders/utils/payment_method_text.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -20,14 +21,14 @@ class OrderCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.card),
         border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.md),
+        padding: EdgeInsets.all(AppSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -35,7 +36,7 @@ class OrderCard extends StatelessWidget {
               order.orderNumber,
               style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             Row(
               children: [
                 Expanded(
@@ -45,7 +46,7 @@ class OrderCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.md,
                     vertical: AppSpacing.xs,
                   ),
@@ -63,17 +64,17 @@ class OrderCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             Text(
               "الإجمالي : ${order.total} ر.ي",
               style: AppTypography.bodyMedium,
             ),
-            const SizedBox(height: AppSpacing.xs),
+            SizedBox(height: AppSpacing.xs),
             Text(
               "الدفع : ${paymentMethodText(order.paymentMethod)}",
               style: AppTypography.bodyMedium,
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             SizedBox(
               width: double.infinity,
               height: 48,
@@ -81,7 +82,7 @@ class OrderCard extends StatelessWidget {
                 onPressed: () {
                   context.push(AppRoutes.orderDetails, extra: order);
                 },
-                text: "تفاصيل الطلب",
+                text: lang.t('order_details'),
                 size: AppButtonSize.large,
               ),
             ),

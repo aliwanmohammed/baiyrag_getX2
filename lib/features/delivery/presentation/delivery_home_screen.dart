@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -188,10 +189,10 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
 
       if (newOrdersList.isNotEmpty) {
         _showNotification(
-          title: 'طلب جديد',
+          title: lang.t('new_order'),
           message: newOrdersList.length == 1
-              ? 'وصل طلب جديد متاح للتوصيل'
-              : 'وصل ${newOrdersList.length} طلبات جديدة متاحة للتوصيل',
+              ? lang.t('new_order_available')
+              : lang.t('new_orders_available'),
           icon: Icons.delivery_dining,
         );
       }
@@ -204,7 +205,7 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
         final changedOrder = statusChanges.first;
 
         _showNotification(
-          title: 'تحديث الطلب',
+          title: lang.t('order_updated'),
           message:
               'تم تحديث حالة الطلب #${changedOrder.orderNumber} إلى ${_statusLabel(changedOrder.status)}',
           icon: Icons.sync,
@@ -252,15 +253,15 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
     messenger.showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 4),
-        margin: const EdgeInsets.all(AppSpacing.lg),
+        duration: Duration(seconds: 4),
+        margin: EdgeInsets.all(AppSpacing.lg),
         content: Row(
           children: [
             AppIcon(
               icon,
               color: colorScheme.onInverseSurface,
             ),
-            const SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -273,7 +274,7 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
                       color: colorScheme.onInverseSurface,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  SizedBox(height: 2),
                   Text(
                     message,
                     style: AppTypography.bodySmall.copyWith(
@@ -292,25 +293,25 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
   String _statusLabel(String status) {
     switch (status) {
       case 'pending':
-        return 'قيد الانتظار';
+        return lang.t('pending');
 
       case 'confirmed':
-        return 'تم التأكيد';
+        return lang.t('confirmed_status');
 
       case 'processing':
-        return 'قيد التجهيز';
+        return lang.t('processing');
 
       case 'shipped':
-        return 'خرج للتوصيل';
+        return lang.t('out_for_delivery');
 
       case 'delivered':
-        return 'تم التسليم';
+        return lang.t('delivered');
 
       case 'cancelled':
-        return 'ملغي';
+        return lang.t('cancelled');
 
       default:
-        return status.isEmpty ? 'غير محددة' : status;
+        return status.isEmpty ? lang.t('unspecified') : status;
     }
   }
 
@@ -338,15 +339,15 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
           child: Column(
             children: [
               _Header(
-                userName: user?.name ?? 'السائق',
+                userName: user?.name ?? lang.t('driver'),
                 activeOrdersCount: controller.activeOrders.length,
               ),
               Material(
                 color: colorScheme.surface,
-                child: const TabBar(
+                child: TabBar(
                   tabs: [
-                    Tab(text: 'طلبات متاحة'),
-                    Tab(text: 'طلباتي'),
+                    Tab(text: lang.t('available_orders')),
+                    Tab(text: lang.t('orders')),
                   ],
                 ),
               ),
@@ -355,7 +356,7 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
                   child: controller.isLoading &&
                           controller.availableOrders.isEmpty &&
                           controller.orders.isEmpty
-                      ? const Center(child: AppLoading())
+                      ? Center(child: AppLoading())
                       : TabBarView(
                           children: [
                             _buildAvailableOrders(
@@ -393,11 +394,11 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
       return RefreshIndicator(
         onRefresh: _manualRefresh,
         child: ListView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          children: const [
+          physics: AlwaysScrollableScrollPhysics(),
+          children: [
             SizedBox(height: 160),
             AppEmptyState(
-              title: 'لا توجد طلبات متاحة حالياً',
+              title: lang.t('no_available_orders'),
               icon: Icons.list_alt,
             ),
           ],
@@ -408,8 +409,8 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
     return RefreshIndicator(
       onRefresh: _manualRefresh,
       child: ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(AppSpacing.lg),
+        physics: AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.all(AppSpacing.lg),
         itemCount: controller.availableOrders.length,
         itemBuilder: (context, index) {
           return _AvailableOrderCard(
@@ -438,11 +439,11 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
       return RefreshIndicator(
         onRefresh: _manualRefresh,
         child: ListView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          children: const [
+          physics: AlwaysScrollableScrollPhysics(),
+          children: [
             SizedBox(height: 160),
             AppEmptyState(
-              title: 'ليس لديك طلبات قيد التوصيل',
+              title: lang.t('no_active_deliveries'),
               icon: Icons.delivery_dining,
             ),
           ],
@@ -453,8 +454,8 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
     return RefreshIndicator(
       onRefresh: _manualRefresh,
       child: ListView.builder(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(AppSpacing.lg),
+        physics: AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.all(AppSpacing.lg),
         itemCount: controller.activeOrders.length,
         itemBuilder: (context, index) {
           return _MyOrderCard(
@@ -484,7 +485,7 @@ class _Header extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 18),
+      padding: EdgeInsets.fromLTRB(20, 20, 20, 18),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -506,21 +507,21 @@ class _Header extends StatelessWidget {
               size: AppIconSize.large,
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'مرحباً، $userName',
+                  lang.t('hello_user', {'name': userName}),
                   style: AppTypography.titleMedium.copyWith(
                     color: colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 3),
+                SizedBox(height: 3),
                 Text(
-                  'سائق التوصيل',
+                  lang.t('delivery_driver'),
                   style: AppTypography.labelMedium.copyWith(
                     color: colorScheme.onPrimary.withValues(alpha: 0.7),
                   ),
@@ -530,7 +531,7 @@ class _Header extends StatelessWidget {
           ),
           if (activeOrdersCount > 0)
             Container(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: AppSpacing.md,
                 vertical: 6,
               ),
@@ -539,7 +540,7 @@ class _Header extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                '$activeOrdersCount طلب',
+                lang.t('orders_count', {'count': activeOrdersCount}),
                 style: AppTypography.labelMedium.copyWith(
                   color: colorScheme.onPrimary,
                   fontWeight: FontWeight.bold,
@@ -568,7 +569,7 @@ class _AvailableOrderCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Card(
-      margin: const EdgeInsets.only(bottom: AppSpacing.lg),
+      margin: EdgeInsets.only(bottom: AppSpacing.lg),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(color: colorScheme.outlineVariant),
@@ -583,7 +584,7 @@ class _AvailableOrderCard extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -591,7 +592,7 @@ class _AvailableOrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'طلب #${order.orderNumber}',
+                    lang.t('order_number_dynamic', {'number': order.orderNumber}),
                     style: AppTypography.titleMedium.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -605,7 +606,7 @@ class _AvailableOrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               Row(
                 children: [
                   AppIcon(
@@ -613,14 +614,14 @@ class _AvailableOrderCard extends StatelessWidget {
                     size: AppIconSize.small,
                     color: colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(width: AppSpacing.sm),
+                  SizedBox(width: AppSpacing.sm),
                   Text(
                     order.customerName,
                     style: AppTypography.bodyMedium,
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               Row(
                 children: [
                   AppIcon(
@@ -628,7 +629,7 @@ class _AvailableOrderCard extends StatelessWidget {
                     size: AppIconSize.small,
                     color: colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(width: AppSpacing.sm),
+                  SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
                       order.address,
@@ -641,7 +642,7 @@ class _AvailableOrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               Row(
                 children: [
                   AppIcon(
@@ -649,14 +650,14 @@ class _AvailableOrderCard extends StatelessWidget {
                     size: AppIconSize.small,
                     color: colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(width: AppSpacing.sm),
+                  SizedBox(width: AppSpacing.sm),
                   Text(
-                    '${order.items.length} منتجات',
+                    lang.t('products_count', {'count': order.items.length}),
                     style: AppTypography.bodyMedium,
                   ),
-                  const Spacer(),
+                  Spacer(),
                   Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: AppSpacing.sm,
                       vertical: 4,
                     ),
@@ -671,7 +672,7 @@ class _AvailableOrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
               SizedBox(
                 width: double.infinity,
                 child: AppButton(
@@ -682,7 +683,7 @@ class _AvailableOrderCard extends StatelessWidget {
                       order,
                     );
                   },
-                  text: 'عرض التفاصيل والاستلام',
+                  text: lang.t('view_details_and_receive'),
                 ),
               ),
             ],
@@ -709,7 +710,7 @@ class _MyOrderCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Card(
-      margin: const EdgeInsets.only(bottom: AppSpacing.lg),
+      margin: EdgeInsets.only(bottom: AppSpacing.lg),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(color: colorScheme.outlineVariant),
@@ -724,7 +725,7 @@ class _MyOrderCard extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -732,7 +733,7 @@ class _MyOrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'طلب #${order.orderNumber}',
+                    lang.t('order_number_dynamic', {'number': order.orderNumber}),
                     style: AppTypography.titleMedium.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -742,7 +743,7 @@ class _MyOrderCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               Row(
                 children: [
                   AppIcon(
@@ -750,14 +751,14 @@ class _MyOrderCard extends StatelessWidget {
                     size: AppIconSize.small,
                     color: colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(width: AppSpacing.sm),
+                  SizedBox(width: AppSpacing.sm),
                   Text(
                     order.customerName,
                     style: AppTypography.bodyMedium,
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               Row(
                 children: [
                   AppIcon(
@@ -765,7 +766,7 @@ class _MyOrderCard extends StatelessWidget {
                     size: AppIconSize.small,
                     color: colorScheme.onSurfaceVariant,
                   ),
-                  const SizedBox(width: AppSpacing.sm),
+                  SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
                       order.address,
@@ -800,7 +801,7 @@ class _StatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.sm,
         vertical: 4,
       ),
@@ -821,19 +822,19 @@ class _StatusBadge extends StatelessWidget {
   String _label(String value) {
     switch (value) {
       case 'pending':
-        return 'قيد الانتظار';
+        return lang.t('pending');
       case 'confirmed':
-        return 'تم التأكيد';
+        return lang.t('confirmed_status');
       case 'processing':
-        return 'قيد التجهيز';
+        return lang.t('processing');
       case 'shipped':
-        return 'خرج للتوصيل';
+        return lang.t('out_for_delivery');
       case 'delivered':
-        return 'تم التسليم';
+        return lang.t('delivered');
       case 'cancelled':
-        return 'ملغي';
+        return lang.t('cancelled');
       default:
-        return value.isEmpty ? 'غير محددة' : value;
+        return value.isEmpty ? lang.t('unspecified') : value;
     }
   }
 

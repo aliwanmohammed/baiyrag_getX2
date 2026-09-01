@@ -105,7 +105,7 @@ class _HomeBannerState extends State<HomeBanner> {
           // ─────────────────────────────────────────────────────────
           // 2. Header Overlay (Top Overlay)
           // ─────────────────────────────────────────────────────────
-          const Positioned(
+          Positioned(
             top: 8,
             left: 16,
             right: 16,

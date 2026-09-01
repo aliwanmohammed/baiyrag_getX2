@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,17 +20,17 @@ class RecentSearches extends StatelessWidget {
     final controller = Get.find<ProductSearchController>();
 
     if (controller.recentSearches.isEmpty) {
-      return const AppEmptyState(
+      return AppEmptyState(
         icon: Icons.search_rounded,
-        title: "ابدأ بكتابة اسم المنتج",
-        subtitle: "يمكنك البحث بالاسم أو الباركود أو القسم",
+        title: lang.t('start_search'),
+        subtitle: lang.t('search_by_name_barcode_category'),
       );
     }
 
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: EdgeInsets.fromLTRB(
             AppSpacing.lg,
             AppSpacing.md,
             AppSpacing.lg,
@@ -38,20 +39,20 @@ class RecentSearches extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                "عمليات البحث الأخيرة",
+                lang.t('recent_searches'),
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              const Spacer(),
+              Spacer(),
               TextButton(
                 onPressed: controller.clearRecentSearches,
-                child: const Text("مسح الكل"),
+                child: Text(lang.t('clear_all')),
               ),
             ],
           ),
         ),
         Expanded(
           child: ListView.separated(
-            physics: const BouncingScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             itemCount: controller.recentSearches.length,
             separatorBuilder: (_, __) => Divider(
               height: 1,
@@ -61,10 +62,10 @@ class RecentSearches extends StatelessWidget {
               final item = controller.recentSearches[index];
 
               return ListTile(
-                leading: const AppIcon(Icons.history, size: AppIconSize.medium),
+                leading: AppIcon(Icons.history, size: AppIconSize.medium),
                 title: Text(item),
                 trailing: IconButton(
-                  icon: const AppIcon(Icons.close, size: AppIconSize.medium),
+                  icon: AppIcon(Icons.close, size: AppIconSize.medium),
                   onPressed: () => controller.removeRecent(item),
                 ),
                 onTap: () {

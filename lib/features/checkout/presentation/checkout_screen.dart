@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/app/router/app_routes.dart';
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:flutter/material.dart';
@@ -54,8 +55,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     if (controller.couponNeedsRecheck) {
       AppMessage.warning(
         context,
-        'تغيرت محتويات السلة، يرجى إعادة التحقق من الكوبون.',
-        title: 'انتهت صلاحية الكوبون',
+        lang.t('cart_changed_coupon'),
+        title: lang.t('coupon_expired'),
       );
       return;
     }
@@ -112,33 +113,33 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         if (!didPop && checkout.isPlacing) {
           AppMessage.info(
             context,
-            'يُرجى الانتظار حتى اكتمال إرسال الطلب...',
-            duration: const Duration(seconds: 2),
+            lang.t('please_wait_order'),
+            duration: Duration(seconds: 2),
           );
         }
       },
       child: Scaffold(
         backgroundColor: colorScheme.surface,
-        appBar: AppPageHeader(title: ('إتمام الطلب')),
+        appBar: AppPageHeader(title: (lang.t('checkout'))),
         body: SafeArea(
           child: AppConstrainedContent(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSpacing.md),
+              padding: EdgeInsets.all(AppSpacing.md),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // ── القسم الثاني: العنوان ──────────────────────────────
-                  _sectionTitle('عنوان التوصيل'),
-                  const SizedBox(height: AppSpacing.md),
+                  _sectionTitle(lang.t('delivery_address')),
+                  SizedBox(height: AppSpacing.md),
                   if (addressController.selectedAddress != null) ...[
                     AddressCard(address: addressController.selectedAddress!),
-                    const SizedBox(height: AppSpacing.sm),
+                    SizedBox(height: AppSpacing.sm),
                     SizedBox(
                       width: double.infinity,
                       child: AppButton(
                         variant: AppButtonVariant.outlined,
-                        icon: const AppIcon(Icons.edit_location_alt, size: AppIconSize.small),
-                        text: "تغيير أو إضافة عنوان",
+                        icon: AppIcon(Icons.edit_location_alt, size: AppIconSize.small),
+                        text: lang.t('change_or_add_address'),
                         size: AppButtonSize.large,
                         onPressed: () async {
                           final addressController = Get.find<AddressController>();
@@ -158,7 +159,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ] else ...[
                     Container(
-                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      padding: EdgeInsets.all(AppSpacing.lg),
                       decoration: BoxDecoration(
                         color: colorScheme.surface,
                         borderRadius: BorderRadius.circular(AppRadius.card),
@@ -170,10 +171,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           Row(
                             children: [
                               AppIcon(Icons.location_off, color: colorScheme.onSurfaceVariant, size: AppIconSize.medium),
-                              const SizedBox(width: AppSpacing.sm),
+                              SizedBox(width: AppSpacing.sm),
                               Expanded(
                                 child: Text(
-                                  "لا يوجد عنوان",
+                                  lang.t('no_address'),
                                   style: AppTypography.titleMedium.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -181,18 +182,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: AppSpacing.sm),
+                          SizedBox(height: AppSpacing.sm),
                           Text(
-                            "أضف عنوان التوصيل لإكمال الطلب",
+                            lang.t('add_delivery_address_hint'),
                             style: AppTypography.bodyMedium.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.lg),
+                          SizedBox(height: AppSpacing.lg),
                           SizedBox(
                             width: double.infinity,
                             child: AppButton(
-                              text: "إضافة عنوان توصيل",
+                              text: lang.t('add_delivery_address'),
                               size: AppButtonSize.large,
                               onPressed: () async {
                                 final addressController =
@@ -216,11 +217,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ],
 
-                  const SizedBox(height: AppSpacing.xl),
+                  SizedBox(height: AppSpacing.xl),
 
                   // ── القسم الثالث: طريقة الدفع ─────────────────────────
-                  _sectionTitle('طريقة الدفع'),
-                  const SizedBox(height: AppSpacing.md),
+                  _sectionTitle(lang.t('payment_method')),
+                  SizedBox(height: AppSpacing.md),
                   PaymentMethodSelector(
                     selectedMethod: checkout.paymentMethod,
                     onChanged: (method) {
@@ -230,11 +231,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     },
                   ),
 
-                  const SizedBox(height: AppSpacing.xl),
+                  SizedBox(height: AppSpacing.xl),
 
                   // ── كوبون الخصم ───────────────────────────────────────
-                  _sectionTitle('كوبون الخصم'),
-                  const SizedBox(height: AppSpacing.md),
+                  _sectionTitle(lang.t('coupon')),
+                  SizedBox(height: AppSpacing.md),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -243,7 +244,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           controller: checkout.couponTextController,
                           textDirection: TextDirection.ltr,
                           decoration: InputDecoration(
-                            hintText: 'أدخل كود الخصم',
+                            hintText: lang.t('enter_coupon'),
                             hintStyle: TextStyle(color: colorScheme.onSurfaceVariant),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(AppRadius.md),
@@ -257,14 +258,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               borderRadius: BorderRadius.circular(AppRadius.md),
                               borderSide: BorderSide(color: colorScheme.primary, width: 2),
                             ),
-                            contentPadding: const EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.md,
                               vertical: 14,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: AppSpacing.sm),
+                      SizedBox(width: AppSpacing.sm),
                       SizedBox(
                         width: 100,
                         height: 52, // Intentional component dimension
@@ -283,26 +284,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   size: 20,
                                   color: colorScheme.onPrimary,
                                 )
-                              : const Text("تطبيق"),
+                              : Text(lang.t('apply')),
                         ),
                       ),
                     ],
                   ),
                   if (couponNeedsRecheck) ...[
-                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(height: AppSpacing.xs),
                     Text(
-                      'تغيرت قيمة السلة، أعد تطبيق الكوبون للتحقق من الخصم.',
+                      lang.t('cart_changed_reapply_coupon'),
                       style: AppTypography.labelMedium.copyWith(color: colorScheme.error),
                     ),
                   ],
 
-                  const SizedBox(height: AppSpacing.xl),
+                  SizedBox(height: AppSpacing.xl),
 
                   // ── القسم الرابع: ملخص الطلب ──────────────────────────
-                  _sectionTitle('ملخص الطلب'),
-                  const SizedBox(height: AppSpacing.md),
+                  _sectionTitle(lang.t('order_summary')),
+                  SizedBox(height: AppSpacing.md),
                   Container(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    padding: EdgeInsets.all(AppSpacing.lg),
                     decoration: BoxDecoration(
                       color: colorScheme.surface,
                       borderRadius: BorderRadius.circular(AppRadius.card),
@@ -312,7 +313,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       children: [
                         ...cart.items.map(
                           (item) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                            padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -333,7 +334,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                         ...giftRewards.map(
                           (reward) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                            padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -355,36 +356,36 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ),
                           ),
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
                           child: Divider(),
                         ),
-                        _summaryRow('المجموع', cart.subtotal),
+                        _summaryRow(lang.t('subtotal'), cart.subtotal),
                         if (couponDiscount > 0)
                           _summaryRow(
-                            'خصم الكوبون',
+                            lang.t('coupon_discount'),
                             -couponDiscount,
                             color: AppColors.success,
                           ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                          padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('رسوم التوصيل', style: AppTypography.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant)),
-                              Text('تُحدد عند إنشاء الطلب', style: AppTypography.bodySmall.copyWith(color: colorScheme.onSurfaceVariant)),
+                              Text(lang.t('delivery_fee'), style: AppTypography.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant)),
+                              Text(lang.t('delivery_fee_at_order'), style: AppTypography.bodySmall.copyWith(color: colorScheme.onSurfaceVariant)),
                             ],
                           ),
                         ),
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
                           child: Divider(),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                          padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
                           child: Center(
                             child: Text(
-                              'سيتم عرض الإجمالي النهائي في تفاصيل الطلب',
+                              lang.t('final_total_in_details'),
                               style: AppTypography.labelLarge.copyWith(
                                 color: colorScheme.primary,
                                 fontWeight: FontWeight.bold,
@@ -397,11 +398,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: AppSpacing.xl),
+                  SizedBox(height: AppSpacing.xl),
 
                   //---------------------------  ملاحظات الطلب  ---------------------------
-                  _sectionTitle('ملاحظات الطلب'),
-                  const SizedBox(height: AppSpacing.md),
+                  _sectionTitle(lang.t('order_notes')),
+                  SizedBox(height: AppSpacing.md),
 
                   TextField(
                     controller: checkout.notesTextController,
@@ -409,7 +410,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     maxLines: 5,
                     textInputAction: TextInputAction.newline,
                     decoration: InputDecoration(
-                      hintText: 'اكتب أي ملاحظات حول الطلب...',
+                      hintText: lang.t('order_notes_hint'),
                       hintStyle: TextStyle(color: colorScheme.onSurfaceVariant),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -423,12 +424,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         borderRadius: BorderRadius.circular(AppRadius.md),
                         borderSide: BorderSide(color: colorScheme.primary, width: 2),
                       ),
-                      contentPadding: const EdgeInsets.all(AppSpacing.md),
+                      contentPadding: EdgeInsets.all(AppSpacing.md),
                       alignLabelWithHint: true,
                     ),
                   ),
 
-                  const SizedBox(height: 30), // Intentional spacing before submit
+                  SizedBox(height: 30), // Intentional spacing before submit
 
                   // ── زر تأكيد الطلب ────────────────────────────────────
                   SizedBox(
@@ -450,7 +451,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               color: colorScheme.onPrimary,
                             )
                           : Text(
-                              'تأكيد الطلب',
+                              lang.t('place_order'),
                               style: AppTypography.titleMedium.copyWith(
                                 color: colorScheme.onPrimary,
                                 fontWeight: FontWeight.bold,
@@ -459,7 +460,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: AppSpacing.xl),
+                  SizedBox(height: AppSpacing.xl),
                 ],
               ),
             ),
@@ -483,7 +484,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     Color? color,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

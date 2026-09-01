@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_spacing.dart';
@@ -22,8 +23,8 @@ class OrderTrackingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // مراحل الطلب الطبيعية (بدون "ملغي")
-    const stages = [
+    // مراحل الطلب الطبيعية (بدون lang.t('cancelled'))
+    final stages = [
       OrderStatus.pending,
       OrderStatus.confirmed,
       OrderStatus.preparing,
@@ -36,16 +37,16 @@ class OrderTrackingScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      appBar: AppPageHeader(title: 'تتبع الطلب #$orderNumber'),
+      appBar: AppPageHeader(title: lang.t('track_order_dynamic', {'number': orderNumber})),
       body: SafeArea(
         child: AppConstrainedContent(
           child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.xl),
+            padding: EdgeInsets.all(AppSpacing.xl),
             child: currentStatus == OrderStatus.cancelled
                 ? _buildCancelled(colorScheme)
                 : Column(
                     children: [
-                      const SizedBox(height: AppSpacing.lg),
+                      SizedBox(height: AppSpacing.lg),
                       ...List.generate(stages.length, (i) {
                         final isDone = i <= currentIndex;
                         final isActive = i == currentIndex;
@@ -69,12 +70,12 @@ class OrderTrackingScreen extends StatelessWidget {
                               ],
                             ),
 
-                            const SizedBox(width: AppSpacing.md),
+                            SizedBox(width: AppSpacing.md),
 
                             // النص
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.only(top: 8),
+                                padding: EdgeInsets.only(top: 8),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -91,15 +92,15 @@ class OrderTrackingScreen extends StatelessWidget {
                                     ),
                                     if (isActive)
                                       Padding(
-                                        padding: const EdgeInsets.only(top: AppSpacing.xs),
+                                        padding: EdgeInsets.only(top: AppSpacing.xs),
                                         child: Text(
-                                          'المرحلة الحالية',
+                                          lang.t('current_stage'),
                                           style: AppTypography.labelMedium.copyWith(
                                             color: colorScheme.primary,
                                           ),
                                         ),
                                       ),
-                                    const SizedBox(height: 44),
+                                    SizedBox(height: 44),
                                   ],
                                 ),
                               ),
@@ -139,14 +140,14 @@ class OrderTrackingScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.cancel_outlined, size: 80, color: colorScheme.error),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
           Text(
-            'تم إلغاء الطلب',
+            lang.t('order_cancelled'),
             style: AppTypography.headlineSmall.copyWith(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           Text(
-            'رقم الطلب: $orderNumber',
+            lang.t('order_number_dynamic2', {'number': orderNumber}),
             style: AppTypography.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant),
           ),
         ],

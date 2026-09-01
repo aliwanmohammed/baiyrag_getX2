@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:get/get.dart';
 // import 'package:flutter/foundation.dart';
 
@@ -77,12 +78,12 @@ import 'package:get/get.dart';
 //       } else {
 //         _error = response.message.isNotEmpty
 //             ? response.message
-//             : 'تعذر تحميل الطلبات المتاحة';
+//             : lang.t('available_orders_load_error');
 //       }
 //     } catch (error, stackTrace) {
 //       debugPrint('[DeliveryController] loadAvailableOrders: $error');
 //       debugPrintStack(stackTrace: stackTrace);
-//       _error = 'تعذر تحميل الطلبات المتاحة';
+//       _error = lang.t('available_orders_load_error');
 //     } finally {
 //       _isLoading = false;
 //       update();
@@ -106,12 +107,12 @@ import 'package:get/get.dart';
 //       } else {
 //         _error = response.message.isNotEmpty
 //             ? response.message
-//             : 'تعذر تحميل طلباتك';
+//             : lang.t('my_deliveries_load_error');
 //       }
 //     } catch (error, stackTrace) {
 //       debugPrint('[DeliveryController] loadOrders: $error');
 //       debugPrintStack(stackTrace: stackTrace);
-//       _error = 'تعذر تحميل طلباتك';
+//       _error = lang.t('my_deliveries_load_error');
 //     } finally {
 //       _isLoading = false;
 //       update();
@@ -144,7 +145,7 @@ import 'package:get/get.dart';
 //         hasError = true;
 //         _error = availableResponse.message.isNotEmpty
 //             ? availableResponse.message
-//             : 'تعذر تحميل الطلبات المتاحة';
+//             : lang.t('available_orders_load_error');
 //       }
 
 //       if (ordersResponse.isSuccess) {
@@ -153,7 +154,7 @@ import 'package:get/get.dart';
 //         hasError = true;
 //         _error = ordersResponse.message.isNotEmpty
 //             ? ordersResponse.message
-//             : 'تعذر تحميل طلباتك';
+//             : lang.t('my_deliveries_load_error');
 //       }
 
 //       if (!hasError) {
@@ -162,7 +163,7 @@ import 'package:get/get.dart';
 //     } catch (error, stackTrace) {
 //       debugPrint('[DeliveryController] refresh: $error');
 //       debugPrintStack(stackTrace: stackTrace);
-//       _error = 'تعذر تحديث الطلبات';
+//       _error = lang.t('deliveries_refresh_error');
 //     } finally {
 //       _isLoading = false;
 //       update();
@@ -175,7 +176,7 @@ import 'package:get/get.dart';
 
 //   Future<String?> claimOrder(String orderId) async {
 //     if (_isClaiming) {
-//       return 'يوجد إجراء قيد التنفيذ';
+//       return lang.t('action_in_progress');
 //     }
 
 //     _isClaiming = true;
@@ -188,7 +189,7 @@ import 'package:get/get.dart';
 //       if (!response.isSuccess || response.data == null) {
 //         return response.message.isNotEmpty
 //             ? response.message
-//             : 'تعذر استلام الطلب';
+//             : lang.t('claim_order_error');
 //       }
 
 //       final claimedOrder = response.data!;
@@ -204,7 +205,7 @@ import 'package:get/get.dart';
 //     } catch (error, stackTrace) {
 //       debugPrint('[DeliveryController] claimOrder: $error');
 //       debugPrintStack(stackTrace: stackTrace);
-//       return 'تعذر استلام الطلب';
+//       return lang.t('claim_order_error');
 //     } finally {
 //       _isClaiming = false;
 //       update();
@@ -233,12 +234,12 @@ import 'package:get/get.dart';
 //       } else {
 //         _error = response.message.isNotEmpty
 //             ? response.message
-//             : 'تعذر تحميل تفاصيل الطلب';
+//             : lang.t('order_details_load_error');
 //       }
 //     } catch (error, stackTrace) {
 //       debugPrint('[DeliveryController] loadOrder: $error');
 //       debugPrintStack(stackTrace: stackTrace);
-//       _error = 'تعذر تحميل تفاصيل الطلب';
+//       _error = lang.t('order_details_load_error');
 //     } finally {
 //       _isLoading = false;
 //       update();
@@ -373,7 +374,7 @@ class DeliveryController extends GetxController {
       } else {
         _error = response.message.isNotEmpty
             ? response.message
-            : 'تعذر تحميل الطلبات المتاحة';
+            : lang.t('available_orders_load_error');
       }
     } catch (error, stackTrace) {
       debugPrint(
@@ -384,7 +385,7 @@ class DeliveryController extends GetxController {
         stackTrace: stackTrace,
       );
 
-      _error = 'تعذر تحميل الطلبات المتاحة';
+      _error = lang.t('available_orders_load_error');
     } finally {
       _isLoading = false;
       update();
@@ -409,7 +410,7 @@ class DeliveryController extends GetxController {
       } else {
         _error = response.message.isNotEmpty
             ? response.message
-            : 'تعذر تحميل طلباتك';
+            : lang.t('my_deliveries_load_error');
       }
     } catch (error, stackTrace) {
       debugPrint(
@@ -420,7 +421,7 @@ class DeliveryController extends GetxController {
         stackTrace: stackTrace,
       );
 
-      _error = 'تعذر تحميل طلباتك';
+      _error = lang.t('my_deliveries_load_error');
     } finally {
       _isLoading = false;
       update();
@@ -455,7 +456,7 @@ class DeliveryController extends GetxController {
 
         _error = availableResponse.message.isNotEmpty
             ? availableResponse.message
-            : 'تعذر تحميل الطلبات المتاحة';
+            : lang.t('available_orders_load_error');
       }
 
       if (ordersResponse.isSuccess) {
@@ -465,7 +466,7 @@ class DeliveryController extends GetxController {
 
         _error = ordersResponse.message.isNotEmpty
             ? ordersResponse.message
-            : 'تعذر تحميل طلباتك';
+            : lang.t('my_deliveries_load_error');
       }
 
       if (!hasError) {
@@ -480,7 +481,7 @@ class DeliveryController extends GetxController {
         stackTrace: stackTrace,
       );
 
-      _error = 'تعذر تحديث الطلبات';
+      _error = lang.t('deliveries_refresh_error');
     } finally {
       _isLoading = false;
 
@@ -496,7 +497,7 @@ class DeliveryController extends GetxController {
     String orderId,
   ) async {
     if (_isClaiming) {
-      return 'يوجد إجراء قيد التنفيذ';
+      return lang.t('action_in_progress');
     }
 
     _isClaiming = true;
@@ -510,7 +511,7 @@ class DeliveryController extends GetxController {
       if (!response.isSuccess || response.data == null) {
         return response.message.isNotEmpty
             ? response.message
-            : 'تعذر استلام الطلب';
+            : lang.t('claim_order_error');
       }
 
       final claimedOrder = response.data!;
@@ -535,7 +536,7 @@ class DeliveryController extends GetxController {
         stackTrace: stackTrace,
       );
 
-      return 'تعذر استلام الطلب';
+      return lang.t('claim_order_error');
     } finally {
       _isClaiming = false;
 
@@ -553,7 +554,7 @@ class DeliveryController extends GetxController {
     required String paymentStatus,
   }) async {
     if (_isUpdatingStatus) {
-      return 'يوجد إجراء قيد التنفيذ';
+      return lang.t('action_in_progress');
     }
 
     _isUpdatingStatus = true;
@@ -571,7 +572,7 @@ class DeliveryController extends GetxController {
       if (!response.isSuccess || response.data == null) {
         final message = response.message.isNotEmpty
             ? response.message
-            : 'تعذر تحديث حالة الطلب';
+            : lang.t('order_status_update_error');
 
         _error = message;
 
@@ -613,7 +614,7 @@ class DeliveryController extends GetxController {
         stackTrace: stackTrace,
       );
 
-      const message = 'تعذر تحديث حالة الطلب';
+      final message = lang.t('order_status_update_error');
 
       _error = message;
 
@@ -656,7 +657,7 @@ class DeliveryController extends GetxController {
       } else {
         _error = response.message.isNotEmpty
             ? response.message
-            : 'تعذر تحميل تفاصيل الطلب';
+            : lang.t('order_details_load_error');
       }
     } catch (error, stackTrace) {
       debugPrint(
@@ -667,7 +668,7 @@ class DeliveryController extends GetxController {
         stackTrace: stackTrace,
       );
 
-      _error = 'تعذر تحميل تفاصيل الطلب';
+      _error = lang.t('order_details_load_error');
     } finally {
       _isLoading = false;
 

@@ -16,7 +16,6 @@ class AppTypography {
     fontSize: 34,
     fontWeight: FontWeight.w700,
     height: 1.2,
-    color: AppColors.textPrimary,
   );
 
   static const displayMedium = TextStyle(
@@ -24,7 +23,6 @@ class AppTypography {
     fontSize: 30,
     fontWeight: FontWeight.w700,
     height: 1.25,
-    color: AppColors.textPrimary,
   );
 
   static const displaySmall = TextStyle(
@@ -32,7 +30,6 @@ class AppTypography {
     fontSize: 26,
     fontWeight: FontWeight.w700,
     height: 1.25,
-    color: AppColors.textPrimary,
   );
 
   //══════════════════════════════════════
@@ -43,21 +40,18 @@ class AppTypography {
     fontFamily: fontFamily,
     fontSize: 24,
     fontWeight: FontWeight.bold,
-    color: AppColors.textPrimary,
   );
 
   static const headlineMedium = TextStyle(
     fontFamily: fontFamily,
     fontSize: 22,
     fontWeight: FontWeight.bold,
-    color: AppColors.textPrimary,
   );
 
   static const headlineSmall = TextStyle(
     fontFamily: fontFamily,
     fontSize: 20,
     fontWeight: FontWeight.bold,
-    color: AppColors.textPrimary,
   );
 
   //══════════════════════════════════════
@@ -68,21 +62,18 @@ class AppTypography {
     fontFamily: fontFamily,
     fontSize: 18,
     fontWeight: FontWeight.w700,
-    color: AppColors.textPrimary,
   );
 
   static const titleMedium = TextStyle(
     fontFamily: fontFamily,
     fontSize: 16,
     fontWeight: FontWeight.w700,
-    color: AppColors.textPrimary,
   );
 
   static const titleSmall = TextStyle(
     fontFamily: fontFamily,
     fontSize: 14,
     fontWeight: FontWeight.w700,
-    color: AppColors.textPrimary,
   );
 
   //══════════════════════════════════════
@@ -93,21 +84,18 @@ class AppTypography {
     fontFamily: fontFamily,
     fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: AppColors.textPrimary,
   );
 
   static const bodyMedium = TextStyle(
     fontFamily: fontFamily,
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: AppColors.textPrimary,
   );
 
   static const bodySmall = TextStyle(
     fontFamily: fontFamily,
     fontSize: 12,
     fontWeight: FontWeight.w400,
-    color: AppColors.textSecondary,
   );
 
   //══════════════════════════════════════
@@ -118,21 +106,18 @@ class AppTypography {
     fontFamily: fontFamily,
     fontSize: 15,
     fontWeight: FontWeight.w600,
-    color: AppColors.textPrimary,
   );
 
   static const labelMedium = TextStyle(
     fontFamily: fontFamily,
     fontSize: 13,
     fontWeight: FontWeight.w600,
-    color: AppColors.textSecondary,
   );
 
   static const labelSmall = TextStyle(
     fontFamily: fontFamily,
     fontSize: 11,
     fontWeight: FontWeight.w600,
-    color: AppColors.textHint,
   );
 
   //══════════════════════════════════════
@@ -145,28 +130,24 @@ class AppTypography {
     fontSize: 14,
     fontWeight: FontWeight.w700,
     height: 1.35,
-    color: AppColors.textPrimary,
   );
 
   static const productBrand = TextStyle(
     fontFamily: fontFamily,
     fontSize: 11,
     fontWeight: FontWeight.w500,
-    color: AppColors.textSecondary,
   );
 
   static const currentPrice = TextStyle(
     fontFamily: fontFamily,
     fontSize: 16,
     fontWeight: FontWeight.w800,
-    color: AppColors.price,
   );
 
   static const oldPrice = TextStyle(
     fontFamily: fontFamily,
     fontSize: 11,
     decoration: TextDecoration.lineThrough,
-    color: AppColors.oldPrice,
   );
 
   static const badge = TextStyle(
@@ -187,21 +168,18 @@ class AppTypography {
     fontFamily: fontFamily,
     fontSize: 22,
     fontWeight: FontWeight.bold,
-    color: AppColors.price,
   );
 
   static const priceMedium = TextStyle(
     fontFamily: fontFamily,
     fontSize: 18,
     fontWeight: FontWeight.bold,
-    color: AppColors.price,
   );
 
   static const priceSmall = TextStyle(
     fontFamily: fontFamily,
     fontSize: 15,
     fontWeight: FontWeight.bold,
-    color: AppColors.price,
   );
 
   static const discount = TextStyle(
@@ -214,6 +192,5 @@ class AppTypography {
   static const caption = TextStyle(
     fontFamily: fontFamily,
     fontSize: 11,
-    color: AppColors.textHint,
   );
 }

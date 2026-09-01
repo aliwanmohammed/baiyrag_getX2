@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/core/widgets/app_message.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -79,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (password.isEmpty) {
       AppMessage.error(
         context,
-        'كلمة المرور مطلوبة',
+        lang.t('password_required'),
       );
       return;
     }
@@ -171,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           Container(
             height: 380, // INTENTIONAL COMPONENT DIMENSION
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -185,10 +186,10 @@ class _LoginScreenState extends State<LoginScreen> {
           SafeArea(
             child: AppConstrainedContent(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    const SizedBox(height: 28), // INTENTIONAL COMPONENT DIMENSION
+                    SizedBox(height: 28), // INTENTIONAL COMPONENT DIMENSION
 
                     // ─────────────────────────────────────────────────
                     // Logo
@@ -211,10 +212,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
 
                     Text(
-                      'البيرق هايبر ماركت',
+                      lang.t('app_name'),
                       style: AppTypography.titleLarge.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -222,10 +223,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
 
                     Text(
-                      'تسوق ذكي • توصيل سريع',
+                      lang.t('smart_shopping_tagline'),
                       style: AppTypography.bodyMedium.copyWith(
                         color: Colors.white.withValues(
                           alpha: 0.92,
@@ -234,15 +235,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 28),
+                    SizedBox(height: 28),
 
                     // ─────────────────────────────────────────────────
                     // Login Card
                     // ─────────────────────────────────────────────────
 
                     Container(
-                      padding: const EdgeInsets.all(AppSpacing.lg),
-                      margin: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.all(AppSpacing.lg),
+                      margin: EdgeInsets.symmetric(
                           horizontal:
                               AppSpacing.md), // Added for responsive safe area
                       decoration: BoxDecoration(
@@ -254,22 +255,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            'تسجيل الدخول',
+                            lang.t('login'),
                             style: AppTypography.headlineSmall.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.xs),
+                          SizedBox(height: AppSpacing.xs),
 
                           Text(
-                            'مرحباً بك! سجّل دخولك للمتابعة',
+                            lang.t('welcome_login'),
                             style: AppTypography.bodyMedium.copyWith(
                               color: colorScheme.outline,
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.xl),
+                          SizedBox(height: AppSpacing.xl),
 
                           // ───────────────────────────────────────────
                           // Email
@@ -282,20 +283,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             keyboardType: TextInputType.emailAddress,
                             textDirection: TextDirection.ltr,
                             enabled: !_loading,
-                            autofillHints: const [
+                            autofillHints: [
                               AutofillHints.username,
                               AutofillHints.email,
                             ],
                             style: AppTypography.bodyLarge,
-                            decoration: const InputDecoration(
-                              labelText: 'البريد الإلكتروني',
+                            decoration: InputDecoration(
+                              labelText: lang.t('email'),
                               prefixIcon: AppIcon(
                                 Icons.email_outlined,
                               ),
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
 
                           // ───────────────────────────────────────────
                           // Password
@@ -306,23 +307,23 @@ class _LoginScreenState extends State<LoginScreen> {
                             obscureText: _obscurePassword,
                             enabled: !_loading,
                             textDirection: TextDirection.ltr,
-                            autofillHints: const [
+                            autofillHints: [
                               AutofillHints.password,
                             ],
                             style: AppTypography.bodyLarge,
                             decoration: InputDecoration(
-                              labelText: 'كلمة المرور',
-                              prefixIcon: const AppIcon(
+                              labelText: lang.t('password'),
+                              prefixIcon: AppIcon(
                                 Icons.lock_outline,
                               ),
                               suffixIcon: IconButton(
-                                constraints: const BoxConstraints(
+                                constraints: BoxConstraints(
                                     minWidth: 48,
                                     minHeight:
                                         48), // ACCESSIBILITY TOUCH TARGET
                                 tooltip: _obscurePassword
-                                    ? 'إظهار كلمة المرور'
-                                    : 'إخفاء كلمة المرور',
+                                    ? lang.t('show_password')
+                                    : lang.t('hide_password'),
                                 onPressed: _loading
                                     ? null
                                     : () {
@@ -339,7 +340,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.xl),
+                          SizedBox(height: AppSpacing.xl),
 
                           // ───────────────────────────────────────────
                           // Submit
@@ -348,7 +349,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: 52, // INTENTIONAL COMPONENT DIMENSION
                             child: AppButton(
-                              text: 'تسجيل الدخول',
+                              text: lang.t('login'),
                               onPressed: _submit,
                               state: _loading
                                   ? AppButtonState.loading
@@ -356,7 +357,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
 
                           // ───────────────────────────────────────────
                           // Register
@@ -372,19 +373,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                       );
                                     },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                     horizontal: AppSpacing.md,
                                     vertical: AppSpacing
                                         .sm), // ACCESSIBILITY TOUCH TARGET
                                 child: RichText(
                                   text: TextSpan(
-                                    text: 'ليس لديك حساب؟  ',
+                                    text: lang.t('no_account'),
                                     style: AppTypography.bodyMedium.copyWith(
                                       color: colorScheme.outline,
                                     ),
                                     children: [
                                       TextSpan(
-                                        text: 'إنشاء حساب',
+                                        text: lang.t('register'),
                                         style:
                                             AppTypography.bodyMedium.copyWith(
                                           color: colorScheme.primary,
@@ -401,7 +402,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: AppSpacing.xl),
+                    SizedBox(height: AppSpacing.xl),
                   ],
                 ),
               ),

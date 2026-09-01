@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 
@@ -79,7 +80,7 @@ class AdsController extends GetxController {
       stopwatch.stop();
       debugPrint('AdsController error: $e');
       debugPrintStack(stackTrace: stackTrace);
-      _error = 'حدث خطأ أثناء تحميل الإعلانات';
+      _error = lang.t('ads_load_error');
     } finally {
       _loading = false;
       _inFlight = false;

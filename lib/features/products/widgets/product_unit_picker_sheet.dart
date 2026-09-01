@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import '../../../core/design_system/components/feedback/app_empty_state.dart';
 import '../../../core/design_system/components/feedback/app_error_state.dart';
@@ -24,7 +25,7 @@ class ProductUnitSelection {
   final ProductModel product;
   final ProductUnitModel unit;
 
-  const ProductUnitSelection({required this.product, required this.unit});
+  ProductUnitSelection({required this.product, required this.unit});
 
   Map<String, dynamic> toOfferJson() {
     return {
@@ -166,7 +167,7 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
       if (!mounted) return;
 
       setState(() {
-        _error = 'حدث خطأ أثناء تحميل المنتجات';
+        _error = lang.t('products_load_error');
         _loading = false;
         _loadingMore = false;
       });
@@ -250,7 +251,7 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
 
   Widget _buildHandle() {
     return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.sm),
+      padding: EdgeInsets.only(top: AppSpacing.sm),
       child: Container(
         width: 44,
         height: 5,
@@ -264,32 +265,32 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.md, AppSpacing.sm, AppSpacing.sm),
+      padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.md, AppSpacing.sm, AppSpacing.sm),
       child: Row(
         children: [
           Expanded(
             child: Text(
-              'اختيار المنتجات',
+              lang.t('select_products'),
               style: AppTypography.headlineSmall,
             ),
           ),
           if (_selected.isNotEmpty)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 5),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 5),
               decoration: BoxDecoration(
                 color: AppColors.primaryExtraLight,
                 borderRadius: BorderRadius.circular(AppRadius.chip),
               ),
               child: Text(
-                '${_selected.length} محدد',
+                lang.t('selected_count', {'count': _selected.length}),
                 style: AppTypography.badge.copyWith(color: AppColors.primaryDark),
               ),
             ),
-          const SizedBox(width: AppSpacing.xs),
+          SizedBox(width: AppSpacing.xs),
           IconButton(
-            tooltip: 'إغلاق',
+            tooltip: lang.t('close'),
             onPressed: () => Navigator.of(context).pop(),
-            icon: const AppIcon(Icons.close_rounded, size: AppIconSize.medium),
+            icon: AppIcon(Icons.close_rounded, size: AppIconSize.medium),
           ),
         ],
       ),
@@ -298,14 +299,14 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
 
   Widget _buildSearch() {
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.md),
+      padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.md),
       child: TextField(
         controller: _searchController,
         textInputAction: TextInputAction.search,
         onSubmitted: _searchProducts,
         decoration: InputDecoration(
-          hintText: 'ابحث عن منتج...',
-          prefixIcon: const AppIcon(Icons.search_rounded, size: AppIconSize.medium),
+          hintText: lang.t('search_product_hint_short'),
+          prefixIcon: AppIcon(Icons.search_rounded, size: AppIconSize.medium),
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
                   onPressed: () {
@@ -313,7 +314,7 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
                     _searchProducts('');
                     setState(() {});
                   },
-                  icon: const AppIcon(Icons.clear_rounded, size: AppIconSize.medium),
+                  icon: AppIcon(Icons.clear_rounded, size: AppIconSize.medium),
                 )
               : null,
           filled: true,
@@ -332,15 +333,15 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
     return SizedBox(
       height: 54,
       child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xs),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xs),
         scrollDirection: Axis.horizontal,
         itemCount: _selected.length,
-        separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.xs),
+        separatorBuilder: (_, __) => SizedBox(width: AppSpacing.xs),
         itemBuilder: (_, index) {
           final selection = _selected.values.elementAt(index);
 
           return InputChip(
-            avatar: const AppIcon(Icons.inventory_2_outlined, size: AppIconSize.small),
+            avatar: AppIcon(Icons.inventory_2_outlined, size: AppIconSize.small),
             label: Text(
               '${selection.product.name} • ${selection.unit.unitName}',
               overflow: TextOverflow.ellipsis,
@@ -358,7 +359,7 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
 
   Widget _buildProducts() {
     if (_loading) {
-      return const Center(child: AppLoading(type: AppLoadingType.pulse));
+      return Center(child: AppLoading(type: AppLoadingType.pulse));
     }
 
     if (_error != null && _products.isEmpty) {
@@ -373,11 +374,11 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
       onRefresh: () => _loadProducts(reset: true),
       child: ListView.builder(
         controller: _scrollController,
-        padding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.xs, AppSpacing.lg, AppSpacing.lg),
+        padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.xs, AppSpacing.lg, AppSpacing.lg),
         itemCount: _products.length + (_loadingMore ? 1 : 0),
         itemBuilder: (_, index) {
           if (index >= _products.length) {
-            return const Padding(
+            return Padding(
               padding: EdgeInsets.all(AppSpacing.lg),
               child: Center(child: AppLoading(type: AppLoadingType.ring, size: 24)),
             );
@@ -409,11 +410,11 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
   }
 
   Widget _buildEmpty() {
-    return const Center(
+    return Center(
       child: AppEmptyState(
         icon: Icons.inventory_2_outlined,
-        title: 'لا توجد منتجات',
-        subtitle: 'جرّب البحث باسم المنتج أو الباركود.',
+        title: lang.t('no_products'),
+        subtitle: lang.t('search_product_or_barcode'),
       ),
     );
   }
@@ -421,7 +422,7 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
   Widget _buildError() {
     return Center(
       child: AppErrorState(
-        message: _error ?? 'حدث خطأ',
+        message: _error ?? lang.t('generic_error'),
         onRetry: () => _loadProducts(reset: true),
       ),
     );
@@ -441,7 +442,7 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
           BoxShadow(
             color: Colors.black.withValues(alpha: .08),
             blurRadius: 18,
-            offset: const Offset(0, -5),
+            offset: Offset(0, -5),
           ),
         ],
       ),
@@ -450,11 +451,11 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
         width: double.infinity,
         child: ElevatedButton.icon(
           onPressed: _selected.isEmpty ? null : _confirm,
-          icon: const AppIcon(Icons.check_rounded, size: AppIconSize.medium),
+          icon: AppIcon(Icons.check_rounded, size: AppIconSize.medium),
           label: Text(
             _selected.isEmpty
-                ? 'اختر وحدة واحدة على الأقل'
-                : 'تأكيد الاختيار (${_selected.length})',
+                ? lang.t('select_at_least_one_unit')
+                : lang.t('confirm_selection_count', {'count': _selected.length}),
           ),
         ),
       ),
@@ -501,7 +502,7 @@ class _ProductPickerCardState extends State<_ProductPickerCard> {
     final units = product.units.cast<ProductUnitModel>();
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(18),
@@ -521,11 +522,11 @@ class _ProductPickerCardState extends State<_ProductPickerCard> {
               });
             },
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12),
               child: Row(
                 children: [
                   _ProductImage(image: product.image),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -537,9 +538,9 @@ class _ProductPickerCardState extends State<_ProductPickerCard> {
                           style: AppTypography.labelLarge,
                         ),
 
-                        const SizedBox(height: 6),
+                        SizedBox(height: 6),
                         Text(
-                          '${units.length} وحدة متاحة',
+                          lang.t('available_units_count', {'count': units.length}),
                           style: AppTypography.labelSmall.copyWith(
                             color: widget.isSelected
                                 ? AppColors.primary
@@ -551,24 +552,24 @@ class _ProductPickerCardState extends State<_ProductPickerCard> {
                   ),
                   AnimatedRotation(
                     turns: _expanded ? .5 : 0,
-                    duration: const Duration(milliseconds: 200),
-                    child: const AppIcon(Icons.keyboard_arrow_down_rounded, size: AppIconSize.medium),
+                    duration: Duration(milliseconds: 200),
+                    child: AppIcon(Icons.keyboard_arrow_down_rounded, size: AppIconSize.medium),
                   ),
                 ],
               ),
             ),
           ),
           AnimatedCrossFade(
-            duration: const Duration(milliseconds: 200),
+            duration: Duration(milliseconds: 200),
             crossFadeState: _expanded
                 ? CrossFadeState.showFirst
                 : CrossFadeState.showSecond,
             firstChild: Padding(
-              padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+              padding: EdgeInsets.fromLTRB(12, 0, 12, 12),
               child: Column(
                 children: [
-                  const Divider(height: 1),
-                  const SizedBox(height: 8),
+                  Divider(height: 1),
+                  SizedBox(height: 8),
                   ...units.map(
                     (unit) => _UnitOption(
                       unit: unit,
@@ -584,7 +585,7 @@ class _ProductPickerCardState extends State<_ProductPickerCard> {
                 ],
               ),
             ),
-            secondChild: const SizedBox.shrink(),
+            secondChild: SizedBox.shrink(),
           ),
         ],
       ),
@@ -613,8 +614,8 @@ class _UnitOption extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        margin: EdgeInsets.only(bottom: 6),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           color: selected
               ? AppColors.primary.withValues(alpha: .07)
@@ -627,7 +628,7 @@ class _UnitOption extends StatelessWidget {
         child: Row(
           children: [
             AnimatedContainer(
-              duration: const Duration(milliseconds: 150),
+              duration: Duration(milliseconds: 150),
               width: 22,
               height: 22,
               decoration: BoxDecoration(
@@ -639,10 +640,10 @@ class _UnitOption extends StatelessWidget {
                 ),
               ),
               child: selected
-                  ? const AppIcon(Icons.check_rounded, size: AppIconSize.small, color: Colors.white)
+                  ? AppIcon(Icons.check_rounded, size: AppIconSize.small, color: Colors.white)
                   : null,
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -655,7 +656,7 @@ class _UnitOption extends StatelessWidget {
                   ),
                   if (unit.quantity > 0)
                     Text(
-                      'الكمية: ${unit.quantity}',
+                      lang.t('quantity_value', {'quantity': unit.quantity}),
                       style: AppTypography.bodySmall,
                     ),
                 ],
@@ -694,7 +695,7 @@ class _ProductImage extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: image.isEmpty
-          ? const AppIcon(Icons.inventory_2_outlined, color: AppColors.textHint, size: AppIconSize.large)
+          ? AppIcon(Icons.inventory_2_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant, size: AppIconSize.large)
           : AppCachedImage(imageUrl: image, fit: BoxFit.contain),
     );
   }

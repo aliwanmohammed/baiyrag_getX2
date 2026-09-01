@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,12 +38,12 @@ class _AdminReportsScreenState extends State<AdminReportsScreen> {
     final controller = Get.find<AdminReportsController>();
 
     return Scaffold(
-      appBar: const AppPageHeader(
-        title: 'التقارير',
+      appBar: AppPageHeader(
+        title: lang.t('reports'),
         showBack: false,
       ),
       body: controller.isLoading && controller.sales == null
-          ? const Center(child: AppLoading())
+          ? Center(child: AppLoading())
           : RefreshIndicator(
               onRefresh: controller.reload,
               child: _ReportsBody(controller: controller),
@@ -62,24 +63,24 @@ class _ReportsBody extends StatelessWidget {
   Widget build(BuildContext context) {
     if (controller.error != null && controller.sales == null) {
       return ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
+        physics: AlwaysScrollableScrollPhysics(),
         children: [
-          const SizedBox(height: 180),
+          SizedBox(height: 180),
           AppIcon(
             Icons.error_outline,
             color: Colors.red.shade300,
             size: AppIconSize.large,
           ),
-          const SizedBox(height: 16),
-          const Center(
-            child: Text('تعذر تحميل التقارير'),
+          SizedBox(height: 16),
+          Center(
+            child: Text(lang.t('reports_load_error')),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Center(
             child: ElevatedButton.icon(
               onPressed: controller.reload,
-              icon: const Icon(Icons.refresh),
-              label: const Text('إعادة المحاولة'),
+              icon: Icon(Icons.refresh),
+              label: Text(lang.t('retry')),
             ),
           ),
         ],
@@ -87,25 +88,25 @@ class _ReportsBody extends StatelessWidget {
     }
 
     return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(16),
+      physics: AlwaysScrollableScrollPhysics(),
+      padding: EdgeInsets.all(16),
       children: [
         _DateFilter(controller: controller),
-        const SizedBox(height: 18),
-        const Text(
-          'ملخص النظام',
+        SizedBox(height: 18),
+        Text(
+          lang.t('system_summary'),
           style: AppTypography.titleLarge,
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         _SummaryGrid(
           sales: controller.sales,
           customers: controller.customers,
           products: controller.products,
           locations: controller.locations,
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
         if (controller.orders != null) _OrdersSection(report: controller.orders!),
-        const SizedBox(height: 24),
+        SizedBox(height: 24),
         _DriversSection(
           controller: controller,
         ),
@@ -154,25 +155,25 @@ class _DateFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(12),
         child: Row(
           children: [
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: () => _pickDate(context, true),
-                icon: const Icon(Icons.calendar_today_outlined),
+                icon: Icon(Icons.calendar_today_outlined),
                 label: Text(
-                  controller.from ?? 'من تاريخ',
+                  controller.from ?? lang.t('from_date'),
                 ),
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8),
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: () => _pickDate(context, false),
-                icon: const Icon(Icons.calendar_today_outlined),
+                icon: Icon(Icons.calendar_today_outlined),
                 label: Text(
-                  controller.to ?? 'إلى تاريخ',
+                  controller.to ?? lang.t('to_date'),
                 ),
               ),
             ),
@@ -201,34 +202,34 @@ class _SummaryGrid extends StatelessWidget {
     return GridView.count(
       crossAxisCount: 2,
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       crossAxisSpacing: 10,
       mainAxisSpacing: 10,
       childAspectRatio: 1.45,
       children: [
         _StatCard(
           icon: Icons.payments_outlined,
-          title: 'المبيعات',
+          title: lang.t('sales'),
           value: '${_format(sales?.totalSales ?? 0)} ر.ي',
         ),
         _StatCard(
           icon: Icons.shopping_bag_outlined,
-          title: 'الطلبات',
+          title: lang.t('orders'),
           value: '${sales?.totalOrders ?? 0}',
         ),
         _StatCard(
           icon: Icons.people_outline,
-          title: 'العملاء',
+          title: lang.t('customers'),
           value: '${customers?.totalCustomers ?? 0}',
         ),
         _StatCard(
           icon: Icons.inventory_2_outlined,
-          title: 'المنتجات',
+          title: lang.t('products'),
           value: '${products?.totalProducts ?? 0}',
         ),
         _StatCard(
           icon: Icons.location_on_outlined,
-          title: 'المواقع',
+          title: lang.t('locations'),
           value: '${locations?.totalLocations ?? 0}',
         ),
       ],
@@ -251,7 +252,7 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(14),
+        padding: EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -261,12 +262,12 @@ class _StatCard extends StatelessWidget {
               color: AppColors.primary,
               size: AppIconSize.medium,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Text(
               title,
               style: AppTypography.bodySmall,
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               value,
               style: AppTypography.titleLarge,
@@ -288,31 +289,31 @@ class _OrdersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final statuses = [
-      ('قيد الانتظار', report.pending, Colors.orange),
-      ('مؤكد', report.confirmed, Colors.blue),
-      ('قيد التجهيز', report.processing, Colors.indigo),
-      ('تم الشحن', report.shipped, Colors.purple),
-      ('تم التسليم', report.delivered, Colors.green),
-      ('ملغي', report.cancelled, Colors.red),
+      (lang.t('pending'), report.pending, Colors.orange),
+      (lang.t('confirmed'), report.confirmed, Colors.blue),
+      (lang.t('processing'), report.processing, Colors.indigo),
+      (lang.t('shipped'), report.shipped, Colors.purple),
+      (lang.t('delivered'), report.delivered, Colors.green),
+      (lang.t('cancelled'), report.cancelled, Colors.red),
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'الطلبات',
+        Text(
+          lang.t('orders'),
           style: AppTypography.titleLarge,
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             child: Column(
               children: [
                 Row(
                   children: [
-                    const Expanded(
-                      child: Text('إجمالي الطلبات'),
+                    Expanded(
+                      child: Text(lang.t('total_orders')),
                     ),
                     Text(
                       '${report.totalOrders}',
@@ -320,11 +321,11 @@ class _OrdersSection extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Divider(height: 24),
+                Divider(height: 24),
                 Row(
                   children: [
-                    const Expanded(
-                      child: Text('قيمة الطلبات'),
+                    Expanded(
+                      child: Text(lang.t('orders_value')),
                     ),
                     Text(
                       '${_format(report.totalAmount)} ر.ي',
@@ -338,7 +339,7 @@ class _OrdersSection extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         ...statuses.map(
           (item) => Card(
             child: ListTile(
@@ -372,14 +373,14 @@ class _DriversSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'أداء المندوبين',
+        Text(
+          lang.t('drivers_performance'),
           style: AppTypography.titleLarge,
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12),
         if (controller.drivers.isEmpty)
-          const AppEmptyState(
-            title: 'لا توجد بيانات للمندوبين',
+          AppEmptyState(
+            title: lang.t('no_driver_data'),
           ),
         ...controller.drivers.map(
           (driver) => Card(
@@ -401,7 +402,7 @@ class _DriversSection extends StatelessWidget {
               },
               leading: CircleAvatar(
                 backgroundColor: AppColors.primary.withValues(alpha: 0.1),
-                child: const AppIcon(
+                child: AppIcon(
                   Icons.delivery_dining,
                   color: AppColors.primary,
                   size: AppIconSize.medium,
@@ -412,7 +413,7 @@ class _DriversSection extends StatelessWidget {
                 style: AppTypography.titleSmall,
               ),
               subtitle: Text(
-                '${driver.deliveredOrders} طلب تم تسليمه',
+                lang.t('delivered_orders_count', {'count': driver.deliveredOrders}),
               ),
               trailing: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -424,8 +425,8 @@ class _DriversSection extends StatelessWidget {
                       color: AppColors.primary,
                     ),
                   ),
-                  const Text(
-                    'عرض التفاصيل',
+                  Text(
+                    lang.t('view_details'),
                     style: AppTypography.caption,
                   ),
                 ],
@@ -449,7 +450,7 @@ class _DriverDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -464,46 +465,46 @@ class _DriverDetails extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Text(
                 report.name,
                 style: AppTypography.headlineSmall,
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 report.email,
                 style: AppTypography.bodyMedium.copyWith(
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               _DriverRow(
-                title: 'إجمالي الطلبات',
+                title: lang.t('total_orders'),
                 value: '${report.totalOrders}',
               ),
               _DriverRow(
-                title: 'قيد الانتظار',
+                title: lang.t('pending'),
                 value: '${report.pending}',
               ),
               _DriverRow(
-                title: 'قيد التجهيز',
+                title: lang.t('processing'),
                 value: '${report.processing}',
               ),
               _DriverRow(
-                title: 'تم الشحن',
+                title: lang.t('shipped'),
                 value: '${report.shipped}',
               ),
               _DriverRow(
-                title: 'تم التسليم',
+                title: lang.t('delivered'),
                 value: '${report.delivered}',
               ),
               _DriverRow(
-                title: 'ملغي',
+                title: lang.t('cancelled'),
                 value: '${report.cancelled}',
               ),
-              const Divider(height: 28),
+              Divider(height: 28),
               _DriverRow(
-                title: 'إجمالي المبيعات',
+                title: lang.t('total_sales'),
                 value: '${_format(report.totalSales)} ر.ي',
                 bold: true,
               ),
@@ -529,7 +530,7 @@ class _DriverRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7),
+      padding: EdgeInsets.symmetric(vertical: 7),
       child: Row(
         children: [
           Expanded(

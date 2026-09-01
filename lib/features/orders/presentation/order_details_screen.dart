@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -60,8 +61,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      appBar: const AppPageHeader(
-        title: 'تفاصيل الطلب',
+      appBar: AppPageHeader(
+        title: lang.t('order_details'),
       ),
       body: SafeArea(
         child: AppConstrainedContent(
@@ -69,8 +70,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             onRefresh: _refresh,
             color: colorScheme.primary,
             child: ListView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(AppSpacing.md),
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.all(AppSpacing.md),
             children: [
               // ================================================================
               // معلومات الطلب الأساسية
@@ -82,14 +83,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   border: Border.all(color: colorScheme.outlineVariant),
                 ),
                 child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+                  contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
                   title: Text(
                     _order.orderNumber,
                     style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(_order.createdAt, style: AppTypography.bodyMedium),
                   trailing: Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: AppSpacing.md,
                       vertical: 6,
                     ),
@@ -110,23 +111,23 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
               ),
 
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
 
               // ================================================================
               // حالة الطلب
               // ================================================================
               Text(
-                'حالة الطلب',
+                lang.t('order_status'),
                 style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
               ),
 
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
 
               OrderProgress(
                 status: _order.status,
               ),
 
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
 
               // ================================================================
               // معلومات الطلب
@@ -138,34 +139,34 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   border: Border.all(color: colorScheme.outlineVariant),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.md),
+                  padding: EdgeInsets.all(AppSpacing.md),
                   child: Column(
                     children: [
                       _infoRow(
-                        'رقم الطلب',
+                        lang.t('order_number'),
                         _order.orderNumber,
                         colorScheme,
                       ),
                       _infoRow(
-                        'طريقة الدفع',
+                        lang.t('payment_method'),
                         paymentMethodText(_order.paymentMethod),
                         colorScheme,
                       ),
                       _infoRow(
-                        'حالة الدفع',
+                        lang.t('payment_status'),
                         _order.paymentStatus.toLowerCase() == 'pending'
-                            ? 'قيد الانتظار'
+                            ? lang.t('pending')
                             : _order.paymentStatus,
                         colorScheme,
                       ),
                       _infoRow(
-                        'العنوان',
+                        lang.t('address'),
                         _order.location.address,
                         colorScheme,
                       ),
                       if (_order.notes != null && _order.notes!.trim().isNotEmpty)
                         _infoRow(
-                          'ملاحظات',
+                          lang.t('notes'),
                           _order.notes!,
                           colorScheme,
                         ),
@@ -174,21 +175,21 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
               ),
 
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
 
               // ================================================================
               // المنتجات
               // ================================================================
               Text(
-                'المنتجات',
+                lang.t('products'),
                 style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
               ),
 
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
 
               ..._order.items.map(
                 (item) => Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                  padding: EdgeInsets.only(bottom: AppSpacing.sm),
                   child: Container(
                     decoration: BoxDecoration(
                       color: colorScheme.surface,
@@ -196,7 +197,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       border: Border.all(color: colorScheme.outlineVariant),
                     ),
                     child: ListTile(
-                      contentPadding: const EdgeInsets.all(AppSpacing.sm),
+                      contentPadding: EdgeInsets.all(AppSpacing.sm),
                       leading: CircleAvatar(
                         backgroundColor: item.isGift ? AppColors.success.withValues(alpha: 0.1) : colorScheme.surfaceContainerHighest,
                         child: Icon(
@@ -208,29 +209,29 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         children: [
                           Expanded(
                             child: Text(
-                              item.product?.nameAr ?? 'منتج غير متوفر',
+                              item.product?.nameAr ?? lang.t('product_unavailable'),
                               style: AppTypography.bodyLarge,
                             ),
                           ),
                           if (item.isGift)
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                              margin: const EdgeInsetsDirectional.only(start: AppSpacing.xs),
+                              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              margin: EdgeInsetsDirectional.only(start: AppSpacing.xs),
                               decoration: BoxDecoration(
                                 color: AppColors.success,
                                 borderRadius: BorderRadius.circular(AppRadius.sm),
                               ),
                               child: Text(
-                                'هدية',
+                                lang.t('gift'),
                                 style: AppTypography.labelSmall.copyWith(color: Colors.white),
                               ),
                             ),
                         ],
                       ),
                       subtitle: Padding(
-                        padding: const EdgeInsets.only(top: AppSpacing.xs),
+                        padding: EdgeInsets.only(top: AppSpacing.xs),
                         child: Text(
-                          '${item.unit?.unitName ?? 'غير معروف'} • ${item.price} ر.ي',
+                          '${item.unit?.unitName ?? lang.t('unknown')} • ${item.price} ر.ي',
                           style: AppTypography.bodyMedium,
                         ),
                       ),
@@ -241,7 +242,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             '× ${item.quantity}',
                             style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 2),
+                          SizedBox(height: 2),
                           Text(
                             '${item.total} ر.ي',
                             style: AppTypography.bodyMedium,
@@ -253,7 +254,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
               ),
 
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
 
               // ================================================================
               // ملخص الأسعار
@@ -265,25 +266,25 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   border: Border.all(color: colorScheme.outlineVariant),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.md),
+                  padding: EdgeInsets.all(AppSpacing.md),
                   child: Column(
                     children: [
                       // المجموع قبل الخصم
                       _priceRow(
-                        'المجموع',
+                        lang.t('subtotal'),
                         _order.subtotal,
                       ),
 
                       // رسوم التوصيل
                       _priceRow(
-                        'التوصيل',
+                        lang.t('delivery_fee'),
                         _order.deliveryFee,
                       ),
 
                       // الخصم العام
                       if (_order.discount > 0)
                         _priceRow(
-                          'الخصم',
+                          lang.t('discount'),
                           -_order.discount,
                           color: AppColors.success,
                         ),
@@ -291,19 +292,19 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       // خصم الكوبون
                       if (_order.couponDiscount > 0)
                         _priceRow(
-                          'خصم الكوبون',
+                          lang.t('coupon_discount'),
                           -_order.couponDiscount,
                           color: AppColors.success,
                         ),
 
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
                         child: Divider(),
                       ),
 
                       // الإجمالي النهائي القادم من Backend
                       _priceRow(
-                        'الإجمالي',
+                        lang.t('total'),
                         _order.total,
                         bold: true,
                       ),
@@ -312,7 +313,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
               ),
 
-              const SizedBox(height: AppSpacing.xxl),
+              SizedBox(height: AppSpacing.xxl),
             ],
           ),
           ),
@@ -331,7 +332,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     ColorScheme colorScheme,
   ) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         vertical: 6,
       ),
       child: Row(
@@ -374,7 +375,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         vertical: 6,
       ),
       child: Row(

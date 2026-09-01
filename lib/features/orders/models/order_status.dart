@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_colors.dart';
@@ -16,19 +17,19 @@ extension OrderStatusExt on OrderStatus {
   String get label {
     switch (this) {
       case OrderStatus.pending:
-        return 'قيد الانتظار';
+        return lang.t('pending');
       case OrderStatus.confirmed:
-        return 'مؤكد';
+        return lang.t('confirmed');
       case OrderStatus.preparing:
-        return 'قيد التجهيز';
+        return lang.t('processing');
       case OrderStatus.shipped:
-        return 'تم الشحن';
+        return lang.t('shipped');
       case OrderStatus.delivered:
-        return 'تم التسليم';
+        return lang.t('delivered');
       case OrderStatus.cancelled:
-        return 'ملغي';
+        return lang.t('cancelled');
       case OrderStatus.unknown:
-        return 'غير معروف';
+        return lang.t('unknown');
     }
   }
 

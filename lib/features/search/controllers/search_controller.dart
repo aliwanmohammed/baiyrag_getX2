@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'dart:async';
 
@@ -105,7 +106,7 @@ class SearchController extends GetxController {
       }
 
       _results = [];
-      _error = 'تعذر تنفيذ البحث. حاول مرة أخرى.';
+      _error = lang.t('search_error_retry');
     } finally {
       if (request == _requestId) {
         _isLoading = false;

@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:get/get.dart';
 import '../../../core/models/product_model.dart';
 import '../../products/domain/repositories/product_repository.dart';
@@ -72,7 +73,7 @@ class BarcodeScannerController extends GetxController {
   Future<ProductModel?> lookupBarcode(String rawBarcode) async {
     final barcode = rawBarcode.trim();
     if (barcode.isEmpty) {
-      _errorMessage = 'يرجى إدخال رمز باركود صالح';
+      _errorMessage = lang.t('invalid_barcode');
       _state = ScannerState.error;
       update();
       return null;
@@ -91,7 +92,7 @@ class BarcodeScannerController extends GetxController {
 
       if (!response.isSuccess || response.data == null || response.data!.items.isEmpty) {
         _state = ScannerState.notFound;
-        _errorMessage = 'لم يتم العثور على أي منتج مرتبط بالرمز: $barcode';
+        _errorMessage = lang.t('no_product_for_barcode', {'barcode': barcode});
         _scannedProduct = null;
         _selectedUnit = null;
         update();
@@ -129,7 +130,7 @@ class BarcodeScannerController extends GetxController {
 
       if (matchedProduct == null) {
         _state = ScannerState.notFound;
-        _errorMessage = 'لم يتم العثور على وحدة مرتبطة بالرمز: $barcode';
+        _errorMessage = lang.t('no_unit_for_barcode', {'barcode': barcode});
         _scannedProduct = null;
         _selectedUnit = null;
         update();
@@ -153,7 +154,7 @@ class BarcodeScannerController extends GetxController {
       return matchedProduct;
     } catch (e) {
       _state = ScannerState.error;
-      _errorMessage = 'حدث خطأ أثناء البحث عن المنتج. يرجى المحاولة مجددًا.';
+      _errorMessage = lang.t('product_search_error_retry');
       _scannedProduct = null;
       _selectedUnit = null;
       update();

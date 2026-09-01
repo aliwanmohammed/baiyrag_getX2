@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:bhm_supermarket/features/navigation/controllers/navigation_controller.dart';
 import 'package:flutter/material.dart';
@@ -65,15 +66,15 @@ class _CartScreenState extends State<CartScreen> {
     );
 
     if (cart.isLoading && cart.isEmpty) {
-      return const Scaffold(
-        body: AppLoading.fullPage(message: 'جاري تحميل السلة...'),
+      return Scaffold(
+        body: AppLoading.fullPage(message: lang.t('loading_cart')),
       );
     }
 
     if (cart.error != null && cart.isEmpty) {
       return Scaffold(
         body: AppErrorState(
-          title: 'تعذر تحميل السلة',
+          title: lang.t('cart_load_error'),
           message: cart.error!,
           onRetry: cart.loadFromServer,
         ),
@@ -83,7 +84,7 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppPageHeader(
-        title: 'السلة',
+        title: lang.t('cart'),
         showBack: false,
         actions: [
           if (cart.isNotEmpty)
@@ -94,12 +95,12 @@ class _CartScreenState extends State<CartScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                   ),
-                  title: const Text('تفريغ السلة'),
-                  content: const Text('هل تريد حذف جميع المنتجات؟'),
+                  title: Text(lang.t('clear_cart')),
+                  content: Text(lang.t('clear_cart_confirm')),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(ctx),
-                      child: const Text('إلغاء'),
+                      child: Text(lang.t('cancel')),
                     ),
                     TextButton(
                       onPressed: () async {
@@ -107,7 +108,7 @@ class _CartScreenState extends State<CartScreen> {
                         await cart.clear();
                       },
                       child: Text(
-                        'حذف',
+                        lang.t('delete'),
                         style: TextStyle(color: colorScheme.error),
                       ),
                     ),
@@ -120,7 +121,7 @@ class _CartScreenState extends State<CartScreen> {
                 color: colorScheme.error,
               ),
               label: Text(
-                'تفريغ',
+                lang.t('clear'),
                 style: TextStyle(color: colorScheme.error, fontSize: 13),
               ),
             ),
@@ -132,15 +133,15 @@ class _CartScreenState extends State<CartScreen> {
                 onRefresh: cart.loadFromServer,
                 color: colorScheme.primary,
                 child: ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: AlwaysScrollableScrollPhysics(),
                   children: [
                     SizedBox(
                       height: 420,
                       child: AppEmptyState(
                         icon: Icons.shopping_bag_outlined,
-                        title: 'السلة فارغة',
-                        subtitle: 'أضف منتجات من الصفحة الرئيسية',
-                        actionLabel: 'تسوق الآن',
+                        title: lang.t('cart_empty'),
+                        subtitle: lang.t('add_products_home'),
+                        actionLabel: lang.t('shop_now'),
                         onAction: () {
                           Get.find<NavigationController>().changeTab(0);
                         },
@@ -154,7 +155,7 @@ class _CartScreenState extends State<CartScreen> {
                   // Items list
                   Expanded(
                     child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.md,
                         vertical: AppSpacing.sm,
                       ),
@@ -162,7 +163,7 @@ class _CartScreenState extends State<CartScreen> {
                       itemBuilder: (context, index) {
                         if (index >= cart.items.length) {
                           return Padding(
-                            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                            padding: EdgeInsets.only(bottom: AppSpacing.sm),
                             child: _GiftRewardCard(
                               reward: giftRewards[index - cart.items.length],
                             ),
@@ -170,7 +171,7 @@ class _CartScreenState extends State<CartScreen> {
                         }
 
                         return Padding(
-                          padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                          padding: EdgeInsets.only(bottom: AppSpacing.sm),
                           child: CartItemCard(
                             item: cart.items[index],
                             onIncrease: () async {
@@ -187,8 +188,8 @@ class _CartScreenState extends State<CartScreen> {
 
                   // Summary card
                   Container(
-                    margin: const EdgeInsets.all(AppSpacing.md),
-                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    margin: EdgeInsets.all(AppSpacing.md),
+                    padding: EdgeInsets.all(AppSpacing.lg),
                     decoration: BoxDecoration(
                       color: colorScheme.surface,
                       borderRadius: BorderRadius.circular(AppRadius.xl),
@@ -196,27 +197,27 @@ class _CartScreenState extends State<CartScreen> {
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.06), // Intentional shadow
                           blurRadius: 20,
-                          offset: const Offset(0, -4),
+                          offset: Offset(0, -4),
                         ),
                       ],
                     ),
                     child: Column(
                       children: [
                         _SummaryRow(
-                          'المجموع',
+                          lang.t('subtotal'),
                           '${cart.originalSubtotal.toStringAsFixed(0)} ر.ي',
                         ),
 
                         if (cart.offerDiscount > 0) ...[
-                          const SizedBox(height: AppSpacing.xs),
+                          SizedBox(height: AppSpacing.xs),
                           _SummaryRow(
-                            'الخصم',
+                            lang.t('discount'),
                             '-${cart.offerDiscount.toStringAsFixed(0)} ر.ي',
                             valueColor: AppColors.success,
                           ),
                         ],
 
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
                           child: Divider(),
                         ),
@@ -225,7 +226,7 @@ class _CartScreenState extends State<CartScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'إجمالي المنتجات',
+                              lang.t('total_products'),
                               style: AppTypography.titleMedium.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -240,7 +241,7 @@ class _CartScreenState extends State<CartScreen> {
                           ],
                         ),
 
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         AppButton(
                           onPressed: () {
                             AuthGate.check(
@@ -251,12 +252,12 @@ class _CartScreenState extends State<CartScreen> {
                               },
                             );
                           },
-                          icon: const AppIcon(
+                          icon: AppIcon(
                             Icons.arrow_back_ios_rounded,
                             size: AppIconSize.small,
                             directionSensitive: true,
                           ),
-                          text: 'متابعة إتمام الطلب',
+                          text: lang.t('continue_checkout'),
                           size: AppButtonSize.large,
                         ),
                       ],
@@ -302,7 +303,7 @@ class _GiftRewardCard extends StatelessWidget {
     final successColor = AppColors.success;
 
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: successColor.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(AppRadius.card),
@@ -311,18 +312,18 @@ class _GiftRewardCard extends StatelessWidget {
       child: Row(
         children: [
           AppIcon(Icons.card_giftcard_rounded, color: successColor),
-          const SizedBox(width: AppSpacing.md),
+          SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'هدية مجانية',
+                  lang.t('free_gift'),
                   style: AppTypography.titleSmall.copyWith(
                     color: successColor,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
                 Text('${reward.gift.productName} × ${reward.quantity}'),
               ],
             ),

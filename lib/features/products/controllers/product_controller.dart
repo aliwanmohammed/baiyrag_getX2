@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../core/models/product_model.dart';
@@ -129,7 +130,7 @@ class ProductController extends GetxController {
       _product = null;
       _units = [];
       _related = [];
-      _error = 'تعذر تحميل بيانات المنتج';
+      _error = lang.t('product_load_error');
       _isLoading = false;
 
       update();
@@ -290,7 +291,7 @@ class ProductController extends GetxController {
 
         _error = response.message.isNotEmpty
             ? response.message
-            : 'تعذر تحميل المنتجات';
+            : lang.t('products_load_error_title');
       }
     } catch (e, stackTrace) {
       if (requestId != _listRequestId) {
@@ -305,7 +306,7 @@ class ProductController extends GetxController {
         _paginationMeta = null;
       }
 
-      _error = 'تعذر تحميل المنتجات';
+      _error = lang.t('products_load_error_title');
     } finally {
       if (requestId == _listRequestId) {
         _isLoading = false;

@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 
 
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class ProductAddButton extends StatelessWidget {
                   );
 
           final response = selectedUnit == null
-              ? ApiResponse.failure('لم يتم اختيار وحدة')
+              ? ApiResponse.failure(lang.t('unit_not_selected'))
               : await Get.find<CartController>().addItem(
                     product: product,
                     unit: selectedUnit,
@@ -51,7 +52,7 @@ class ProductAddButton extends StatelessWidget {
             SnackBar(
               content: Text(
                 response.isSuccess
-                    ? 'تمت إضافة ${product.name}'
+                    ? lang.t('added_product_dynamic', {'product': product.name})
                     : response.message,
               ),
             ),
@@ -64,18 +65,18 @@ class ProductAddButton extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
-              color: const Color(0xff39BFE7),
+              color: Color(0xff39BFE7),
               width: 1.2,
             ),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: .08),
                 blurRadius: 10,
-                offset: const Offset(0, 3),
+                offset: Offset(0, 3),
               ),
             ],
           ),
-          child: const AppIcon(
+          child: AppIcon(
             Icons.add_rounded,
             color: Color(0xff39BFE7),
             size: AppIconSize.small,

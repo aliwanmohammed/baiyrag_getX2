@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
@@ -66,7 +67,7 @@ class ProductInfo extends StatelessWidget {
                 if (defaultUnit != null && defaultUnit.quantity > 0)
                   Flexible(
                     child: Text(
-                      'الكمية: ${defaultUnit.quantity}',
+                      lang.t('quantity_value', {'quantity': defaultUnit.quantity}),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppTypography.caption.copyWith(

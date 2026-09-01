@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 enum PaymentMethod { cash, card, unknown }
 
 extension PaymentMethodExt on PaymentMethod {
@@ -19,7 +20,7 @@ extension PaymentMethodExt on PaymentMethod {
       case PaymentMethod.card:
         return 'بطاقة بنكية';
       case PaymentMethod.unknown:
-        return 'غير معروف';
+        return lang.t('unknown');
     }
   }
 

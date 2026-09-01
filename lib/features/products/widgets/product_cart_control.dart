@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/features/products/models/product_unit_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -77,7 +78,7 @@ class ProductCartControl extends StatelessWidget {
                         );
 
                 final response = selectedUnit == null
-                    ? ApiResponse.failure('لم يتم اختيار وحدة')
+                    ? ApiResponse.failure(lang.t('unit_not_selected'))
                     : await Get.find<CartController>().addItem(
                           product: product,
                           unit: selectedUnit,
@@ -99,7 +100,7 @@ class ProductCartControl extends StatelessWidget {
               },
         child: Semantics(
           button: true,
-          label: 'إضافة إلى السلة',
+          label: lang.t('add_to_cart'),
           child: Ink(
             width: 28,
             height: 28,
@@ -107,26 +108,26 @@ class ProductCartControl extends StatelessWidget {
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(AppRadius.sm),
               border: Border.all(
-                color: const Color(0xff39BFE7), // Intentional Exception
+                color: Color(0xff39BFE7), // Intentional Exception
                 width: 1.2,
               ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withValues(alpha: .08), // Intentional Exception to retain specific blur
                   blurRadius: 10,
-                  offset: const Offset(0, 3),
+                  offset: Offset(0, 3),
                 ),
               ],
             ),
             child: isProcessing
-                ? const Center(
+                ? Center(
                     child: AppLoading(
                       type: AppLoadingType.dots,
                       size: 12,
                       color: Color(0xff39BFE7),
                     ),
                   )
-                : const AppIcon(
+                : AppIcon(
                     Icons.add_rounded,
                     color: Color(0xff39BFE7),
                     size: AppIconSize.small,
@@ -147,7 +148,7 @@ class ProductCartControl extends StatelessWidget {
 
     return Container(
       height: 30,
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.xs),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -173,7 +174,7 @@ class ProductCartControl extends StatelessWidget {
                   },
             child: Semantics(
               button: true,
-              label: 'زيادة الكمية',
+              label: lang.t('increase_quantity'),
               child: SizedBox(
                 width: 22,
                 child: AppIcon(
@@ -216,7 +217,7 @@ class ProductCartControl extends StatelessWidget {
                   },
             child: Semantics(
               button: true,
-              label: 'إنقاص الكمية',
+              label: lang.t('decrease_quantity'),
               child: SizedBox(
                 width: 22,
                 child: AppIcon(

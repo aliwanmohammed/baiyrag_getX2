@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'dart:async' show Completer;
 import 'dart:math' show pi, sin;
 
@@ -336,8 +337,8 @@ class _SplashScreenState extends State<SplashScreen>
                           opacity: _subtitleOpacity,
                           child: SlideTransition(
                             position: _subtitleOffset,
-                            child: const Text(
-                              'جودة تستحقها.. أسعار تناسبك',
+                            child: Text(
+                              lang.t('splash_tagline'),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Color(0xFFEFE8FF),

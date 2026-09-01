@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_spacing.dart';
@@ -15,10 +16,10 @@ class DeliveryEarningsScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: const AppPageHeader(title: 'أرباحي', showBack: false),
+      appBar: AppPageHeader(title: lang.t('my_earnings'), showBack: false),
       body: AppConstrainedContent(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: EdgeInsets.all(AppSpacing.lg),
           child: Column(
             children: [
               // Summary Cards
@@ -26,16 +27,16 @@ class DeliveryEarningsScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _EarningsCard(
-                      'اليوم',
+                      lang.t('today'),
                       '1,200 ر.ي',
                       Icons.today_outlined,
                       colorScheme.primary,
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: _EarningsCard(
-                      'الأسبوع',
+                      lang.t('week'),
                       '8,400 ر.ي',
                       Icons.date_range_outlined,
                       colorScheme.secondary,
@@ -43,21 +44,21 @@ class DeliveryEarningsScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               Row(
                 children: [
                   Expanded(
                     child: _EarningsCard(
-                      'الشهر',
+                      lang.t('month'),
                       '32,000 ر.ي',
                       Icons.calendar_month_outlined,
                       colorScheme.tertiary,
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: _EarningsCard(
-                      'التوصيلات',
+                      lang.t('deliveries'),
                       '145 طلب',
                       Icons.delivery_dining_outlined,
                       colorScheme.secondary, // Success semantic replacement
@@ -65,18 +66,18 @@ class DeliveryEarningsScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
 
               // Daily breakdown
               Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: Text(
-                  'آخر 7 أيام',
+                  lang.t('last_7_days'),
                   style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              const SizedBox(height: AppSpacing.md),
-              ...const [
+              SizedBox(height: AppSpacing.md),
+              ...[
                 _DayRow('الأحد', '1,800 ر.ي', 6),
                 _DayRow('الإثنين', '2,100 ر.ي', 7),
                 _DayRow('الثلاثاء', '900 ر.ي', 3),
@@ -110,12 +111,12 @@ class _EarningsCard extends StatelessWidget {
         side: BorderSide(color: colorScheme.outlineVariant),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.md),
+        padding: EdgeInsets.all(AppSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppIcon(icon, color: color, size: AppIconSize.medium),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             Text(
               value,
               style: AppTypography.titleMedium.copyWith(
@@ -146,7 +147,7 @@ class _DayRow extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
           SizedBox(
@@ -167,12 +168,12 @@ class _DayRow extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          SizedBox(width: AppSpacing.md),
           Text(
             amount,
             style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(width: AppSpacing.sm),
+          SizedBox(width: AppSpacing.sm),
           Text(
             '($deliveries)',
             style: AppTypography.labelSmall.copyWith(color: colorScheme.onSurfaceVariant),

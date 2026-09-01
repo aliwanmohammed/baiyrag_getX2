@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/design_system/components/app_icon.dart';
@@ -17,7 +18,7 @@ class SearchAppBar extends StatelessWidget {
     final controller = Get.find<ProductSearchController>();
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16),
       child: TextField(
         controller: controller.controller,
         autofocus: true,
@@ -28,12 +29,12 @@ class SearchAppBar extends StatelessWidget {
         //   controller.search(value);
         // },
         decoration: InputDecoration(
-          hintText: 'ابحث عن منتج',
-          prefixIcon: const AppIcon(Icons.search, size: AppIconSize.medium),
+          hintText: lang.t('search_product_short'),
+          prefixIcon: AppIcon(Icons.search, size: AppIconSize.medium),
           suffixIcon: controller.controller.text.isEmpty
               ? null
               : IconButton(
-                  icon: const AppIcon(Icons.clear, size: AppIconSize.medium),
+                  icon: AppIcon(Icons.clear, size: AppIconSize.medium),
                   onPressed: () {
                     controller.controller.clear();
                     controller.clear();

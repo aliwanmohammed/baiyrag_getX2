@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app/localization/language_controller.dart';
+import '../../../app/localization/lang.dart';
 import '../../../app/router/app_routes.dart';
 import '../../../app/theme/app_spacing.dart';
 import '../../../app/theme/app_typography.dart';
@@ -44,7 +45,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   // Onboarding data
   // ============================================================
 
-  final List<OnboardingItem> _pages = const [
+  final List<OnboardingItem> _pages = [
     OnboardingItem(
       image: 'assets/images/logos/onpo1.png',
       titleAr: 'تسوق كل ما تحتاجه',
@@ -99,7 +100,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 650),
+      duration: Duration(milliseconds: 650),
     );
 
     _fadeAnimation = CurvedAnimation(
@@ -108,7 +109,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     );
 
     _slideAnimation =
-        Tween<Offset>(begin: const Offset(0.0, 0.08), end: Offset.zero).animate(
+        Tween<Offset>(begin: Offset(0.0, 0.08), end: Offset.zero).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Curves.easeOutCubic,
@@ -153,7 +154,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     }
 
     await _pageController.nextPage(
-      duration: const Duration(milliseconds: 420),
+      duration: Duration(milliseconds: 420),
       curve: Curves.easeOutCubic,
     );
   }
@@ -218,7 +219,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               // TOP BAR
               // ======================================================
               Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: AppSpacing.lg,
                   vertical: AppSpacing.md,
                 ),
@@ -236,7 +237,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     TextButton(
                       onPressed: _skipOnboarding,
                       style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.sm,
                           vertical: AppSpacing.xs,
                         ),
@@ -244,7 +245,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       child: Text(
-                        isArabic ? 'تخطي' : 'Skip',
+                        lang.t('skip'),
                         style: AppTypography.bodyMedium.copyWith(
                           color: colorScheme.outline,
                           fontWeight: FontWeight.w500,
@@ -263,7 +264,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                   controller: _pageController,
                   itemCount: _pages.length,
                   onPageChanged: _onPageChanged,
-                  physics: const BouncingScrollPhysics(),
+                  physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     final item = _pages[index];
 
@@ -287,7 +288,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               // BOTTOM NAVIGATION
               // ======================================================
               Padding(
-                padding: const EdgeInsets.fromLTRB(
+                padding: EdgeInsets.fromLTRB(
                   AppSpacing.lg,
                   0,
                   AppSpacing.lg,
@@ -300,7 +301,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     // ------------------------------------------------
                     _buildPageIndicator(colorScheme),
 
-                    const SizedBox(height: AppSpacing.xl),
+                    SizedBox(height: AppSpacing.xl),
 
                     // ------------------------------------------------
                     // Navigation
@@ -330,7 +331,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     required ColorScheme colorScheme,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.xl,
       ),
       child: Column(
@@ -342,7 +343,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           Expanded(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   vertical: AppSpacing.md,
                 ),
                 child: Image.asset(
@@ -387,7 +388,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               // SPACE BETWEEN TITLE AND DESCRIPTION
               // --------------------------------------------------
 
-              const SizedBox(
+              SizedBox(
                 height: AppSpacing.lg,
               ),
 
@@ -396,7 +397,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               // --------------------------------------------------
 
               Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: AppSpacing.sm,
                 ),
                 child: Text(
@@ -415,7 +416,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
           // SPACE BEFORE BOTTOM NAVIGATION
           // ======================================================
 
-          const SizedBox(
+          SizedBox(
             height: AppSpacing.xl,
           ),
         ],
@@ -437,7 +438,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         languageController.toggle();
       },
       style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: AppSpacing.sm,
           vertical: AppSpacing.xs,
         ),
@@ -452,9 +453,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             size: AppIconSize.small,
             color: colorScheme.outline,
           ),
-          const SizedBox(width: AppSpacing.xs),
+          SizedBox(width: AppSpacing.xs),
           Text(
-            isArabic ? 'English' : 'العربية',
+            isArabic ? lang.t('english') : lang.t('arabic'),
             style: AppTypography.bodySmall.copyWith(
               color: colorScheme.outline,
               fontWeight: FontWeight.w600,
@@ -476,9 +477,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         final isActive = index == _currentPage;
 
         return AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
+          duration: Duration(milliseconds: 250),
           curve: Curves.easeOut,
-          margin: const EdgeInsets.symmetric(horizontal: 4),
+          margin: EdgeInsets.symmetric(horizontal: 4),
           width: isActive ? 22 : 6,
           height: 6,
           decoration: BoxDecoration(
@@ -510,12 +511,12 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             TextButton(
               onPressed: _nextPage,
               style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: AppSpacing.xs,
                 ),
               ),
               child: Text(
-                isArabic ? 'التالي' : 'Next',
+                lang.t('next'),
                 style: AppTypography.bodyMedium.copyWith(
                   color: colorScheme.primary,
                   fontWeight: FontWeight.w700,
@@ -527,7 +528,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               child: Align(
                 alignment: Alignment.center,
                 child: AppButton(
-                  text: isArabic ? 'ابدأ بالتسوق الآن' : 'Start Shopping Now',
+                  text: lang.t('start_shopping_now'),
                   onPressed: _startShopping,
                 ),
               ),
@@ -565,7 +566,7 @@ class OnboardingItem {
   final String descriptionAr;
   final String descriptionEn;
 
-  const OnboardingItem({
+  OnboardingItem({
     required this.image,
     required this.titleAr,
     required this.titleEn,

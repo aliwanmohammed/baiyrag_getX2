@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -100,7 +101,7 @@ class ProductSearchController extends GetxController {
         _error = AppErrorMessage.from(
           message: response.message,
           statusCode: response.statusCode,
-          fallback: 'تعذر تنفيذ البحث. حاول مرة أخرى.',
+          fallback: lang.t('search_error_retry'),
         );
       }
     } catch (error, stackTrace) {
@@ -109,7 +110,7 @@ class ProductSearchController extends GetxController {
       debugPrint('[ProductSearchController] search error: $error');
       debugPrintStack(stackTrace: stackTrace);
       _results = [];
-      _error = 'تعذر تنفيذ البحث. حاول مرة أخرى.';
+      _error = lang.t('search_error_retry');
     } finally {
       if (request == _requestId) {
         _isLoading = false;

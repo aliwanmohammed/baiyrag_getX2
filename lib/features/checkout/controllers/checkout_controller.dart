@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -56,7 +57,7 @@ class CheckoutController extends GetxController {
 
   Future<CouponActionResult> applyCoupon() async {
     final code = couponTextController.text.trim().toUpperCase();
-    if (code.isEmpty) return const CouponActionResult.failure('أدخل كود الكوبون أولاً');
+    if (code.isEmpty) return CouponActionResult.failure(lang.t('enter_coupon_first'));
     _couponLoading = true;
     update();
     try {
@@ -65,14 +66,14 @@ class CheckoutController extends GetxController {
         _discountAmount = 0;
         _couponSubtotal = null;
         _appliedCouponCode = null;
-        return CouponActionResult.failure(result?.message ?? _coupon.error ?? 'الكوبون غير صالح', title: 'كوبون غير صالح');
+        return CouponActionResult.failure(result?.message ?? _coupon.error ?? lang.t('invalid_coupon'), title: lang.t('invalid_coupon'));
       }
       _discountAmount = result.discountAmount.clamp(0, _cart.subtotal).toDouble();
       _couponSubtotal = _cart.subtotal;
       _appliedCouponCode = code;
-      return CouponActionResult.success('تم تطبيق الكوبون، الخصم ${result.discountAmount.toStringAsFixed(0)} ر.ي', title: 'تم تطبيق الكوبون ✓');
+      return CouponActionResult.success(lang.t('coupon_applied_dynamic', {'amount': result.discountAmount.toStringAsFixed(0)}), title: lang.t('coupon_applied'));
     } catch (_) {
-      return const CouponActionResult.failure('تعذر التحقق من الكوبون');
+      return CouponActionResult.failure(lang.t('coupon_validation_error'));
     } finally {
       _couponLoading = false;
       update();
@@ -80,10 +81,10 @@ class CheckoutController extends GetxController {
   }
 
   Future<CheckoutActionResult> placeOrder() async {
-    if (couponNeedsRecheck) return const CheckoutActionResult.failure('تغيرت محتويات السلة، يرجى إعادة التحقق من الكوبون.', title: 'انتهت صلاحية الكوبون');
-    if (_address.selectedAddress == null) return const CheckoutActionResult.addressRequired();
+    if (couponNeedsRecheck) return CheckoutActionResult.failure(lang.t('cart_changed_coupon'), title: lang.t('coupon_expired'));
+    if (_address.selectedAddress == null) return CheckoutActionResult.addressRequired();
     if (_cart.isEmpty) {
-      return const CheckoutActionResult.failure('السلة فارغة');
+      return CheckoutActionResult.failure(lang.t('cart_empty'));
     }
 
     final orderItems = [
@@ -96,9 +97,9 @@ class CheckoutController extends GetxController {
     ];
 
     if (orderItems.isEmpty) {
-      return const CheckoutActionResult.failure('يجب إضافة منتج واحد على الأقل');
+      return CheckoutActionResult.failure(lang.t('cart_must_have_product'));
     }
-    if (_isPlacing) return const CheckoutActionResult.failure('يوجد طلب قيد الإرسال');
+    if (_isPlacing) return CheckoutActionResult.failure(lang.t('order_submission_in_progress'));
 
     _isPlacing = true;
     update();
@@ -111,13 +112,13 @@ class CheckoutController extends GetxController {
         items: orderItems,
       );
       if (!response.success) {
-        return CheckoutActionResult.failure(response.message.isEmpty ? 'فشل إنشاء الطلب، حاول مرة أخرى' : response.message, title: 'فشل إرسال الطلب');
+        return CheckoutActionResult.failure(response.message.isEmpty ? lang.t('order_create_failed') : response.message, title: lang.t('order_submit_failed'));
       }
       await _cart.clear();
       try { await _orders.reload(); } catch (_) {}
       return CheckoutActionResult.success(response.data?['order_number']?.toString() ?? '');
     } catch (_) {
-      return const CheckoutActionResult.failure('حدث خطأ أثناء إرسال الطلب، حاول مرة أخرى.', title: 'فشل إرسال الطلب');
+      return CheckoutActionResult.failure(lang.t('order_submit_error'), title: lang.t('order_submit_failed'));
     } finally {
       _isPlacing = false;
       update();
@@ -126,19 +127,19 @@ class CheckoutController extends GetxController {
 }
 
 class CouponActionResult {
-  const CouponActionResult._(this.success, this.message, this.title);
-  const CouponActionResult.success(String message, {String? title}) : this._(true, message, title);
-  const CouponActionResult.failure(String message, {String? title}) : this._(false, message, title);
+  CouponActionResult._(this.success, this.message, this.title);
+  CouponActionResult.success(String message, {String? title}) : this._(true, message, title);
+  CouponActionResult.failure(String message, {String? title}) : this._(false, message, title);
   final bool success;
   final String message;
   final String? title;
 }
 
 class CheckoutActionResult {
-  const CheckoutActionResult._({required this.success, required this.addressRequired, this.message, this.title, this.orderNumber});
-  const CheckoutActionResult.success(String orderNumber) : this._(success: true, addressRequired: false, orderNumber: orderNumber);
-  const CheckoutActionResult.failure(String message, {String? title}) : this._(success: false, addressRequired: false, message: message, title: title);
-  const CheckoutActionResult.addressRequired() : this._(success: false, addressRequired: true);
+  CheckoutActionResult._({required this.success, required this.addressRequired, this.message, this.title, this.orderNumber});
+  CheckoutActionResult.success(String orderNumber) : this._(success: true, addressRequired: false, orderNumber: orderNumber);
+  CheckoutActionResult.failure(String message, {String? title}) : this._(success: false, addressRequired: false, message: message, title: title);
+  CheckoutActionResult.addressRequired() : this._(success: false, addressRequired: true);
   final bool success;
   final bool addressRequired;
   final String? message;

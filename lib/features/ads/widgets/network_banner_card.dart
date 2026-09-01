@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -48,7 +49,7 @@ class NetworkBannerCard extends StatelessWidget {
                   Colors.transparent,
                   Colors.black.withValues(alpha: 0.50),
                 ],
-                stops: const [0.0, 0.40, 1.0],
+                stops: [0.0, 0.40, 1.0],
               ),
             ),
           ),
@@ -64,7 +65,7 @@ class NetworkBannerCard extends StatelessWidget {
                   Colors.black.withValues(alpha: 0.15),
                   Colors.transparent,
                 ],
-                stops: const [0.0, 0.55, 1.0],
+                stops: [0.0, 0.55, 1.0],
               ),
             ),
           ),
@@ -73,11 +74,11 @@ class NetworkBannerCard extends StatelessWidget {
           // 3. Content Area (Below Header Overlay)
           // ─────────────────────────────────────────────────────────
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 68, 20, 24),
+            padding: EdgeInsets.fromLTRB(20, 68, 20, 24),
             child: Align(
               alignment: rtl ? Alignment.centerRight : Alignment.centerLeft,
               child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 240),
+                constraints: BoxConstraints(maxWidth: 240),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment:
@@ -98,7 +99,7 @@ class NetworkBannerCard extends StatelessWidget {
                         ),
                       ),
                     if (ad.description.isNotEmpty) ...[
-                      const SizedBox(height: 5),
+                      SizedBox(height: 5),
                       Text(
                         ad.description,
                         maxLines: 2,
@@ -113,7 +114,7 @@ class NetworkBannerCard extends StatelessWidget {
                       ),
                     ],
                     if (ad.url.isNotEmpty) ...[
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       _BannerAction(rtl: rtl, onTap: _openUrl),
                     ],
                   ],
@@ -141,20 +142,20 @@ class _BannerAction extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(24),
         child: Ink(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+          padding: EdgeInsets.symmetric(horizontal: 14, vertical: 7),
           decoration: BoxDecoration(
-            color: const Color(0xFFFF5722),
+            color: Color(0xFFFF5722),
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFFF5722).withValues(alpha: 0.35),
+                color: Color(0xFFFF5722).withValues(alpha: 0.35),
                 blurRadius: 8,
-                offset: const Offset(0, 3),
+                offset: Offset(0, 3),
               ),
             ],
           ),
-          child: const Text(
-            'شوف الكوبونات بعروضها',
+          child: Text(
+            lang.t('see_coupons_offers'),
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w800,

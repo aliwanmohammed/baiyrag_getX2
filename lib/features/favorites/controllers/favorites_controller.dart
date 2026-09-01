@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:bhm_supermarket/features/favorites/domain/repositories/favorites_repository.dart';
@@ -103,7 +104,7 @@ class FavoritesController extends GetxController {
       final response = await _repository.getFavorites();
 
       if (!response.isSuccess || response.data == null) {
-        _error = response.message.isNotEmpty ? response.message : 'تعذر تحميل المفضلة';
+        _error = response.message.isNotEmpty ? response.message : lang.t('favorites_load_error');
         return;
       }
 
@@ -147,7 +148,7 @@ class FavoritesController extends GetxController {
 
       await _saveFavorites();
     } catch (e, stackTrace) {
-      _error = 'تعذر تحميل المفضلة. حاول مرة أخرى.';
+      _error = lang.t('favorites_load_error_retry');
       debugPrint('[FavoritesController] sync error: $e');
       debugPrintStack(stackTrace: stackTrace);
     } finally {

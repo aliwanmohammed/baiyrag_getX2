@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../home/controllers/home_controller.dart';
@@ -20,9 +21,9 @@ class CategoriesPinned extends StatelessWidget {
     final homeController = Get.find<HomeController>();
 
     final categories = [
-      const CategoryModel(
+      CategoryModel(
         id: 'special_offers',
-        nameAr: 'العروض',
+        nameAr: lang.t('offers'),
         nameEn: 'Offers',
         image: '',
         parentId: null,
@@ -38,10 +39,10 @@ class CategoriesPinned extends StatelessWidget {
         height: 78,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          physics: BouncingScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: 12),
           itemCount: categories.length + 1,
-          separatorBuilder: (_, __) => const SizedBox(width: 8),
+          separatorBuilder: (_, __) => SizedBox(width: 8),
           itemBuilder: (_, index) {
             if (index == 0) {
               return CategoryChip(

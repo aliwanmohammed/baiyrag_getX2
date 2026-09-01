@@ -42,10 +42,10 @@ class AppRouter {
         },
         routes: [
           GoRoute(
-              path: AppRoutes.splash, builder: (_, __) => const SplashScreen()),
+              path: AppRoutes.splash, builder: (_, __) => SplashScreen()),
           GoRoute(
             path: AppRoutes.onboarding,
-            builder: (_, __) => const OnboardingScreen(),
+            builder: (_, __) => OnboardingScreen(),
           ),
           GoRoute(
             path: AppRoutes.login,
@@ -54,7 +54,7 @@ class AppRouter {
           ),
           GoRoute(
             path: AppRoutes.register,
-            builder: (_, __) => const RegisterScreen(),
+            builder: (_, __) => RegisterScreen(),
           ),
           GoRoute(
             path: AppRoutes.home,
@@ -66,7 +66,7 @@ class AppRouter {
             },
           ),
           GoRoute(
-              path: AppRoutes.search, builder: (_, __) => const SearchScreen()),
+              path: AppRoutes.search, builder: (_, __) => SearchScreen()),
           GoRoute(
             path: '${AppRoutes.categories}/:categoryId',
             builder: (_, state) => CategoryProductsScreen(
@@ -75,18 +75,18 @@ class AppRouter {
             ),
           ),
           GoRoute(
-              path: AppRoutes.orders, builder: (_, __) => const OrdersScreen()),
+              path: AppRoutes.orders, builder: (_, __) => OrdersScreen()),
           GoRoute(
             path: AppRoutes.checkout,
-            builder: (_, __) => const CheckoutScreen(),
+            builder: (_, __) => CheckoutScreen(),
           ),
           GoRoute(
             path: AppRoutes.notifications,
-            builder: (_, __) => const NotificationsScreen(),
+            builder: (_, __) => NotificationsScreen(),
           ),
           GoRoute(
             path: AppRoutes.profile,
-            builder: (_, __) => const ProfileScreen(),
+            builder: (_, __) => ProfileScreen(),
           ),
           GoRoute(
             path: AppRoutes.addresses,
@@ -98,15 +98,15 @@ class AppRouter {
           ),
           GoRoute(
             path: AppRoutes.favorites,
-            builder: (_, __) => const FavoritesScreen(),
+            builder: (_, __) => FavoritesScreen(),
           ),
           GoRoute(
             path: AppRoutes.scanner,
-            builder: (_, __) => const BarcodeScannerScreen(),
+            builder: (_, __) => BarcodeScannerScreen(),
           ),
           GoRoute(
             path: AppRoutes.settings,
-            builder: (_, __) => const SettingsScreen(),
+            builder: (_, __) => SettingsScreen(),
           ),
           GoRoute(
             path: AppRoutes.orderSuccess,
@@ -115,31 +115,31 @@ class AppRouter {
           ),
           GoRoute(
             path: AppRoutes.aboutUs,
-            builder: (_, __) => const StaticInfoScreen(
+            builder: (_, __) => StaticInfoScreen(
               type: InfoPageType.aboutUs,
             ),
           ),
           GoRoute(
             path: AppRoutes.contactUs,
-            builder: (_, __) => const StaticInfoScreen(
+            builder: (_, __) => StaticInfoScreen(
               type: InfoPageType.contactUs,
             ),
           ),
           GoRoute(
             path: AppRoutes.faq,
-            builder: (_, __) => const StaticInfoScreen(
+            builder: (_, __) => StaticInfoScreen(
               type: InfoPageType.faq,
             ),
           ),
           GoRoute(
             path: AppRoutes.privacyPolicy,
-            builder: (_, __) => const StaticInfoScreen(
+            builder: (_, __) => StaticInfoScreen(
               type: InfoPageType.privacyPolicy,
             ),
           ),
           GoRoute(
             path: AppRoutes.termsOfUse,
-            builder: (_, __) => const Scaffold(
+            builder: (_, __) => Scaffold(
               body: Center(
                 child: Text('شروط الاستخدام'),
               ),
@@ -147,11 +147,11 @@ class AppRouter {
           ),
           GoRoute(
             path: AppRoutes.deliveryEarnings,
-            builder: (_, __) => const DeliveryEarningsScreen(),
+            builder: (_, __) => DeliveryEarningsScreen(),
           ),
           GoRoute(
             path: AppRoutes.deliveryHome,
-            builder: (_, __) => const DeliveryMainScreen(),
+            builder: (_, __) => DeliveryMainScreen(),
           ),
           GoRoute(
             path: AppRoutes.orderDetails,
@@ -160,12 +160,12 @@ class AppRouter {
               if (extra is OrderModel) {
                 return OrderDetailsScreen(order: extra);
               }
-              return const OrdersScreen();
+              return OrdersScreen();
             },
           ),
           GoRoute(
             path: AppRoutes.adminReports,
-            builder: (_, __) => const AdminReportsScreen(),
+            builder: (_, __) => AdminReportsScreen(),
           ),
         ],
       );

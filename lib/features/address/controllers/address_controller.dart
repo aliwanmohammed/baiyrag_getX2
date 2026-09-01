@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'package:bhm_supermarket/core/services/secure_storage_service.dart';
 
@@ -79,7 +80,7 @@ class AddressController extends GetxController {
       if (!response.isSuccess) {
         return response.message.isNotEmpty
             ? response.message
-            : 'فشلت عملية إضافة العنوان';
+            : lang.t('add_address_error');
       }
 
       await loadAddresses();
@@ -115,7 +116,7 @@ class AddressController extends GetxController {
       if (!response.isSuccess) {
         return response.message.isNotEmpty
             ? response.message
-            : 'فشلت عملية تعديل العنوان';
+            : lang.t('edit_address_error');
       }
 
       await loadAddresses();

@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 
@@ -164,7 +165,7 @@ class CartController extends GetxController {
           await _saveCart();
         },
         onError: (message) {
-          _error = message.isNotEmpty ? message : 'تعذر تحميل السلة';
+          _error = message.isNotEmpty ? message : lang.t('cart_load_error');
           debugPrint('Cart server load failed: $message');
         },
       );
@@ -182,13 +183,13 @@ class CartController extends GetxController {
     int quantity = 1,
   }) async {
     if (quantity <= 0) {
-      return ApiResponse.failure('الكمية غير صحيحة');
+      return ApiResponse.failure(lang.t('invalid_quantity'));
     }
 
     final key = '${product.id}_${unit.id}';
 
     if (_busy || _processingItems.contains(key)) {
-      return ApiResponse.failure('يرجى الانتظار');
+      return ApiResponse.failure(lang.t('please_wait'));
     }
 
     _busy = true;
@@ -267,7 +268,7 @@ class CartController extends GetxController {
 
       // لا نمسح السلة المحلية عند خطأ غير متوقع.
       return ApiResponse.failure(
-        'تعذر إضافة المنتج إلى السلة',
+        lang.t('add_product_to_cart_error'),
       );
     } finally {
       _busy = false;

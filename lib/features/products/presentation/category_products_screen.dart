@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/app/theme/app_colors.dart';
 import 'package:bhm_supermarket/app/theme/app_radius.dart';
 import 'package:bhm_supermarket/app/theme/app_spacing.dart';
@@ -104,35 +105,35 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     // final products = controller.products;
     // final isLoading = controller.isLoading;
     // final error = controller.error;
-    final title = widget.categoryName ?? (widget.categoryId == 'special_offers' ? 'العروض' : 'المنتجات');
+    final title = widget.categoryName ?? (widget.categoryId == 'special_offers' ? lang.t('offers') : lang.t('products'));
 
     return Scaffold(
       appBar: AppPageHeader(
         title: title,
         actions: [
           PopupMenuButton<String>(
-            icon: const AppIcon(Icons.sort_rounded, size: AppIconSize.medium),
+            icon: AppIcon(Icons.sort_rounded, size: AppIconSize.medium),
             onSelected: (val) => setState(() => _sortBy = val),
-            itemBuilder: (_) => const [
-              PopupMenuItem(value: 'default', child: Text('الترتيب الافتراضي')),
-              PopupMenuItem(value: 'price_asc', child: Text('السعر: من الأقل')),
+            itemBuilder: (_) => [
+              PopupMenuItem(value: 'default', child: Text(lang.t('sort_default'))),
+              PopupMenuItem(value: 'price_asc', child: Text(lang.t('price_low_high'))),
               PopupMenuItem(
                 value: 'price_desc',
-                child: Text('السعر: من الأعلى'),
+                child: Text(lang.t('price_high_low')),
               ),
-              PopupMenuItem(value: 'name', child: Text('الاسم')),
+              PopupMenuItem(value: 'name', child: Text(lang.t('name'))),
             ],
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(56),
+          preferredSize: Size.fromHeight(56),
           child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.md),
+            padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.md),
             child: TextField(
               onChanged: (val) => setState(() => _searchQuery = val),
               decoration: InputDecoration(
-                hintText: 'ابحث في $title...',
-                prefixIcon: const AppIcon(Icons.search_rounded, size: AppIconSize.medium),
+                hintText: lang.t('search_in_category'),
+                prefixIcon: AppIcon(Icons.search_rounded, size: AppIconSize.medium),
                 isDense: true,
                 filled: true,
                 fillColor: AppColors.surfaceVariant,
@@ -154,15 +155,15 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   Widget _buildBody(ProductController controller) {
     if (widget.categoryId == 'special_offers') {
       if (controller.isLoading && controller.products.isEmpty) {
-        return const Center(child: AppLoading.fullPage(message: 'جاري تحميل المنتجات...'));
+        return Center(child: AppLoading.fullPage(message: lang.t('loading_products')));
       }
 
       if (controller.error != null && controller.products.isEmpty) {
         return AppEmptyState(
           icon: Icons.warning_rounded,
-          title: 'تعذر تحميل العروض',
+          title: lang.t('offers_load_error'),
           subtitle: controller.error,
-          actionLabel: 'إعادة المحاولة',
+          actionLabel: lang.t('retry'),
           onAction: () => controller.loadCategory(''),
         );
       }
@@ -184,23 +185,23 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
         return Stack(
           children: [
             ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
+              physics: AlwaysScrollableScrollPhysics(),
               controller: _scrollController,
               children: [
                 ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: MediaQuery.sizeOf(context).height * 0.6,
                   ),
-                  child: const AppEmptyState(
+                  child: AppEmptyState(
                     icon: Icons.local_offer_rounded,
-                    title: 'لا توجد عروض',
-                    subtitle: 'اسحب للأعلى للبحث عن المزيد من العروض',
+                    title: lang.t('no_offers'),
+                    subtitle: lang.t('pull_more_offers'),
                   ),
                 ),
               ],
             ),
             if (controller.isFetchingMore)
-              const PositionedDirectional(
+              PositionedDirectional(
                 bottom: AppSpacing.lg,
                 start: 0,
                 end: 0,
@@ -222,12 +223,12 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
             child: ProductsGrid(
               products: filtered,
               controller: _scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
+              physics: AlwaysScrollableScrollPhysics(),
               shrinkWrap: false,
             ),
           ),
           if (controller.isFetchingMore)
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(AppSpacing.lg),
               child: Center(
                 child: SizedBox(
@@ -242,15 +243,15 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     }
 
     if (controller.isLoading && controller.products.isEmpty) {
-      return const Center(child: AppLoading.fullPage(message: 'جاري تحميل المنتجات...'));
+      return Center(child: AppLoading.fullPage(message: lang.t('loading_products')));
     }
 
     if (controller.error != null && controller.products.isEmpty) {
       return AppEmptyState(
         icon: Icons.warning_rounded,
-        title: 'تعذر تحميل المنتجات',
+        title: lang.t('products_load_error_title'),
         subtitle: controller.error,
-        actionLabel: 'إعادة المحاولة',
+        actionLabel: lang.t('retry'),
         onAction: () => controller.loadCategory(widget.categoryId),
       );
     }
@@ -266,14 +267,14 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
         onRefresh: () => controller.loadCategory(widget.categoryId, refresh: true),
         color: Theme.of(context).colorScheme.primary,
         child: ListView(
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: AlwaysScrollableScrollPhysics(),
           children: [
             SizedBox(
               height: MediaQuery.sizeOf(context).height * .55,
-              child: const AppEmptyState(
+              child: AppEmptyState(
                 icon: Icons.inventory_2_rounded,
-                title: 'لا توجد منتجات',
-                subtitle: 'لا توجد منتجات في هذا القسم حالياً',
+                title: lang.t('no_products'),
+                subtitle: lang.t('no_products_category'),
               ),
             ),
           ],
@@ -290,12 +291,12 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
           child: ProductsGrid(
             products: filtered,
             controller: _scrollController,
-            physics: const AlwaysScrollableScrollPhysics(),
+            physics: AlwaysScrollableScrollPhysics(),
             shrinkWrap: false,
           ),
         ),
         if (controller.isFetchingMore)
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(AppSpacing.lg),
             child: Center(
               child: SizedBox(

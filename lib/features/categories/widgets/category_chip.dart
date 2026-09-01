@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_typography.dart';
@@ -147,7 +148,7 @@ class CategoryChip extends StatelessWidget {
     // 8. Offers & Discounts / عروض / تخفيضات / خصومات / كوبونات
     if (name.contains('عرض') ||
         name.contains('عروض') ||
-        name.contains('خصم') ||
+        name.contains(lang.t('discount')) ||
         name.contains('خصومات') ||
         name.contains('تخفيض') ||
         name.contains('كوبون') ||
@@ -255,7 +256,7 @@ class CategoryChip extends StatelessWidget {
           children: [
             // ── Rounded Square Card matching reference image ────────────
             AnimatedContainer(
-              duration: const Duration(milliseconds: 180),
+              duration: Duration(milliseconds: 180),
               width: 52,
               height: 52,
               decoration: BoxDecoration(
@@ -263,26 +264,26 @@ class CategoryChip extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(
                   color: isAll && selected
-                      ? const Color(0xFFD97706)
+                      ? Color(0xFFD97706)
                       : (isSpecialOffers && selected
-                          ? const Color(0xFFE53935)
+                          ? Color(0xFFE53935)
                           : (selected
-                              ? const Color(0xFFD97706)
-                              : const Color(0xFFEEEEEE))),
+                              ? Color(0xFFD97706)
+                              : Color(0xFFEEEEEE))),
                   width: selected ? 1.5 : 1,
                 ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: selected ? 0.08 : 0.03),
                     blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    offset: Offset(0, 2),
                   ),
                 ],
               ),
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: EdgeInsets.all(10),
                 child: isAll
-                    ? const Center(
+                    ? Center(
                         child: AppIcon(
                           Icons.grid_view_rounded,
                           color: Color(0xFFD97706),
@@ -290,7 +291,7 @@ class CategoryChip extends StatelessWidget {
                         ),
                       )
                     : isSpecialOffers
-                        ? const Center(
+                        ? Center(
                             child: AppIcon(
                               Icons.local_offer_rounded,
                               color: Color(0xFFE53935),
@@ -309,15 +310,15 @@ class CategoryChip extends StatelessWidget {
                                     child: AppIcon(
                                       resolveCategoryIcon(category!.name),
                                       color: selected
-                                          ? const Color(0xFFD97706)
-                                          : const Color(0xFF424242),
+                                          ? Color(0xFFD97706)
+                                          : Color(0xFF424242),
                                       size: AppIconSize.medium,
                                     ),
                                   ),
                           ),
               ),
             ),
-            const SizedBox(height: 5),
+            SizedBox(height: 5),
             Text(
               title,
               maxLines: 1,
@@ -327,10 +328,10 @@ class CategoryChip extends StatelessWidget {
                 fontSize: 11.5,
                 fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
                 color: isAll
-                    ? const Color(0xFFD97706)
+                    ? Color(0xFFD97706)
                     : (isSpecialOffers
-                        ? (selected ? const Color(0xFFE53935) : const Color(0xFF2D2D2D))
-                        : (selected ? const Color(0xFFD97706) : const Color(0xFF2D2D2D))),
+                        ? (selected ? Color(0xFFE53935) : Color(0xFF2D2D2D))
+                        : (selected ? Color(0xFFD97706) : Color(0xFF2D2D2D))),
               ),
             ),
           ],

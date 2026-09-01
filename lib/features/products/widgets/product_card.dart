@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../app/theme/app_radius.dart';
@@ -70,7 +71,7 @@ class ProductCard extends StatelessWidget {
                     top: 8,
                     start: 8,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.xs,
                         vertical: 2,
                       ),
@@ -94,13 +95,13 @@ class ProductCard extends StatelessWidget {
                                 ? Theme.of(context).colorScheme.onTertiary
                                 : Theme.of(context).colorScheme.onError,
                           ),
-                          const SizedBox(width: 2),
+                          SizedBox(width: 2),
                           Text(
                             offer.isGift
-                                ? 'هدية'
+                                ? lang.t('gift')
                                 : offer.isPercentage
-                                    ? 'خصم'
-                                    : 'عرض خاص',
+                                    ? lang.t('discount')
+                                    : lang.t('special_offer'),
                             style: AppTypography.caption.copyWith(
                               color: offer.isGift
                                   ? Theme.of(context).colorScheme.onTertiary
@@ -133,7 +134,7 @@ class ProductCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
             child: ProductInfo(
               product: product,
               quantityWidget: ProductCartControl(product: product),

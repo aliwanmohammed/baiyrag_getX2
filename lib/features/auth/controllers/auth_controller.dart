@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'package:bhm_supermarket/app/router/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +80,7 @@ class AuthController extends GetxController {
 
       return response.message;
     } catch (_) {
-      return 'تعذر تسجيل الدخول. حاول مرة أخرى.';
+      return lang.t('login_error_retry');
     } finally {
       _setLoading(false);
     }
@@ -111,7 +112,7 @@ class AuthController extends GetxController {
 
       return response.message;
     } catch (_) {
-      return 'تعذر إنشاء الحساب. حاول مرة أخرى.';
+      return lang.t('register_error_retry');
     } finally {
       _setLoading(false);
     }

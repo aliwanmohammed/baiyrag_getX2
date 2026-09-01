@@ -28,37 +28,37 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      appBar: const AppPageHeader(title: 'الإعدادات'),
+      appBar: AppPageHeader(title: lang.t('settings')),
       body: AppConstrainedContent(
         child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+          padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
           children: [
             // المظهر
-            const _SectionHeader('المظهر والواجهة'),
+            _SectionHeader(lang.t('appearance')),
             SwitchListTile(
               secondary: AppIcon(
                 theme.isDark ? Icons.dark_mode : Icons.light_mode,
                 color: colorScheme.primary,
                 size: AppIconSize.medium,
               ),
-              title: Text('الوضع الليلي', style: AppTypography.titleMedium),
+              title: Text(lang.t('dark_mode'), style: AppTypography.titleMedium),
               subtitle: Text(
-                theme.isDark ? 'مفعّل' : 'معطّل',
+                theme.isDark ? lang.t('enabled') : lang.t('disabled'),
                 style: AppTypography.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant),
               ),
               value: theme.isDark,
               activeThumbColor: colorScheme.primary,
               onChanged: theme.setDark,
-              contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+              contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
             ),
             ListTile(
               leading: AppIcon(Icons.language, color: colorScheme.primary, size: AppIconSize.medium),
-              title: Text('اللغة', style: AppTypography.titleMedium),
+              title: Text(lang.t('language'), style: AppTypography.titleMedium),
               subtitle: Text(
-                lang.isArabic ? 'العربية' : 'English',
+                lang.isArabic ? lang.t('arabic') : lang.t('english'),
                 style: AppTypography.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+              contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
               trailing: ToggleButtons(
                 borderRadius: AppRadius.mdRadius,
                 isSelected: [lang.isArabic, lang.isEnglish],
@@ -68,14 +68,14 @@ class SettingsScreen extends StatelessWidget {
                 onPressed: (i) => i == 0 ? lang.setArabic() : lang.setEnglish(),
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
                     child: Text(
                       'ع',
                       style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
                     child: Text(
                       'EN',
                       style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
@@ -84,19 +84,19 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(height: AppSpacing.xl),
+            Divider(height: AppSpacing.xl),
 
             // الحساب
-            const _SectionHeader('الحساب'),
+            _SectionHeader(lang.t('account')),
             ListTile(
               leading: AppIcon(
                 Icons.notifications_outlined,
                 color: colorScheme.primary,
                 size: AppIconSize.medium,
               ),
-              title: Text('الإشعارات', style: AppTypography.titleMedium),
+              title: Text(lang.t('notifications'), style: AppTypography.titleMedium),
               trailing: AppIcon(Icons.chevron_left, color: colorScheme.outline, size: AppIconSize.medium, directionSensitive: true),
-              contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+              contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
               onTap: () => context.push(AppRoutes.notifications),
             ),
             ListTile(
@@ -105,20 +105,20 @@ class SettingsScreen extends StatelessWidget {
                 color: colorScheme.primary,
                 size: AppIconSize.medium,
               ),
-              title: Text('عناوين التوصيل', style: AppTypography.titleMedium),
+              title: Text(lang.t('delivery_addresses'), style: AppTypography.titleMedium),
               trailing: AppIcon(Icons.chevron_left, color: colorScheme.outline, size: AppIconSize.medium, directionSensitive: true),
-              contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+              contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
               onTap: () => context.push(AppRoutes.addresses),
             ),
-            const Divider(height: AppSpacing.xl),
+            Divider(height: AppSpacing.xl),
 
             // معلومات
-            const _SectionHeader('معلومات'),
+            _SectionHeader(lang.t('information')),
             ListTile(
               leading: AppIcon(Icons.info_outline, color: colorScheme.primary, size: AppIconSize.medium),
-              title: Text('من نحن', style: AppTypography.titleMedium),
+              title: Text(lang.t('about_us'), style: AppTypography.titleMedium),
               trailing: AppIcon(Icons.chevron_left, color: colorScheme.outline, size: AppIconSize.medium, directionSensitive: true),
-              contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+              contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
               onTap: () => context.push(AppRoutes.aboutUs),
             ),
             ListTile(
@@ -127,9 +127,9 @@ class SettingsScreen extends StatelessWidget {
                 color: colorScheme.primary,
                 size: AppIconSize.medium,
               ),
-              title: Text('سياسة الخصوصية', style: AppTypography.titleMedium),
+              title: Text(lang.t('privacy_policy'), style: AppTypography.titleMedium),
               trailing: AppIcon(Icons.chevron_left, color: colorScheme.outline, size: AppIconSize.medium, directionSensitive: true),
-              contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+              contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
               onTap: () => context.push(AppRoutes.privacyPolicy),
             ),
             ListTile(
@@ -138,25 +138,25 @@ class SettingsScreen extends StatelessWidget {
                 color: colorScheme.primary,
                 size: AppIconSize.medium,
               ),
-              title: Text('شروط الاستخدام', style: AppTypography.titleMedium),
+              title: Text(lang.t('terms'), style: AppTypography.titleMedium),
               trailing: AppIcon(Icons.chevron_left, color: colorScheme.outline, size: AppIconSize.medium, directionSensitive: true),
-              contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+              contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
               onTap: () => context.push(AppRoutes.termsOfUse),
             ),
-            const Divider(height: AppSpacing.xl),
+            Divider(height: AppSpacing.xl),
 
             // الإصدار
             ListTile(
               leading: AppIcon(Icons.info_outline, color: colorScheme.onSurfaceVariant, size: AppIconSize.medium),
               title: Text(
-                'إصدار التطبيق',
+                lang.t('app_version'),
                 style: AppTypography.titleMedium.copyWith(color: colorScheme.onSurfaceVariant),
               ),
               trailing: Text(
                 'v1.0.0',
                 style: AppTypography.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+              contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
             ),
           ],
         ),
@@ -171,7 +171,7 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.md, AppSpacing.lg, AppSpacing.md, AppSpacing.xs),
+      padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.md, AppSpacing.lg, AppSpacing.md, AppSpacing.xs),
       child: Text(
         title,
         style: AppTypography.labelLarge.copyWith(

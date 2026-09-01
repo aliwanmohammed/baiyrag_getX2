@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
@@ -55,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
 
-    final nameError = Validators.required(name, 'الاسم الكامل');
+    final nameError = Validators.required(name, lang.t('full_name'));
     if (nameError != null) {
       _showMessage(nameError);
       return;
@@ -74,17 +75,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     if (password.isEmpty) {
-      _showMessage('كلمة المرور مطلوبة');
+      _showMessage(lang.t('password_required'));
       return;
     }
 
     if (confirmPassword.isEmpty) {
-      _showMessage('تأكيد كلمة المرور مطلوب');
+      _showMessage(lang.t('confirm_password_required'));
       return;
     }
 
     if (password != confirmPassword) {
-      _showMessage('كلمتا المرور غير متطابقتين');
+      _showMessage(lang.t('passwords_mismatch'));
       return;
     }
 
@@ -157,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           // ─────────────────────────────────────────────────
           Container(
             height: 380,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -172,19 +173,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
           SafeArea(
             child: AppConstrainedContent(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+                physics: BouncingScrollPhysics(),
                 child: Column(
                   children: [
                     // Top Navigation Bar with Back Button
                     Padding(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.sm,
                         vertical: 4,
                       ),
                       child: Row(
                         children: [
                           IconButton(
-                            icon: const AppIcon(
+                            icon: AppIcon(
                               Icons.arrow_forward_rounded,
                               color: Colors.white,
                               size: AppIconSize.medium,
@@ -221,10 +222,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
 
                     Text(
-                      'البيرق هايبر ماركت',
+                      lang.t('app_name'),
                       style: AppTypography.titleLarge.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -232,24 +233,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
 
                     Text(
-                      'تسوق ذكي • توصيل سريع',
+                      lang.t('smart_shopping_tagline'),
                       style: AppTypography.bodyMedium.copyWith(
                         color: Colors.white.withValues(alpha: 0.92),
                         fontSize: 13.5,
                       ),
                     ),
 
-                    const SizedBox(height: 28),
+                    SizedBox(height: 28),
 
                     // ─────────────────────────────────────────────────
                     // Register Form Card
                     // ─────────────────────────────────────────────────
                     Container(
-                      padding: const EdgeInsets.all(AppSpacing.lg),
-                      margin: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.all(AppSpacing.lg),
+                      margin: EdgeInsets.symmetric(
                         horizontal: AppSpacing.md,
                       ),
                       decoration: BoxDecoration(
@@ -261,61 +262,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
-                            'إنشاء حساب جديد',
+                            lang.t('create_account_new'),
                             style: AppTypography.headlineSmall.copyWith(
                               fontWeight: FontWeight.bold,
                               color: colorScheme.onSurface,
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.xs),
+                          SizedBox(height: AppSpacing.xs),
                           Text(
-                            'أدخل بياناتك لإنشاء حساب والبدء في التسوق',
+                            lang.t('register_subtitle'),
                             style: AppTypography.bodySmall.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.xl),
+                          SizedBox(height: AppSpacing.xl),
 
                           // Name
                           AppTextField(
-                            hint: 'الاسم الكامل',
+                            hint: lang.t('full_name'),
                             controller: _nameController,
-                            prefixIcon: const AppIcon(Icons.person_outline),
+                            prefixIcon: AppIcon(Icons.person_outline),
                           ),
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
 
                           // Phone
                           AppTextField(
-                            hint: 'رقم الهاتف',
+                            hint: lang.t('phone'),
                             controller: _phoneController,
                             keyboardType: TextInputType.phone,
-                            prefixIcon: const AppIcon(Icons.phone_outlined),
+                            prefixIcon: AppIcon(Icons.phone_outlined),
                           ),
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
 
                           // Email
                           AppTextField(
-                            hint: 'البريد الإلكتروني',
+                            hint: lang.t('email'),
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
-                            prefixIcon: const AppIcon(Icons.email_outlined),
+                            prefixIcon: AppIcon(Icons.email_outlined),
                           ),
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
 
                           // Password with Visibility Toggle
                           AppTextField(
-                            hint: 'كلمة المرور',
+                            hint: lang.t('password'),
                             controller: _passwordController,
                             obscureText: _obscurePassword,
-                            prefixIcon: const AppIcon(Icons.lock_outline),
+                            prefixIcon: AppIcon(Icons.lock_outline),
                             suffixIcon: IconButton(
-                              constraints: const BoxConstraints(
+                              constraints: BoxConstraints(
                                 minWidth: 48,
                                 minHeight: 48,
                               ),
                               tooltip: _obscurePassword
-                                  ? 'إظهار كلمة المرور'
-                                  : 'إخفاء كلمة المرور',
+                                  ? lang.t('show_password')
+                                  : lang.t('hide_password'),
                               icon: AppIcon(
                                 _obscurePassword
                                     ? Icons.visibility_off_outlined
@@ -329,22 +330,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               },
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
 
                           // Confirm Password with Visibility Toggle
                           AppTextField(
-                            hint: 'تأكيد كلمة المرور',
+                            hint: lang.t('confirm_password'),
                             controller: _confirmPasswordController,
                             obscureText: _obscureConfirmPassword,
-                            prefixIcon: const AppIcon(Icons.lock_reset_outlined),
+                            prefixIcon: AppIcon(Icons.lock_reset_outlined),
                             suffixIcon: IconButton(
-                              constraints: const BoxConstraints(
+                              constraints: BoxConstraints(
                                 minWidth: 48,
                                 minHeight: 48,
                               ),
                               tooltip: _obscureConfirmPassword
-                                  ? 'إظهار كلمة المرور'
-                                  : 'إخفاء كلمة المرور',
+                                  ? lang.t('show_password')
+                                  : lang.t('hide_password'),
                               icon: AppIcon(
                                 _obscureConfirmPassword
                                     ? Icons.visibility_off_outlined
@@ -360,13 +361,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.xxl),
+                          SizedBox(height: AppSpacing.xxl),
 
                           // Submit Button
                           SizedBox(
                             height: 52,
                             child: AppButton(
-                              text: 'إنشاء حساب',
+                              text: lang.t('register'),
                               onPressed: _submit,
                               state: _isLoading
                                   ? AppButtonState.loading
@@ -374,7 +375,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.lg),
+                          SizedBox(height: AppSpacing.lg),
 
                           // Already have an account link
                           Center(
@@ -389,19 +390,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       }
                                     },
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal: AppSpacing.md,
                                   vertical: AppSpacing.sm,
                                 ),
                                 child: RichText(
                                   text: TextSpan(
-                                    text: 'لديك حساب بالفعل؟  ',
+                                    text: lang.t('already_have_account'),
                                     style: AppTypography.bodyMedium.copyWith(
                                       color: colorScheme.onSurfaceVariant,
                                     ),
                                     children: [
                                       TextSpan(
-                                        text: 'تسجيل الدخول',
+                                        text: lang.t('login'),
                                         style: AppTypography.bodyMedium.copyWith(
                                           color: colorScheme.primary,
                                           fontWeight: FontWeight.bold,
@@ -417,7 +418,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: AppSpacing.xxl),
+                    SizedBox(height: AppSpacing.xxl),
                   ],
                 ),
               ),

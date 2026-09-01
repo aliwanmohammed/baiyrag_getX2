@@ -7,7 +7,7 @@
 // import '../../../core/design_system/components/app_icon.dart';
 //
 // class ProductQuantitySelector extends StatefulWidget {
-//   const ProductQuantitySelector({super.key});
+//   ProductQuantitySelector({super.key});
 //
 //   @override
 //   State<ProductQuantitySelector> createState() =>
@@ -19,7 +19,7 @@
 //   Widget build(BuildContext context) {
 //     return Container(
 //       height: 30,
-//       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+//       padding: EdgeInsets.symmetric(horizontal: AppSpacing.xs),
 //       decoration: BoxDecoration(
 //         color: Theme.of(context).colorScheme.surface,
 //         borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -36,7 +36,7 @@
 //             },
 //             child: Semantics(
 //               button: true,
-//               label: 'زيادة الكمية',
+//               label: lang.t('increase_quantity'),
 //               child: SizedBox(
 //                 width: 22,
 //                 child: AppIcon(Icons.add, size: AppIconSize.small, color: Theme.of(context).colorScheme.primary),
@@ -64,7 +64,7 @@
 //             },
 //             child: Semantics(
 //               button: true,
-//               label: 'إنقاص الكمية',
+//               label: lang.t('decrease_quantity'),
 //               child: SizedBox(
 //                 width: 22,
 //                 child: AppIcon(Icons.remove, size: AppIconSize.small, color: Theme.of(context).colorScheme.primary),

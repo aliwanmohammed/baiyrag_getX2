@@ -29,10 +29,10 @@ class DeliveryProfileScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: const AppPageHeader(title: 'الملف الشخصي', showBack: false),
+      appBar: AppPageHeader(title: lang.t('profile'), showBack: false),
       body: AppConstrainedContent(
         child: ListView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: EdgeInsets.all(AppSpacing.lg),
           children: [
             // بطاقة المعلومات
             Card(
@@ -42,7 +42,7 @@ class DeliveryProfileScreen extends StatelessWidget {
                 side: BorderSide(color: colorScheme.outlineVariant),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 child: Row(
                   children: [
                     CircleAvatar(
@@ -56,7 +56,7 @@ class DeliveryProfileScreen extends StatelessWidget {
                         color: colorScheme.primary,
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.lg),
+                    SizedBox(width: AppSpacing.lg),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +67,7 @@ class DeliveryProfileScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           Text(
                             user?.email ?? '',
                             style: AppTypography.bodyMedium.copyWith(
@@ -87,7 +87,7 @@ class DeliveryProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
   
             // إعدادات
             Card(
@@ -100,16 +100,16 @@ class DeliveryProfileScreen extends StatelessWidget {
                 children: [
                   SwitchListTile(
                     secondary: AppIcon(Icons.dark_mode_outlined, size: AppIconSize.medium),
-                    title: Text('الوضع الليلي', style: AppTypography.bodyLarge),
+                    title: Text(lang.t('dark_mode'), style: AppTypography.bodyLarge),
                     value: theme.isDark,
                     activeThumbColor: colorScheme.primary,
                     onChanged: theme.setDark,
                   ),
                   ListTile(
                     leading: AppIcon(Icons.language, size: AppIconSize.medium),
-                    title: Text('اللغة', style: AppTypography.bodyLarge),
+                    title: Text(lang.t('language'), style: AppTypography.bodyLarge),
                     subtitle: Text(
-                      lang.isArabic ? 'العربية' : 'English',
+                      lang.isArabic ? 'العربية' : lang.t('english'),
                       style: AppTypography.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant),
                     ),
                     trailing: ToggleButtons(
@@ -117,7 +117,7 @@ class DeliveryProfileScreen extends StatelessWidget {
                       isSelected: [lang.isArabic, lang.isEnglish],
                       onPressed: (i) =>
                           i == 0 ? lang.setArabic() : lang.setEnglish(),
-                      children: const [
+                      children: [
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           child: Text('ع'),
@@ -132,7 +132,7 @@ class DeliveryProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
   
             // تسجيل الخروج
             ListTile(
@@ -142,7 +142,7 @@ class DeliveryProfileScreen extends StatelessWidget {
               ),
               leading: AppIcon(Icons.logout, color: colorScheme.error, size: AppIconSize.medium),
               title: Text(
-                'تسجيل الخروج',
+                lang.t('logout'),
                 style: AppTypography.titleMedium.copyWith(color: colorScheme.error),
               ),
               onTap: () async {
@@ -150,19 +150,19 @@ class DeliveryProfileScreen extends StatelessWidget {
                   context: context,
                   builder: (dialogContext) {
                     return AlertDialog(
-                      title: const Text('تسجيل الخروج'),
-                      content: const Text('هل أنت متأكد أنك تريد تسجيل الخروج؟'),
+                      title: Text(lang.t('logout')),
+                      content: Text(lang.t('logout_confirm')),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.pop(dialogContext, false),
-                          child: const Text('إلغاء'),
+                          child: Text(lang.t('cancel')),
                         ),
                         FilledButton(
                           onPressed: () => Navigator.pop(dialogContext, true),
                           style: FilledButton.styleFrom(
                             backgroundColor: colorScheme.error,
                           ),
-                          child: const Text('تسجيل الخروج'),
+                          child: Text(lang.t('logout')),
                         ),
                       ],
                     );

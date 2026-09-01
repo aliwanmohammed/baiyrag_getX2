@@ -1,10 +1,11 @@
+import '../../../app/localization/lang.dart';
 String paymentMethodText(String value) {
   switch (value) {
     case "cash":
-      return "الدفع نقداً";
+      return lang.t('cash_payment');
 
     case "card":
-      return "بطاقة بنكية";
+      return lang.t('bank_card_payment');
 
     default:
       return value;

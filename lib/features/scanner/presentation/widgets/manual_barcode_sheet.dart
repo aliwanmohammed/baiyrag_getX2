@@ -1,3 +1,4 @@
+import '../../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_radius.dart';
@@ -85,18 +86,18 @@ class _ManualBarcodeSheetState extends State<ManualBarcodeSheet> {
     return Container(
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(
+        borderRadius: BorderRadius.vertical(
           top: Radius.circular(AppRadius.xl),
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.15),
             blurRadius: 20,
-            offset: const Offset(0, -4),
+            offset: Offset(0, -4),
           ),
         ],
       ),
-      padding: const EdgeInsets.fromLTRB(
+      padding: EdgeInsets.fromLTRB(
         AppSpacing.lg,
         AppSpacing.md,
         AppSpacing.lg,
@@ -117,7 +118,7 @@ class _ManualBarcodeSheetState extends State<ManualBarcodeSheet> {
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
 
           // Header
           Row(
@@ -129,7 +130,7 @@ class _ManualBarcodeSheetState extends State<ManualBarcodeSheet> {
                   color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
-                child: const Center(
+                child: Center(
                   child: AppIcon(
                     Icons.keyboard_alt_outlined,
                     color: AppColors.primary,
@@ -137,18 +138,18 @@ class _ManualBarcodeSheetState extends State<ManualBarcodeSheet> {
                   ),
                 ),
               ),
-              const SizedBox(width: AppSpacing.md),
+              SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'إدخال الباركود يدويًا',
+                      lang.t('enter_barcode_manual'),
                       style: AppTypography.titleMedium.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    SizedBox(height: 2),
                     Text(
                       'اكتب الرقم المطبوع أسفل الباركود على المنتج',
                       style: AppTypography.bodySmall.copyWith(
@@ -160,7 +161,7 @@ class _ManualBarcodeSheetState extends State<ManualBarcodeSheet> {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg),
 
           // Input field (LTR for numeric barcode)
           Directionality(
@@ -169,22 +170,22 @@ class _ManualBarcodeSheetState extends State<ManualBarcodeSheet> {
               controller: _controller,
               hint: 'e.g. 6281003301234',
               keyboardType: TextInputType.number,
-              prefixIcon: const Padding(
+              prefixIcon: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12),
                 child: AppIcon(
                   Icons.qr_code_2_rounded,
                   size: AppIconSize.small,
-                  color: AppColors.textSecondary,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg),
 
           // Submit button
           AppButton(
-            text: 'بحث عن المنتج',
-            icon: const AppIcon(
+            text: lang.t('search_product'),
+            icon: AppIcon(
               Icons.search_rounded,
               size: AppIconSize.small,
               color: Colors.white,

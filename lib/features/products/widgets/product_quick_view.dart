@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../app/widgets/app_button.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_radius.dart';
+import '../../../app/localization/language_controller.dart';
 import '../../../app/widgets/app_cached_image.dart';
 import '../../../app/widgets/app_price.dart';
 import '../../../core/models/product_model.dart';
@@ -17,14 +18,17 @@ class ProductQuickView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Get.find<LanguageController>();
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.vertical(
           top: Radius.circular(AppRadius.sheet),
         ),
       ),
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       child: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -41,7 +45,7 @@ class ProductQuickView extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               SizedBox(
                 height: 220,
                 width: double.infinity,
@@ -50,37 +54,36 @@ class ProductQuickView extends StatelessWidget {
                   fit: BoxFit.contain,
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               Text(
                 product.name,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               AppPrice(price: product.price),
-              const SizedBox(height: 15),
+              SizedBox(height: 15),
               Text(
                 product.description,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const SizedBox(height: 25),
+              SizedBox(height: 25),
               AppButton(
                 icon: Icons.shopping_cart_outlined,
-                text: "إضافة إلى السلة",
+                text: lang.t('add_to_cart'),
                 onPressed: () {
                   if (product.units.isEmpty) return;
 
                   final unit = product.units.first;
-                  final offerUnit =
-                      Get.find<OffersController>().productUnitOffer(
-                    productId: product.id,
-                    unitId: unit.id,
-                  );
+                  final offerUnit = Get.find<OffersController>().productUnitOffer(
+                        productId: product.id,
+                        unitId: unit.id,
+                      );
 
                   Get.find<CartController>().addItem(
-                    product: product,
-                    unit: unit,
-                    unitPrice: offerUnit?.price ?? unit.price,
-                    originalPrice: offerUnit?.oldPrice ?? unit.price,
-                  );
+                        product: product,
+                        unit: unit,
+                        unitPrice: offerUnit?.price ?? unit.price,
+                        originalPrice: offerUnit?.oldPrice ?? unit.price,
+                      );
 
                   // Capture before pop to avoid stale context
                   final scaffoldMsg = ScaffoldMessenger.of(context);
@@ -88,14 +91,14 @@ class ProductQuickView extends StatelessWidget {
 
                   scaffoldMsg.showSnackBar(
                     SnackBar(
-                      content: Text("${product.name} تمت إضافته إلى السلة"),
+                      content: Text('${product.name} ${lang.t('added_to_cart')}'),
                       behavior: SnackBarBehavior.floating,
-                      duration: const Duration(seconds: 2),
+                      duration: Duration(seconds: 2),
                     ),
                   );
                 },
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
             ],
           ),
         ),

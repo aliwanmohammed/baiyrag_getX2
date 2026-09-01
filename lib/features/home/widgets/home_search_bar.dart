@@ -18,7 +18,7 @@ class HomeSearchBar extends StatelessWidget {
 
   final VoidCallback? onTap;
 
-  final String hint;
+  final String? hint;
 
   final bool autofocus;
 
@@ -29,7 +29,7 @@ class HomeSearchBar extends StatelessWidget {
     this.controller,
     this.onChanged,
     this.onTap,
-    this.hint = "ابحث عن أي منتج...",
+    this.hint,
     this.autofocus = false,
   });
 
@@ -38,17 +38,17 @@ class HomeSearchBar extends StatelessWidget {
     final child = Container(
       height: 50,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: const Color(0xFFEEEEEE),
+          color: Theme.of(context).colorScheme.outlineVariant,
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 14,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
       ),
@@ -67,28 +67,28 @@ class HomeSearchBar extends StatelessWidget {
         style: AppTypography.bodyMedium,
         decoration: InputDecoration(
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
+          contentPadding: EdgeInsets.symmetric(
             horizontal: 18,
             vertical: 13,
           ),
           hintText: hint,
           hintStyle: AppTypography.bodyMedium.copyWith(
-            color: const Color(0xFF9E9E9E),
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontSize: 14,
           ),
           suffixIcon: Container(
-            margin: const EdgeInsets.all(6),
+            margin: EdgeInsets.all(6),
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: const Color(0xFFFEF3C7),
+              color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Center(
+            child: Center(
               child: AppIcon(
                 Icons.search_rounded,
                 size: AppIconSize.small,
-                color: Color(0xFFD97706),
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ),

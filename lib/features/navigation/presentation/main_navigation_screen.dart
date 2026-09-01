@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -68,22 +69,22 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget _createTab(int index) {
     switch (index) {
       case 0:
-        return const HomeScreen();
+        return HomeScreen();
 
       case 1:
-        return const CategoriesScreen();
+        return CategoriesScreen();
 
       case 2:
-        return const BarcodeScannerScreen();
+        return BarcodeScannerScreen();
 
       case 3:
-        return const CartScreen();
+        return CartScreen();
 
       case 4:
-        return const ProfileScreen();
+        return ProfileScreen();
 
       default:
-        return const SizedBox.shrink();
+        return SizedBox.shrink();
     }
   }
 
@@ -115,14 +116,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           for (var i = 0; i < _tabCount; i++)
             HeroMode(
               enabled: i == navigation.index,
-              child: _tabs[i] ?? const SizedBox.shrink(),
+              child: _tabs[i] ?? SizedBox.shrink(),
             ),
         ],
       ),
       bottomNavigationBar: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: EdgeInsets.fromLTRB(
             16,
             8,
             16,
@@ -139,12 +140,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   color: colorScheme.shadow.withValues(alpha: .16),
                   blurRadius: 45,
                   spreadRadius: 1,
-                  offset: const Offset(0, 10),
+                  offset: Offset(0, 10),
                 ),
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: 4,
                 vertical: 2,
               ),
@@ -153,14 +154,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 children: [
                   _NavItem(
                     icon: Icons.home_rounded,
-                    label: 'الرئيسية',
+                    label: lang.t('home'),
                     index: 0,
                     current: navigation.index,
                     onTap: (i) => _go(context, i),
                   ),
                   _NavItem(
                     icon: Icons.grid_view_rounded,
-                    label: 'الأقسام',
+                    label: lang.t('categories'),
                     index: 1,
                     current: navigation.index,
                     onTap: (i) => _go(context, i),
@@ -183,7 +184,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   }),
                   _NavItem(
                     icon: Icons.person_rounded,
-                    label: 'حسابي',
+                    label: lang.t('profile'),
                     index: 4,
                     current: navigation.index,
                     onTap: (i) => _go(context, i),
@@ -255,10 +256,10 @@ class _NavItem extends StatelessWidget {
         borderRadius: AppRadius.mdRadius,
         child: AnimatedScale(
           scale: selected ? 1.04 : 1,
-          duration: const Duration(milliseconds: 180),
+          duration: Duration(milliseconds: 180),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 220),
-            padding: const EdgeInsets.symmetric(
+            duration: Duration(milliseconds: 220),
+            padding: EdgeInsets.symmetric(
               horizontal: 10,
               vertical: 4,
             ),
@@ -273,7 +274,7 @@ class _NavItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 180),
+                  duration: Duration(milliseconds: 180),
                   child: AppIcon(
                     icon,
                     key: ValueKey(selected),
@@ -283,7 +284,7 @@ class _NavItem extends StatelessWidget {
                         : colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
                 Text(
                   label,
                   style: AppTypography.labelSmall.copyWith(
@@ -332,9 +333,9 @@ class _ScannerCenterBtn extends StatelessWidget {
           children: [
             AnimatedScale(
               scale: selected ? 1.05 : 1,
-              duration: const Duration(milliseconds: 180),
+              duration: Duration(milliseconds: 180),
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 220),
+                duration: Duration(milliseconds: 220),
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
@@ -357,7 +358,7 @@ class _ScannerCenterBtn extends StatelessWidget {
                           BoxShadow(
                             color: colorScheme.primary.withValues(alpha: 0.35),
                             blurRadius: 12,
-                            offset: const Offset(0, 4),
+                            offset: Offset(0, 4),
                           ),
                         ]
                       : null,
@@ -371,9 +372,9 @@ class _ScannerCenterBtn extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 2),
+            SizedBox(height: 2),
             Text(
-              'مسح باركود',
+              lang.t('scan_barcode'),
               style: AppTypography.labelSmall.copyWith(
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
@@ -418,10 +419,10 @@ class _CartNavItem extends StatelessWidget {
         borderRadius: AppRadius.mdRadius,
         child: AnimatedScale(
           scale: selected ? 1.04 : 1,
-          duration: const Duration(milliseconds: 180),
+          duration: Duration(milliseconds: 180),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 220),
-            padding: const EdgeInsets.symmetric(
+            duration: Duration(milliseconds: 220),
+            padding: EdgeInsets.symmetric(
               horizontal: 10,
               vertical: 4,
             ),
@@ -439,7 +440,7 @@ class _CartNavItem extends StatelessWidget {
                   clipBehavior: Clip.none,
                   children: [
                     AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 180),
+                      duration: Duration(milliseconds: 180),
                       child: AppIcon(
                         Icons.shopping_cart_rounded,
                         key: ValueKey(selected),
@@ -454,8 +455,8 @@ class _CartNavItem extends StatelessWidget {
                         top: -4,
                         end: -8,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                          constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                          padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                          constraints: BoxConstraints(minWidth: 16, minHeight: 16),
                           decoration: BoxDecoration(
                             color: colorScheme.error,
                             borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -474,9 +475,9 @@ class _CartNavItem extends StatelessWidget {
                       ),
                   ],
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2),
                 Text(
-                  'السلة',
+                  lang.t('cart'),
                   style: AppTypography.labelSmall.copyWith(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,

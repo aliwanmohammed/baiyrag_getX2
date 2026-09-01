@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import '../../../core/design_system/components/app_icon.dart';
 import '../../../core/design_system/components/feedback/app_loading.dart';
@@ -21,7 +22,7 @@ class PickedLocation {
   final double longitude;
   final String address;
 
-  const PickedLocation({
+  PickedLocation({
     required this.latitude,
     required this.longitude,
     required this.address,
@@ -45,10 +46,8 @@ class PickLocationSheet extends StatefulWidget {
 
 class _PickLocationSheetState extends State<PickLocationSheet> {
   // ── Constants ─────────────────────────────────────────────
-  static const _fallback = LatLng(15.369445, 44.191007);
-  static const _defaultZoom = 17.0;
-  static const _defaultAddress = 'حدد موقعك ثم اضغط تأكيد الموقع';
-  static const _fallbackAddress = 'موقع محدد على الخريطة';
+  static const LatLng _fallback = LatLng(15.369445, 44.191007);
+  static const double _defaultZoom = 17.0;
 
   // ── State ──────────────────────────────────────────────────
   final MapController _mapController = MapController();
@@ -58,11 +57,14 @@ class _PickLocationSheetState extends State<PickLocationSheet> {
   LatLng _center = _fallback;
 
   /// Shown in the address card. Updated ONLY when the user
-  /// taps "تأكيد الموقع".
-  final String _address = _defaultAddress;
+  /// taps lang.t('confirm_location').
+  late String _address;
 
   /// True only while the confirm button is performing reverse-geocoding.
   bool _confirming = false;
+
+  String get _defaultAddress => lang.t('select_location_confirm');
+  String get _fallbackAddress => lang.t('selected_map_location');
 
   /// True after the map widget has been rendered at least once,
   /// so we can safely call _mapController.move().
@@ -73,6 +75,7 @@ class _PickLocationSheetState extends State<PickLocationSheet> {
   @override
   void initState() {
     super.initState();
+    _address = _defaultAddress;
     WidgetsBinding.instance.addPostFrameCallback((_) => _initLocation());
   }
 
@@ -124,7 +127,7 @@ class _PickLocationSheetState extends State<PickLocationSheet> {
       }
 
       return await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
+        locationSettings: LocationSettings(
           accuracy: LocationAccuracy.high,
         ),
       );
@@ -199,7 +202,7 @@ class _PickLocationSheetState extends State<PickLocationSheet> {
               onClose: _confirming ? null : () => Navigator.of(context).pop(),
               colorScheme: colorScheme,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             Expanded(
               child: _MapSection(
                 mapController: _mapController,
@@ -255,7 +258,7 @@ class _SheetHandle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: EdgeInsets.symmetric(vertical: 12),
       child: Container(
         width: 40,
         height: 4,
@@ -277,7 +280,7 @@ class _SheetHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
       child: Row(
         children: [
           // Close button
@@ -289,7 +292,7 @@ class _SheetHeader extends StatelessWidget {
           // Title
           Expanded(
             child: Text(
-              'اختيار الموقع',
+              lang.t('choose_location'),
               textAlign: TextAlign.center,
               style: AppTypography.titleLarge.copyWith(
                 fontWeight: FontWeight.w700,
@@ -298,7 +301,7 @@ class _SheetHeader extends StatelessWidget {
             ),
           ),
           // Spacer to balance the close button
-          const SizedBox(width: 40),
+          SizedBox(width: 40),
         ],
       ),
     );
@@ -365,7 +368,7 @@ class _MapSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppRadius.xl),
         child: Stack(
@@ -396,7 +399,7 @@ class _MapSection extends StatelessWidget {
                 children: [
                   _LocationPin(colorScheme: colorScheme),
                   // Stem shadow offset
-                  const SizedBox(height: 32), // INTENTIONAL COMPONENT DIMENSION
+                  SizedBox(height: 32), // INTENTIONAL COMPONENT DIMENSION
                 ],
               ),
             ),
@@ -412,7 +415,7 @@ class _MapSection extends StatelessWidget {
                     onPressed: onZoomIn,
                     colorScheme: colorScheme,
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   _IconCircleButton(
                     icon: Icons.remove_rounded,
                     onPressed: onZoomOut,
@@ -453,7 +456,7 @@ class _MapSection extends StatelessWidget {
                       ],
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(14),
+                      padding: EdgeInsets.all(14),
                       child: AppLoading(size: 24),
                     ),
                   ),
@@ -492,7 +495,7 @@ class _LocationPin extends StatelessWidget {
           decoration: BoxDecoration(
             color: colorScheme.surface,
             shape: BoxShape.circle,
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
                 color: Colors.black26, // INTENTIONAL VISUAL EXCEPTION
                 blurRadius: 10,
@@ -527,7 +530,7 @@ class _BottomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(
+      padding: EdgeInsets.fromLTRB(
         AppSpacing.md,
         AppSpacing.md,
         AppSpacing.md,
@@ -539,7 +542,7 @@ class _BottomCard extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.06), // INTENTIONAL VISUAL EXCEPTION
             blurRadius: 16,
-            offset: const Offset(0, -4),
+            offset: Offset(0, -4),
           ),
         ],
       ),
@@ -563,7 +566,7 @@ class _BottomCard extends StatelessWidget {
                   size: AppIconSize.small,
                 ),
               ),
-              const SizedBox(width: AppSpacing.sm),
+              SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Text(
                   address,
@@ -578,7 +581,7 @@ class _BottomCard extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
 
           // ── Confirm button ─────────────────────────────────
           SizedBox(
@@ -600,9 +603,9 @@ class _BottomCard extends StatelessWidget {
                       size: 18,
                       color: colorScheme.onPrimary,
                     )
-                  : const AppIcon(Icons.check_rounded, size: AppIconSize.small),
+                  : AppIcon(Icons.check_rounded, size: AppIconSize.small),
               label: Text(
-                confirming ? 'جارٍ تحديد العنوان...' : 'تأكيد الموقع',
+                confirming ? lang.t('resolving_address') : lang.t('confirm_location'),
                 style: AppTypography.labelLarge.copyWith(
                   color: colorScheme.onPrimary,
                   fontWeight: FontWeight.w700,

@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 // import 'package:flutter/foundation.dart';
 // import 'package:bhm_supermarket/core/network/dio_exception_mapper.dart';
 // import 'package:dio/dio.dart';
@@ -75,7 +76,7 @@
 //   ) {
 //     return _patchOrder(
 //       ApiEndpoints.deliveryOrderClaim(id),
-//       errorMessage: 'حدث خطأ أثناء استلام الطلب',
+//       errorMessage: lang.t('claim_order_error'),
 //     );
 //   }
 
@@ -109,7 +110,7 @@
 
 //       if (rawData is! Map) {
 //         return ApiResponse<DeliveryOrderModel>.failure(
-//           'بيانات الطلب غير صالحة',
+//           lang.t('invalid_order_data'),
 //           statusCode: response.statusCode,
 //         );
 //       }
@@ -207,7 +208,7 @@ class DeliveryRemoteDataSource extends BaseRemoteDataSource {
   ) {
     return _patchOrder(
       ApiEndpoints.deliveryOrderClaim(id),
-      errorMessage: 'حدث خطأ أثناء استلام الطلب',
+      errorMessage: lang.t('claim_order_error'),
     );
   }
 
@@ -249,7 +250,7 @@ class DeliveryRemoteDataSource extends BaseRemoteDataSource {
 
       if (!success) {
         return ApiResponse<DeliveryOrderModel>.failure(
-          message.isNotEmpty ? message : 'تعذر تحديث حالة الطلب',
+          message.isNotEmpty ? message : lang.t('order_status_update_error'),
           statusCode: response.statusCode,
         );
       }
@@ -258,7 +259,7 @@ class DeliveryRemoteDataSource extends BaseRemoteDataSource {
 
       if (rawData is! Map) {
         return ApiResponse<DeliveryOrderModel>.failure(
-          'بيانات الطلب بعد التحديث غير صالحة',
+          lang.t('invalid_updated_order_data'),
           statusCode: response.statusCode,
         );
       }
@@ -284,7 +285,7 @@ class DeliveryRemoteDataSource extends BaseRemoteDataSource {
       );
 
       return ApiResponse<DeliveryOrderModel>.failure(
-        'تعذر تحديث حالة الطلب',
+        lang.t('order_status_update_error'),
       );
     }
   }
@@ -324,7 +325,7 @@ class DeliveryRemoteDataSource extends BaseRemoteDataSource {
 
       if (rawData is! Map) {
         return ApiResponse<DeliveryOrderModel>.failure(
-          'بيانات الطلب غير صالحة',
+          lang.t('invalid_order_data'),
           statusCode: response.statusCode,
         );
       }

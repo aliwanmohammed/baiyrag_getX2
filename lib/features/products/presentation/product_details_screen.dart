@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/app/theme/app_radius.dart';
 import 'package:bhm_supermarket/app/theme/app_shadows.dart';
 import 'package:bhm_supermarket/app/theme/app_spacing.dart';
@@ -72,7 +73,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     if (response.isSuccess) {
       AppMessage.success(
         context,
-        'تمت إضافة ${product.name} × ${controller.quantity} إلى السلة',
+        lang.t('product_added_dynamic', {'product': product.name, 'quantity': controller.quantity}),
       );
       Navigator.pop(context);
     } else {
@@ -106,8 +107,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
     // First load must always occupy the page with a real loading state.
     if (controller.isLoading && currentProduct == null) {
-      return const Scaffold(
-        body: AppLoading.fullPage(message: 'جاري تحميل المنتج...'),
+      return Scaffold(
+        body: AppLoading.fullPage(message: lang.t('loading_product')),
       );
     }
 
@@ -115,9 +116,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       return Scaffold(
         body: AppEmptyState(
           icon: Icons.error_outline_rounded,
-          title: 'تعذر تحميل المنتج',
+          title: lang.t('product_load_error'),
           subtitle: error,
-          actionLabel: 'إعادة المحاولة',
+          actionLabel: lang.t('retry'),
           onAction: () => controller.loadProduct(widget.productId),
         ),
       );
@@ -146,16 +147,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   elevation: 0,
                   stretch: true,
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  leading: const AppBackButtonOverlay(),
+                  leading: AppBackButtonOverlay(),
                   actions: [
                     Container(
-                      margin: const EdgeInsetsDirectional.only(top: 10, start: 6),
+                      margin: EdgeInsetsDirectional.only(top: 10, start: 6),
                       child: Material(
                         color: Theme.of(context).cardColor,
-                        shape: const CircleBorder(),
+                        shape: CircleBorder(),
                         elevation: 2,
                         child: IconButton(
-                          icon: const AppIcon(Icons.share_outlined),
+                          icon: AppIcon(Icons.share_outlined),
                           onPressed: () {
                             // سيتم ربط المشاركة لاحقاً
                           },
@@ -163,14 +164,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsetsDirectional.only(
+                      margin: EdgeInsetsDirectional.only(
                         top: 10,
                         start: 12,
                         end: AppSpacing.md,
                       ),
                       child: Material(
                         color: Theme.of(context).cardColor,
-                        shape: const CircleBorder(),
+                        shape: CircleBorder(),
                         elevation: 2,
                         child: IconButton(
                           onPressed: currentProduct == null
@@ -180,7 +181,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 },
                           icon: AppIcon(
                             isFav ? Icons.favorite : Icons.favorite_border,
-                            color: isFav ? AppColors.error : AppColors.textSecondary,
+                            color: isFav ? AppColors.error : Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ),
@@ -191,17 +192,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     background: Stack(
                       fit: StackFit.expand,
                       children: [
-                        Container(color: Colors.white),
+                        Container(color: Theme.of(context).colorScheme.surface),
                         Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(30, 90, 30, 50),
+                          padding: EdgeInsetsDirectional.fromSTEB(30, 90, 30, 50),
                           child: Hero(
                             tag: 'product_${widget.productId}',
                             child: (currentProduct == null ||
                                     currentProduct.image.isEmpty)
-                                ? const Icon(
+                                ? Icon(
                                     Icons.inventory_2_outlined,
                                     size: 130,
-                                    color: Colors.grey,
+                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   )
                                 : AppCachedImage(
                                     imageUrl: currentProduct.image,
@@ -217,7 +218,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   SliverToBoxAdapter(
                     child: AppConstrainedContent(
                       child: Padding(
-                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        padding: EdgeInsets.all(AppSpacing.lg),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -225,7 +226,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           // Category
                           //-----------------------------------------------------
                           Container(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 6,
                             ),
@@ -241,7 +242,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
 
                           //-----------------------------------------------------
                           // Product Name
@@ -251,16 +252,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             style: AppTypography.headlineLarge,
                           ),
 
-                          const SizedBox(height: AppSpacing.sm),
+                          SizedBox(height: AppSpacing.sm),
 
-                          const SizedBox(height: AppSpacing.xl),
+                          SizedBox(height: AppSpacing.xl),
 
                           //-----------------------------------------------------
                           // Price Card
                           //-----------------------------------------------------
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(18),
+                            padding: EdgeInsets.all(18),
                             decoration: BoxDecoration(
                               color: AppColors.primary.withValues(alpha: .05),
                               borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -288,7 +289,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   ),
                                 ),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                     horizontal: 14,
                                     vertical: 10,
                                   ),
@@ -298,7 +299,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       AppRadius.md,
                                     ),
                                   ),
-                                  child: const Row(
+                                  child: Row(
                                     children: [
                                       Icon(
                                         Icons.local_offer_outlined,
@@ -307,7 +308,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       ),
                                       SizedBox(height: AppSpacing.md),
                                       Text(
-                                        "أفضل سعر",
+                                        lang.t('best_price'),
                                         style: AppTypography.titleLarge,
                                       ),
                                     ],
@@ -317,13 +318,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.xxl),
+                          SizedBox(height: AppSpacing.xxl),
 
                           //-----------------------------------------------------
                           // Product Information
                           //-----------------------------------------------------
                           Container(
-                            padding: const EdgeInsets.all(18),
+                            padding: EdgeInsets.all(18),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(AppRadius.md),
@@ -332,38 +333,38 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             child: Column(
                               children: [
                                 _DetailRow(
-                                  "رقم الصنف",
+                                  lang.t('item_number'),
                                   currentProduct.uniqueNumber,
                                 ),
                                 if (selected != null)
                                   _DetailRow(
-                                    "باركود الوحدة",
+                                    lang.t('unit_barcode'),
                                     selected.barcode,
                                   ),
                                 _DetailRow(
-                                  "القسم",
+                                  lang.t('category'),
                                   currentProduct.categoryName,
                                 ),
                                 _DetailRow(
-                                  "الحالة",
+                                  lang.t('status'),
                                   currentProduct.isAvailable
-                                      ? "متوفر"
-                                      : "غير متوفر",
+                                      ? lang.t('in_stock')
+                                      : lang.t('out_of_stock'),
                                 ),
                               ],
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.xxl),
+                          SizedBox(height: AppSpacing.xxl),
                           if (units.isNotEmpty) ...[
                             Text(
-                              "اختر الوحدة",
+                              lang.t('select_unit'),
                               style: AppTypography.titleLarge,
                             ),
-                            const SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md),
                             AppAdaptiveGrid(
                               shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
+                              physics: NeverScrollableScrollPhysics(),
                               itemCount: units.length,
                               minItemWidth: 160.0, // Intentional component dimension to fit 2 on mobile
                               childAspectRatio: 2.4,
@@ -384,9 +385,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         );
                                   },
                                   child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 250),
+                                    duration: Duration(milliseconds: 250),
                                     curve: Curves.ease,
-                                    padding: const EdgeInsets.all(14),
+                                    padding: EdgeInsets.all(14),
                                     decoration: BoxDecoration(
                                       color: selectedUnit
                                           ? AppColors.primary.withValues(
@@ -408,7 +409,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                 color: AppColors.primary
                                                     .withValues(alpha: .12),
                                                 blurRadius: 14,
-                                                offset: const Offset(0, 5),
+                                                offset: Offset(0, 5),
                                               ),
                                             ]
                                           : [],
@@ -423,15 +424,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                               .copyWith(
                                             color: selectedUnit
                                                 ? AppColors.primary
-                                                : AppColors.textPrimary,
+                                                : Theme.of(context).colorScheme.onSurface,
                                           ),
                                         ),
-                                        const SizedBox(height: AppSpacing.xs),
+                                        SizedBox(height: AppSpacing.xs),
                                         Text(
                                           unit.quantity.toString(),
                                           style: AppTypography.bodySmall,
                                         ),
-                                        const SizedBox(height: AppSpacing.sm),
+                                        SizedBox(height: AppSpacing.sm),
                                         Text(
                                           "${unit.price.toStringAsFixed(0)} ر.ي",
                                           style: AppTypography.priceMedium,
@@ -442,15 +443,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 );
                               },
                             ),
-                            const SizedBox(height: AppSpacing.xxl),
+                            SizedBox(height: AppSpacing.xxl),
                           ],
 
                           if (currentProduct.description.isNotEmpty) ...[
-                            Text("وصف المنتج", style: AppTypography.titleLarge),
-                            const SizedBox(height: AppSpacing.md),
+                            Text(lang.t('product_description'), style: AppTypography.titleLarge),
+                            SizedBox(height: AppSpacing.md),
                             Container(
                               width: double.infinity,
-                              padding: const EdgeInsets.all(AppSpacing.md),
+                              padding: EdgeInsets.all(AppSpacing.md),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).cardColor,
                                 borderRadius: BorderRadius.circular(
@@ -465,10 +466,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: AppSpacing.xl),
+                            SizedBox(height: AppSpacing.xl),
                           ],
                           Container(
-                            padding: const EdgeInsets.all(AppSpacing.md),
+                            padding: EdgeInsets.all(AppSpacing.md),
                             decoration: BoxDecoration(
                               color: Theme.of(context).cardColor,
                               borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -482,12 +483,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "الكمية",
+                                        lang.t('quantity'),
                                         style: AppTypography.titleMedium,
                                       ),
-                                      const SizedBox(height: AppSpacing.xs),
+                                      SizedBox(height: AppSpacing.xs),
                                       Text(
-                                        "يمكنك زيادة أو تقليل الكمية",
+                                        lang.t('quantity_hint'),
                                         style: AppTypography.bodySmall,
                                       ),
                                     ],
@@ -502,21 +503,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.xl),
+                          SizedBox(height: AppSpacing.xl),
                           if (related.isNotEmpty) ...[
-                            const SizedBox(height: AppSpacing.xxl),
+                            SizedBox(height: AppSpacing.xxl),
                             Text(
-                              'منتجات ذات صلة',
+                              lang.t('related_products'),
                               style: AppTypography.titleLarge,
                             ),
-                            const SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md),
                             SizedBox(
                               height: 240,
                               child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: related.length,
                                 separatorBuilder: (_, __) =>
-                                    const SizedBox(width: AppSpacing.md),
+                                    SizedBox(width: AppSpacing.md),
                                 itemBuilder: (_, i) => SizedBox(
                                   width: 150,
                                   child: ProductCard(product: related[i]),
@@ -524,7 +525,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                           ],
-                          const SizedBox(height: AppSpacing.massive),
+                          SizedBox(height: AppSpacing.massive),
                         ],
                       ),
                     ),
@@ -536,13 +537,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       child: error != null
                           ? AppEmptyState(
                               icon: Icons.warning_rounded,
-                              title: 'تعذر تحميل المنتج',
+                              title: lang.t('product_load_error'),
                               subtitle: error,
-                              actionLabel: 'إعادة المحاولة',
+                              actionLabel: lang.t('retry'),
                               onAction: () => Get.find<ProductController>()
                                   .loadProduct(widget.productId),
                             )
-                          : const Center(child: AppLoading()),
+                          : Center(child: AppLoading()),
                     ),
                   ),
               ],
@@ -553,7 +554,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               top: false,
               child: Container(
                 height: AppSizes.bottomBarHeight,
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: AppSpacing.lg,
                   vertical: AppSpacing.md,
                 ),
@@ -571,7 +572,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("الإجمالي", style: AppTypography.bodySmall),
+                          Text(lang.t('total'), style: AppTypography.bodySmall),
                           Text(
                             "${((offerUnit?.price ?? selected.price) * controller.quantity).toStringAsFixed(0)} ر.ي",
                             style: AppTypography.priceLarge,
@@ -588,7 +589,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       child: SizedBox(
                         height: AppSizes.buttonHeight,
                         child: AppButton(
-                          text: "إضافة إلى السلة",
+                          text: lang.t('add_to_cart'),
                           icon: Icons.shopping_cart_checkout_rounded,
                           onPressed: _addToCart,
                         ),
@@ -613,7 +614,7 @@ class _DetailRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
       child: Row(
         children: [
           SizedBox(

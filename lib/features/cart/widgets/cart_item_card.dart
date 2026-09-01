@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import '../../../app/theme/app_spacing.dart';
 import '../../../app/theme/app_radius.dart';
@@ -23,7 +24,7 @@ class CartItemCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.card),
@@ -39,7 +40,7 @@ class CartItemCard extends StatelessWidget {
               height: 72, // Intentional component dimension
               color: colorScheme.surfaceContainerHighest,
               child: item.product.image.isEmpty
-                  ? const Center(
+                  ? Center(
                       child: Text('🛍️', style: TextStyle(fontSize: 32)), // Intentional component dimension
                     )
                   : AppCachedImage(
@@ -48,7 +49,7 @@ class CartItemCard extends StatelessWidget {
                     ),
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          SizedBox(width: AppSpacing.md),
 
           // Info
           Expanded(
@@ -63,11 +64,11 @@ class CartItemCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xs),
+                SizedBox(height: AppSpacing.xs),
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.sm,
                         vertical: 2, // Intentional component dimension
                       ),
@@ -85,7 +86,7 @@ class CartItemCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -116,10 +117,10 @@ class CartItemCard extends StatelessWidget {
                           _QtyBtn(
                             icon: Icons.remove_rounded,
                             onTap: onDecrease,
-                            semanticLabel: 'تقليل الكمية',
+                            semanticLabel: lang.t('decrease_quantity'),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+                            padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
                             child: Text(
                               '${item.quantity}',
                               style: AppTypography.titleSmall.copyWith(
@@ -131,7 +132,7 @@ class CartItemCard extends StatelessWidget {
                             icon: Icons.add_rounded,
                             onTap: onIncrease,
                             isAdd: true,
-                            semanticLabel: 'زيادة الكمية',
+                            semanticLabel: lang.t('increase_quantity'),
                           ),
                         ],
                       ),

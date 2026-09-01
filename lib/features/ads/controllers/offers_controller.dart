@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 
@@ -174,7 +175,7 @@ class OffersController extends GetxController {
       }
     } catch (e) {
       stopwatch.stop();
-      _error = 'حدث خطأ أثناء تحميل العروض';
+      _error = lang.t('offers_load_error');
       debugPrint(
         '[OffersController] ERROR OFFERS '
         '(duration=${stopwatch.elapsedMilliseconds}ms, error=$e)',

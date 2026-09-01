@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/design_system/components/app_button.dart';
@@ -27,15 +28,15 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
     super.initState();
     _scaleCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 700),
+      duration: Duration(milliseconds: 700),
     );
     _slideCtrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 600),
+      duration: Duration(milliseconds: 600),
     );
     _scale = CurvedAnimation(parent: _scaleCtrl, curve: Curves.elasticOut);
     _slide = Tween(
-      begin: const Offset(0, 0.3),
+      begin: Offset(0, 0.3),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _slideCtrl, curve: Curves.easeOut));
     _scaleCtrl.forward().then((_) => _slideCtrl.forward());
@@ -56,7 +57,7 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
       canPop: false,
       child: Scaffold(
         body: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFFE8F8F0), Color(0xFFE3F4FB)], // INTENTIONAL VISUAL EXCEPTION
               begin: Alignment.topCenter,
@@ -66,10 +67,10 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
           child: SafeArea(
             child: AppConstrainedContent(
               child: Padding(
-                padding: const EdgeInsets.all(28),
+                padding: EdgeInsets.all(28),
                 child: Column(
                   children: [
-                    const Spacer(flex: 2),
+                    Spacer(flex: 2),
 
                     // Success animation
                     ScaleTransition(
@@ -96,7 +97,7 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                               ),
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.check_rounded,
                               color: Colors.white,
                               size: 60,
@@ -106,7 +107,7 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                       ),
                     ),
 
-                    const SizedBox(height: 32),
+                    SizedBox(height: 32),
 
                     // Text content
                     SlideTransition(
@@ -114,15 +115,15 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                       child: Column(
                         children: [
                           Text(
-                            'تم استلام طلبك! 🎉',
+                            lang.t('order_received'),
                             style: AppTypography.headlineSmall.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12),
                           Container(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                               vertical: AppSpacing.sm,
                             ),
@@ -139,9 +140,9 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                                   size: 18,
                                   color: colorScheme.primary,
                                 ),
-                                const SizedBox(width: AppSpacing.sm),
+                                SizedBox(width: AppSpacing.sm),
                                 Text(
-                                  'رقم الطلب: #${widget.orderNumber}',
+                                  lang.t('order_number_widget'),
                                   style: AppTypography.bodyLarge.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -149,9 +150,9 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                               ],
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
                           Text(
-                            'سيتم التواصل معك لتأكيد طلبك وتحديد موعد التوصيل',
+                            lang.t('order_contact_hint'),
                             textAlign: TextAlign.center,
                             style: AppTypography.bodyMedium.copyWith(
                               color: colorScheme.onSurfaceVariant,
@@ -162,11 +163,11 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                       ),
                     ),
 
-                    const Spacer(flex: 2),
+                    Spacer(flex: 2),
 
                     // Steps indicator
                     Container(
-                      padding: const EdgeInsets.all(AppSpacing.md),
+                      padding: EdgeInsets.all(AppSpacing.md),
                       decoration: BoxDecoration(
                         color: colorScheme.surface,
                         borderRadius: BorderRadius.circular(AppRadius.card),
@@ -175,25 +176,25 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                       child: Column(
                         children: [
                           Text(
-                            'ماذا يحدث الآن؟',
+                            lang.t('what_happens_now'),
                             style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
                           _Step(
                             '1',
-                            'المتجر يستلم طلبك',
+                            lang.t('store_receives_order'),
                             Icons.storefront_outlined,
                             colorScheme,
                           ),
                           _Step(
                             '2',
-                            'يتم تجهيز المنتجات',
+                            lang.t('preparing_products'),
                             Icons.inventory_2_outlined,
                             colorScheme,
                           ),
                           _Step(
                             '3',
-                            'التوصيل لباب بيتك',
+                            lang.t('delivery_to_door'),
                             Icons.delivery_dining_outlined,
                             colorScheme,
                           ),
@@ -201,22 +202,22 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                       ),
                     ),
 
-                    const SizedBox(height: AppSpacing.xl),
+                    SizedBox(height: AppSpacing.xl),
 
                     AppButton(
                       onPressed: () => context.go(AppRoutes.orders),
-                      icon: const AppIcon(Icons.location_on_outlined, size: AppIconSize.medium),
-                      text: 'تتبع الطلب',
+                      icon: AppIcon(Icons.location_on_outlined, size: AppIconSize.medium),
+                      text: lang.t('track_order'),
                       size: AppButtonSize.large,
                     ),
-                    const SizedBox(height: AppSpacing.sm),
+                    SizedBox(height: AppSpacing.sm),
                     AppButton(
                       variant: AppButtonVariant.outlined,
                       onPressed: () => context.go(AppRoutes.home),
-                      text: 'العودة للرئيسية',
+                      text: lang.t('back_home'),
                       size: AppButtonSize.large,
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                   ],
                 ),
               ),
@@ -235,7 +236,7 @@ class _Step extends StatelessWidget {
   const _Step(this.number, this.label, this.icon, this.colorScheme);
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6),
+        padding: EdgeInsets.symmetric(vertical: 6),
         child: Row(
           children: [
             Container(
@@ -255,9 +256,9 @@ class _Step extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md),
             AppIcon(icon, color: colorScheme.primary, size: AppIconSize.small),
-            const SizedBox(width: AppSpacing.sm),
+            SizedBox(width: AppSpacing.sm),
             Text(label, style: AppTypography.bodyMedium),
           ],
         ),

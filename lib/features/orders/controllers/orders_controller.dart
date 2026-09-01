@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:get/get.dart';
 
 import '../domain/repositories/order_repository.dart';
@@ -46,10 +47,10 @@ class OrdersController extends GetxController {
         _currentPage = _hasMore ? 2 : 1;
         _error = null;
       } else {
-        _error = AppErrorMessage.from(message: response.message, statusCode: response.statusCode, fallback: 'تعذر تحميل الطلبات. حاول مرة أخرى.');
+        _error = AppErrorMessage.from(message: response.message, statusCode: response.statusCode, fallback: lang.t('orders_load_error_retry'));
       }
     } catch (e) {
-      _error = 'تعذر تحميل الطلبات. حاول مرة أخرى.';
+      _error = lang.t('orders_load_error_retry');
     } finally {
       _loading = false;
       update();

@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,7 @@ class AuthGate {
     BuildContext context, {
     required VoidCallback onAuthenticated,
     String? destination,
-    String loginMessage = 'يجب تسجيل الدخول لإتمام هذه العملية.',
+    String? loginMessage,
   }) {
     final auth = Get.find<AuthController>();
 
@@ -29,7 +30,7 @@ class AuthGate {
 
     AppDialog.loginRequired(
       context,
-      message: loginMessage,
+      message: loginMessage ?? lang.t('login_required_action'),
     ).then((confirmed) {
       if (confirmed == true && context.mounted) {
         if (destination != null) {

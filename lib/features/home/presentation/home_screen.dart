@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -74,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
         addHorizontalPadding: false,
         child: SafeArea(
           child: NestedScrollView(
-          physics: const BouncingScrollPhysics(
+          physics: BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics(),
           ),
           headerSliverBuilder: (
@@ -86,8 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
             return [
               SliverToBoxAdapter(
                 child: hasAds
-                    ? const HomeBanner()
-                    : const Padding(
+                    ? HomeBanner()
+                    : Padding(
                         padding: EdgeInsets.fromLTRB(
                           AppSpacing.lg,
                           8,
@@ -99,18 +100,18 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SliverPersistentHeader(
                 pinned: true,
-                delegate: const _SearchDelegate(),
+                delegate: _SearchDelegate(),
               ),
               SliverPersistentHeader(
                 pinned: true,
-                delegate: const _CategoriesDelegate(),
+                delegate: _CategoriesDelegate(),
               ),
             ];
           },
           body: RefreshIndicator(
             displacement: 50,
             onRefresh: _refreshHome,
-            child: const _HomeBody(),
+            child: _HomeBody(),
           ),
         ),
       ),
@@ -132,12 +133,12 @@ class _HomeBody extends StatelessWidget {
   Widget _buildBody(BuildContext context, HomeController controller) {
     if (controller.state == HomeLoadState.loading ||
         controller.state == HomeLoadState.initial) {
-      return const CustomScrollView(
+      return CustomScrollView(
         physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,
-            child: AppLoading.fullPage(message: 'جاري تحميل المنتجات...'),
+            child: AppLoading.fullPage(message: lang.t('loading_products')),
           ),
         ],
       );
@@ -145,15 +146,15 @@ class _HomeBody extends StatelessWidget {
 
     if (controller.state == HomeLoadState.error && controller.products.isEmpty) {
       return CustomScrollView(
-        physics: const BouncingScrollPhysics(
+        physics: BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,
             child: AppErrorState(
-              title: 'تعذر تحميل المنتجات',
-              message: controller.error ?? 'تحقق من اتصالك بالإنترنت وأعد المحاولة',
+              title: lang.t('products_load_error_title'),
+              message: controller.error ?? lang.t('network_retry'),
               onRetry: () => controller.loadProducts(),
             ),
           ),
@@ -163,16 +164,16 @@ class _HomeBody extends StatelessWidget {
 
     if (controller.state == HomeLoadState.empty) {
       return CustomScrollView(
-        physics: const BouncingScrollPhysics(
+        physics: BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        slivers: const [
+        slivers: [
           SliverFillRemaining(
             hasScrollBody: false,
             child: AppEmptyState(
               icon: Icons.inventory_2_outlined,
-              title: 'لا توجد منتجات حالياً',
-              subtitle: 'سيتم إضافة منتجات قريباً',
+              title: lang.t('no_products'),
+              subtitle: lang.t('products_coming_soon'),
             ),
           ),
         ],
@@ -191,7 +192,7 @@ class _HomeBody extends StatelessWidget {
         return false;
       },
       child: CustomScrollView(
-        physics: const BouncingScrollPhysics(
+        physics: BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
         slivers: [
@@ -199,18 +200,18 @@ class _HomeBody extends StatelessWidget {
             SliverToBoxAdapter(
               child: Container(
                 color: Colors.orange.shade50,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Row(
                   children: [
-                    const AppIcon(
+                    AppIcon(
                       Icons.warning_amber_rounded,
                       color: Colors.orange,
                       size: AppIconSize.small,
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'تعذر تحديث المنتجات — تعرض بيانات قديمة',
+                        lang.t('products_refresh_stale'),
                         style: AppTypography.bodySmall.copyWith(
                           color: Colors.orange,
                         ),
@@ -221,7 +222,7 @@ class _HomeBody extends StatelessWidget {
                       child: AppButton(
                         variant: AppButtonVariant.text,
                         size: AppButtonSize.small,
-                        text: 'إعادة',
+                        text: lang.t('refresh'),
                         onPressed: controller.reload,
                       ),
                     ),
@@ -230,17 +231,17 @@ class _HomeBody extends StatelessWidget {
               ),
             ),
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(6, 4, 6, AppSpacing.xxl),
+            padding: EdgeInsets.fromLTRB(6, 4, 6, AppSpacing.xxl),
             sliver: SliverToBoxAdapter(
               child: ProductsGrid(
                 products: controller.products,
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
+                physics: NeverScrollableScrollPhysics(),
               ),
             ),
           ),
           if (controller.isFetchingMore)
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.all(AppSpacing.lg),
                 child: Center(
@@ -253,7 +254,7 @@ class _HomeBody extends StatelessWidget {
               ),
             ),
           if (!controller.hasNextPage && controller.products.isNotEmpty)
-            const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.xl)),
+            SliverToBoxAdapter(child: SizedBox(height: AppSpacing.xl)),
         ],
       ),
     );
@@ -261,7 +262,7 @@ class _HomeBody extends StatelessWidget {
 }
 
 class _SearchDelegate extends SliverPersistentHeaderDelegate {
-  const _SearchDelegate();
+  _SearchDelegate();
 
   @override
   double get minExtent => 60;
@@ -281,11 +282,11 @@ class _SearchDelegate extends SliverPersistentHeaderDelegate {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
             vertical: 5,
           ),
-          child: const HomeSearchBar(enableHero: true),
+          child: HomeSearchBar(enableHero: true),
         ),
       ),
     );
@@ -296,7 +297,7 @@ class _SearchDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class _CategoriesDelegate extends SliverPersistentHeaderDelegate {
-  const _CategoriesDelegate();
+  _CategoriesDelegate();
 
   @override
   double get minExtent => 82;
@@ -313,7 +314,7 @@ class _CategoriesDelegate extends SliverPersistentHeaderDelegate {
     return Material(
       color: Theme.of(context).colorScheme.surface,
       elevation: overlapsContent ? 2 : 0,
-      child: const SafeArea(bottom: false, child: CategoriesPinned()),
+      child: SafeArea(bottom: false, child: CategoriesPinned()),
     );
   }
 

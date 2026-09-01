@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
@@ -36,7 +37,7 @@ class HomeHeader extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'مرحبًا',
+                      lang.t('hello'),
                       style: AppTypography.labelMedium.copyWith(
                         color: hintColor,
                         fontWeight: FontWeight.w600,
@@ -46,22 +47,22 @@ class HomeHeader extends StatelessWidget {
                                 Shadow(
                                   color: Colors.black.withValues(alpha: 0.45),
                                   blurRadius: 6,
-                                  offset: const Offset(0, 1),
+                                  offset: Offset(0, 1),
                                 ),
                               ]
                             : null,
                       ),
                     ),
-                    const SizedBox(width: 4),
-                    const Text(
+                    SizedBox(width: 4),
+                    Text(
                       '👋',
                       style: TextStyle(fontSize: 13),
                     ),
                   ],
                 ),
-                const SizedBox(height: 1),
+                SizedBox(height: 1),
                 Text(
-                  user?.name.isNotEmpty == true ? user!.name : 'زائر',
+                  user?.name.isNotEmpty == true ? user!.name : lang.t('guest'),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTypography.headlineMedium.copyWith(
@@ -74,7 +75,7 @@ class HomeHeader extends StatelessWidget {
                             Shadow(
                               color: Colors.black.withValues(alpha: 0.50),
                               blurRadius: 8,
-                              offset: const Offset(0, 2),
+                              offset: Offset(0, 2),
                             ),
                           ]
                         : null,
@@ -122,7 +123,7 @@ class _HeaderIconButton extends StatelessWidget {
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.08),
                 blurRadius: 10,
-                offset: const Offset(0, 3),
+                offset: Offset(0, 3),
               ),
             ],
           ),
@@ -130,7 +131,7 @@ class _HeaderIconButton extends StatelessWidget {
             alignment: Alignment.center,
             clipBehavior: Clip.none,
             children: [
-              const AppIcon(
+              AppIcon(
                 Icons.notifications_none_rounded,
                 size: AppIconSize.small,
                 color: Color(0xFF1E1E1E),
@@ -142,7 +143,7 @@ class _HeaderIconButton extends StatelessWidget {
                   child: Container(
                     width: 8,
                     height: 8,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Color(0xFFFF3B30),
                       shape: BoxShape.circle,
                     ),

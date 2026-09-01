@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_colors.dart';
@@ -18,7 +19,7 @@ class ProductFavoriteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      label: isFavorite ? 'إزالة من المفضلة' : 'إضافة للمفضلة',
+      label: isFavorite ? lang.t('remove_from_favorites') : lang.t('add_to_favorites'),
       child: IconButton(
         onPressed: onTap,
         iconSize: 18,

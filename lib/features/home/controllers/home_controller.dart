@@ -1,3 +1,4 @@
+import '../../../app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -83,7 +84,7 @@ class HomeController extends GetxController {
         _error = AppErrorMessage.from(
           message: response.message,
           statusCode: response.statusCode,
-          fallback: 'تعذر تحميل المنتجات. حاول مرة أخرى.',
+          fallback: lang.t('products_load_error_retry'),
         );
         _state = HomeLoadState.error;
         return;
@@ -91,7 +92,7 @@ class HomeController extends GetxController {
 
       _appendPage(response.data!.items, response.data!.meta);
 
-      // "العروض" is a deliberate category/filter in the UI. The offer is
+      // lang.t('offers') is a deliberate category/filter in the UI. The offer is
       // attached to the exact unit by the backend, so filter units using that
       // server-provided offer data only.
       if (_selectedCategory == 'special_offers') {
@@ -109,7 +110,7 @@ class HomeController extends GetxController {
 
       debugPrint('[HomeController] loadProducts error: $e');
       debugPrintStack(stackTrace: stackTrace);
-      _error = 'تعذر تحميل المنتجات. حاول مرة أخرى.';
+      _error = lang.t('products_load_error_retry');
       _state = HomeLoadState.error;
     } finally {
       if (request == _requestId) {

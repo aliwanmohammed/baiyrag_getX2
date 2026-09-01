@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -35,24 +36,24 @@ class CategoriesScreen extends StatelessWidget {
     final controller = Get.find<CategoryController>();
 
     if (controller.isLoading) {
-      return const Scaffold(body: AppLoading.fullPage(message: 'جاري تحميل الأقسام...'));
+      return Scaffold(body: AppLoading.fullPage(message: lang.t('loading_categories')));
     }
 
     if (controller.error != null) {
       return Scaffold(
-        appBar: const AppPageHeader(title: "الأقسام", showBack: false),
+        appBar: AppPageHeader(title: lang.t('categories'), showBack: false),
         body: AppErrorState(
-          title: "تعذر تحميل الأقسام",
-          message: controller.error ?? "تعذر تحميل الأقسام. حاول مرة أخرى.",
+          title: lang.t('categories_load_error'),
+          message: controller.error ?? lang.t('categories_load_error_retry'),
           onRetry: controller.reload,
         ),
       );
     }
 
     final categories = [
-      const CategoryModel(
+      CategoryModel(
         id: 'special_offers',
-        nameAr: 'العروض',
+        nameAr: lang.t('offers'),
         nameEn: 'Offers',
         image: '',
         parentId: null,
@@ -62,17 +63,17 @@ class CategoriesScreen extends StatelessWidget {
     ];
 
     if (categories.isEmpty) {
-      return const Scaffold(
+      return Scaffold(
         body: AppEmptyState(
           icon: Icons.inventory_2_rounded,
-          title: "لا توجد أقسام",
-          subtitle: "سيتم إضافة الأقسام قريباً",
+          title: lang.t('no_categories'),
+          subtitle: lang.t('categories_coming_soon'),
         ),
       );
     }
 
     return Scaffold(
-      appBar: const AppPageHeader(title: "الأقسام", showBack: false),
+      appBar: AppPageHeader(title: lang.t('categories'), showBack: false),
       body: AppConstrainedContent(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -83,8 +84,8 @@ class CategoriesScreen extends StatelessWidget {
               onRefresh: controller.reload,
               color: Theme.of(context).colorScheme.primary,
               child: GridView.builder(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              physics: const BouncingScrollPhysics(),
+              padding: EdgeInsets.all(AppSpacing.lg),
+              physics: BouncingScrollPhysics(),
               itemCount: categories.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
@@ -107,7 +108,7 @@ class CategoriesScreen extends StatelessWidget {
                         boxShadow: AppShadows.card,
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        padding: EdgeInsets.all(AppSpacing.lg),
                         child: Column(
                           children: [
                             Expanded(
@@ -125,7 +126,7 @@ class CategoriesScreen extends StatelessWidget {
                                       ),
                               ),
                             ),
-                            const SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md),
                             Text(
                               category.name,
                               textAlign: TextAlign.center,

@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -56,7 +57,7 @@ class _AddressManagementScreenState extends State<AddressManagementScreen> {
   Widget _buildGetX0(BuildContext context) {
     return Scaffold(
       appBar: AppPageHeader(
-        title: "عناوين التوصيل",
+        title: lang.t('delivery_addresses'),
         onBack: () {
           Navigator.of(context).pop(widget.fromCheckout);
         },
@@ -64,36 +65,36 @@ class _AddressManagementScreenState extends State<AddressManagementScreen> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
-        icon: const Icon(Icons.add),
-        label: const Text("إضافة عنوان"),
+        icon: Icon(Icons.add),
+        label: Text(lang.t('add_address')),
         onPressed: () {
           _showAddressDialog(context);
         },
       ),
       body: GetBuilder<AddressController>(builder: (controller) {
           if (controller.loading) {
-              return const Center(child: AppLoading());
+              return Center(child: AppLoading());
           }
 
           if (controller.addresses.isEmpty) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.xxl),
+                padding: EdgeInsets.all(AppSpacing.xxl),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const AppEmptyState(
+                    AppEmptyState(
                       icon: Icons.location_off,
-                      title: "لا يوجد أي عنوان",
-                      subtitle: "أضف عنوانك الأول لإتمام الطلب",
+                      title: lang.t('no_addresses'),
+                      subtitle: lang.t('add_first_address'),
                     ),
-                    const SizedBox(height: AppSpacing.xl),
+                    SizedBox(height: AppSpacing.xl),
                     SizedBox(
                       width: double.infinity,
                       height: 48,
                       child: AppButton(
-                        icon: const AppIcon(Icons.add_location_alt, size: AppIconSize.medium),
-                        text: "إضافة عنوان",
+                        icon: AppIcon(Icons.add_location_alt, size: AppIconSize.medium),
+                        text: lang.t('add_address'),
                         onPressed: () {
                           _showAddressDialog(context);
                         },
@@ -106,9 +107,9 @@ class _AddressManagementScreenState extends State<AddressManagementScreen> {
           }
 
           return ListView.separated(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
             itemCount: controller.addresses.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            separatorBuilder: (_, __) => SizedBox(height: 12),
             itemBuilder: (_, index) {
               final address = controller.addresses[index];
 
@@ -139,11 +140,11 @@ class _AddressManagementScreenState extends State<AddressManagementScreen> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
-      builder: (_) => const PickLocationSheet(),
+      builder: (_) => PickLocationSheet(),
     );
 
     if (!context.mounted) return;
@@ -181,9 +182,9 @@ class _AddressManagementScreenState extends State<AddressManagementScreen> {
   ) {
     AppDialog.confirm(
       context,
-      title: 'حذف العنوان',
-      message: 'هل تريد حذف هذا العنوان نهائياً؟',
-      confirmText: 'حذف',
+      title: lang.t('delete_address'),
+      message: lang.t('delete_address_confirm'),
+      confirmText: lang.t('delete'),
       isDanger: true,
     ).then((confirmed) async {
       if (confirmed != true || !context.mounted) return;
@@ -192,9 +193,9 @@ class _AddressManagementScreenState extends State<AddressManagementScreen> {
 
       if (!context.mounted) return;
       if (success) {
-        AppMessage.success(context, 'تم حذف العنوان بنجاح');
+        AppMessage.success(context, lang.t('address_deleted'));
       } else {
-        AppMessage.error(context, 'فشل حذف العنوان، حاول مرة أخرى');
+        AppMessage.error(context, lang.t('address_delete_failed'));
       }
     });
   }
@@ -220,14 +221,14 @@ class _AddressTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Icon(Icons.location_on, color: AppColors.primary),
-                const SizedBox(width: 8),
+                Icon(Icons.location_on, color: AppColors.primary),
+                SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     address.title,
@@ -236,7 +237,7 @@ class _AddressTile extends StatelessWidget {
                 ),
                 if (address.isDefault)
                   Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: 8,
                       vertical: 4,
                     ),
@@ -244,25 +245,25 @@ class _AddressTile extends StatelessWidget {
                       color: AppColors.primary.withValues(alpha: .1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Text("افتراضي"),
+                    child: Text(lang.t('default')),
                   ),
               ],
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Text(address.address),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             Row(
               children: [
                 if (!address.isDefault)
                   TextButton(
                     onPressed: onSetDefault,
-                    child: const Text("تعيين افتراضي"),
+                    child: Text(lang.t('set_default')),
                   ),
-                const Spacer(),
-                IconButton(onPressed: onEdit, icon: const Icon(Icons.edit)),
+                Spacer(),
+                IconButton(onPressed: onEdit, icon: Icon(Icons.edit)),
                 IconButton(
                   onPressed: onDelete,
-                  icon: const Icon(Icons.delete, color: Colors.red),
+                  icon: Icon(Icons.delete, color: Colors.red),
                 ),
               ],
             ),
@@ -342,7 +343,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
 
     final titleError = Validators.required(
       title,
-      'اسم العنوان',
+      lang.t('address_name'),
     );
 
     if (titleError != null) {
@@ -357,7 +358,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
     final titleLengthError = Validators.minLength(
       title,
       2,
-      'اسم العنوان',
+      lang.t('address_name'),
     );
 
     if (titleLengthError != null) {
@@ -371,7 +372,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
 
     final addressError = Validators.required(
       address,
-      'العنوان',
+      lang.t('address'),
     );
 
     if (addressError != null) {
@@ -386,7 +387,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
     final addressLengthError = Validators.minLength(
       address,
       3,
-      'العنوان',
+      lang.t('address'),
     );
 
     if (addressLengthError != null) {
@@ -463,14 +464,14 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 60),
+      margin: EdgeInsets.only(top: 60),
       padding: EdgeInsets.only(
         left: 20,
         right: 20,
         top: 20,
         bottom: MediaQuery.of(context).viewInsets.bottom + 20,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -478,13 +479,13 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
         child: Column(
           children: [
             Text(
-              widget.existing == null ? "إضافة عنوان" : "تعديل عنوان",
+              widget.existing == null ? lang.t('add_address') : lang.t('edit_address'),
               style: AppTypography.titleLarge,
             ),
-            const SizedBox(height: 20),
-            _field("اسم العنوان", _titleCtrl),
-            _field("الشارع", _addressCtrl),
-            const SizedBox(height: 10),
+            SizedBox(height: 20),
+            _field(lang.t('address_name'), _titleCtrl),
+            _field(lang.t('street'), _addressCtrl),
+            SizedBox(height: 10),
             InkWell(
               borderRadius: BorderRadius.circular(16),
               onTap: () async {
@@ -493,7 +494,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
                   context: context,
                   isScrollControlled: true,
                   useSafeArea: true,
-                  builder: (_) => const PickLocationSheet(),
+                  builder: (_) => PickLocationSheet(),
                 );
 
                 if (pickedLocation == null) return;
@@ -506,16 +507,16 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
               },
               child: Container(
                 height: 70,
-                padding: const EdgeInsets.symmetric(horizontal: 18),
+                padding: EdgeInsets.symmetric(horizontal: 18),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: Colors.grey.shade300),
                 ),
                 child: Row(
-                  children: const [
+                  children: [
                     Icon(Icons.map, color: Colors.green),
                     SizedBox(width: 12),
-                    Expanded(child: Text("اختيار الموقع من الخريطة")),
+                    Expanded(child: Text(lang.t('choose_location_map'))),
                     Icon(Icons.arrow_forward_ios, size: 16),
                   ],
                 ),
@@ -528,20 +529,20 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
                   _isDefault = v;
                 });
               },
-              title: const Text("عنوان افتراضي"),
+              title: Text(lang.t('default_address_title')),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: _isSaving ? null : _save,
                 child: _isSaving
-                    ? const AppLoading(
+                    ? AppLoading(
                         type: AppLoadingType.bars,
                         size: 22,
                         color: Colors.white,
                       )
-                    : const Text("حفظ"),
+                    : Text(lang.t('save')),
               ),
             ),
           ],
@@ -556,7 +557,7 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
     TextInputType type = TextInputType.text,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
+      padding: EdgeInsets.only(bottom: 14),
       child: TextField(
         controller: controller,
         keyboardType: type,

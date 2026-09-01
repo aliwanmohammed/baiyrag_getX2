@@ -1,3 +1,4 @@
+import '../../../../app/localization/lang.dart';
 import 'package:bhm_supermarket/features/orders/controllers/orders_controller.dart';
 import 'package:flutter/material.dart';
 import '../../../core/design_system/components/feedback/app_empty_state.dart';
@@ -57,14 +58,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      appBar: const AppPageHeader(
-        title: "طلباتي",
+      appBar: AppPageHeader(
+        title: lang.t('orders'),
         fallbackRoute: AppRoutes.home,
       ),
       body: SafeArea(
         child: GetBuilder<OrdersController>(builder: (controller) {
             if (controller.loading) {
-              return const AppLoading.fullPage(message: 'جاري تحميل الطلبات...');
+              return AppLoading.fullPage(message: lang.t('loading_orders'));
             }
 
             if (controller.error != null && controller.orders.isEmpty) {
@@ -77,9 +78,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
             }
 
             if (controller.orders.isEmpty) {
-              return const Center(
+              return Center(
                 child: AppEmptyState(
-                  title: "لا توجد طلبات",
+                  title: lang.t('no_orders'),
                 ),
               );
             }
@@ -90,12 +91,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
               child: AppConstrainedContent(
                 child: ListView.builder(
                   controller: _scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
                   itemCount: controller.orders.length + (controller.loadingMore ? 1 : 0),
                   itemBuilder: (_, index) {
                     if (index == controller.orders.length) {
-                      return const Padding(
+                      return Padding(
                         padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
                         child: Center(child: AppLoading(size: 24)),
                       );
