@@ -12,6 +12,7 @@ class SecureStorageService {
 
   static const _tokenKey = '_bhm_access_token';
   static const _languageKey = '_bhm_language';
+  static const _themeKey = '_bhm_theme';
   static const _userRoleKey = '_bhm_user_role';
   static const _userIdKey = '_bhm_user_id';
   static const _userProfileKey = '_bhm_user_profile';
@@ -89,6 +90,14 @@ class SecureStorageService {
 
   Future<String> readLanguage() async {
     return await _storage.read(key: _languageKey) ?? 'ar';
+  }
+
+  Future<void> saveTheme(bool isDark) async {
+    await _storage.write(key: _themeKey, value: isDark ? 'dark' : 'light');
+  }
+
+  Future<bool> readTheme() async {
+    return (await _storage.read(key: _themeKey)) == 'dark';
   }
 
   Future<void> clearAll() async => _storage.deleteAll();

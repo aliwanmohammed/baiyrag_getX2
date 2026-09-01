@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../app/widgets/app_button.dart';
+import '../../../app/theme/app_colors.dart';
+import '../../../app/theme/app_radius.dart';
 import '../../../app/widgets/app_cached_image.dart';
 import '../../../app/widgets/app_price.dart';
 import '../../../core/models/product_model.dart';
@@ -16,9 +18,11 @@ class ProductQuickView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(AppRadius.sheet),
+        ),
       ),
       padding: const EdgeInsets.all(20),
       child: SafeArea(
@@ -32,7 +36,7 @@ class ProductQuickView extends StatelessWidget {
                   width: 45,
                   height: 5,
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
+                    color: AppColors.outline,
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
@@ -65,17 +69,18 @@ class ProductQuickView extends StatelessWidget {
                   if (product.units.isEmpty) return;
 
                   final unit = product.units.first;
-                  final offerUnit = Get.find<OffersController>().productUnitOffer(
-                        productId: product.id,
-                        unitId: unit.id,
-                      );
+                  final offerUnit =
+                      Get.find<OffersController>().productUnitOffer(
+                    productId: product.id,
+                    unitId: unit.id,
+                  );
 
                   Get.find<CartController>().addItem(
-                        product: product,
-                        unit: unit,
-                        unitPrice: offerUnit?.price ?? unit.price,
-                        originalPrice: offerUnit?.oldPrice ?? unit.price,
-                      );
+                    product: product,
+                    unit: unit,
+                    unitPrice: offerUnit?.price ?? unit.price,
+                    originalPrice: offerUnit?.oldPrice ?? unit.price,
+                  );
 
                   // Capture before pop to avoid stale context
                   final scaffoldMsg = ScaffoldMessenger.of(context);

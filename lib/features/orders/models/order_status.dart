@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../app/theme/app_colors.dart';
+
 enum OrderStatus {
   pending,
   confirmed,
@@ -52,19 +54,19 @@ extension OrderStatusExt on OrderStatus {
   Color get color {
     switch (this) {
       case OrderStatus.pending:
-        return Colors.orange;
+        return AppColors.warning;
       case OrderStatus.confirmed:
-        return Colors.blue;
+        return AppColors.info;
       case OrderStatus.preparing:
-        return Colors.indigo;
+        return AppColors.primaryDark;
       case OrderStatus.shipped:
-        return Colors.teal;
+        return AppColors.info;
       case OrderStatus.delivered:
-        return Colors.green;
+        return AppColors.success;
       case OrderStatus.cancelled:
-        return Colors.red;
+        return AppColors.error;
       case OrderStatus.unknown:
-        return Colors.grey;
+        return AppColors.textHint;
     }
   }
 

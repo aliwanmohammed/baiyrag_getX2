@@ -53,7 +53,7 @@ class AppTheme {
       centerTitle: true,
       elevation: 0,
       scrolledUnderElevation: 0,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       foregroundColor: AppColors.textPrimary,
       titleTextStyle: AppTypography.titleLarge,
       iconTheme: const IconThemeData(color: AppColors.textPrimary),
@@ -62,7 +62,7 @@ class AppTheme {
       elevation: 0,
       color: AppColors.surface,
       shadowColor: Colors.transparent,
-      surfaceTintColor: Colors.transparent,
+      surfaceTintColor: AppColors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.lg),
       ),
@@ -197,7 +197,7 @@ class AppTheme {
     ),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: AppColors.surface,
-      surfaceTintColor: Colors.transparent,
+      surfaceTintColor: AppColors.transparent,
     ),
   );
 
@@ -229,14 +229,14 @@ class AppTheme {
       bodyLarge: AppTypography.bodyLarge.copyWith(color: AppColors.white),
       bodyMedium: AppTypography.bodyMedium.copyWith(color: AppColors.white),
       bodySmall: AppTypography.bodySmall.copyWith(
-        color: const Color(0xffB5BCC7),
+        color: AppDarkColors.textSecondary,
       ),
       labelLarge: AppTypography.labelLarge.copyWith(color: AppColors.white),
       labelMedium: AppTypography.labelMedium.copyWith(
-        color: const Color(0xffC5CBD4),
+        color: AppDarkColors.textPrimary,
       ),
       labelSmall: AppTypography.labelSmall.copyWith(
-        color: const Color(0xff9DA5B4),
+        color: AppDarkColors.textHint,
       ),
     ),
     splashFactory: InkRipple.splashFactory,
@@ -251,7 +251,7 @@ class AppTheme {
       centerTitle: true,
       elevation: 0,
       scrolledUnderElevation: 0,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       foregroundColor: AppColors.white,
       titleTextStyle: AppTypography.titleLarge.copyWith(color: AppColors.white),
       iconTheme: const IconThemeData(color: AppColors.white),
@@ -260,7 +260,7 @@ class AppTheme {
       elevation: 0,
       color: AppDarkColors.card,
       shadowColor: Colors.transparent,
-      surfaceTintColor: Colors.transparent,
+      surfaceTintColor: AppColors.transparent,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -343,8 +343,8 @@ class AppTheme {
     ),
     chipTheme: ChipThemeData(
       selectedColor: AppColors.primary.withValues(alpha: .15),
-      backgroundColor: const Color(0xff1E232B),
-      side: const BorderSide(color: Color(0xff3A404B)),
+      backgroundColor: AppDarkColors.card,
+      side: const BorderSide(color: AppDarkColors.border),
       labelStyle: AppTypography.labelMedium.copyWith(color: AppColors.white),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.xl),
@@ -388,11 +388,11 @@ class AppTheme {
     ),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: AppDarkColors.card,
-      surfaceTintColor: Colors.transparent,
+      surfaceTintColor: AppColors.transparent,
     ),
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
-      backgroundColor: const Color(0xff1E232B),
+      backgroundColor: AppDarkColors.card,
       contentTextStyle: AppTypography.bodyMedium.copyWith(color: AppColors.white),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.md),
