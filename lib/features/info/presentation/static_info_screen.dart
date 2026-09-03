@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -232,7 +232,8 @@ class _FaqContent extends StatelessWidget {
         final item = items[i];
         return Card(
           child: ExpansionTile(
-            title: Text(item.question(_isArabic), style: AppTypography.titleMedium),
+            title: Text(item.question(_isArabic),
+                style: AppTypography.titleMedium),
             childrenPadding: EdgeInsets.fromLTRB(
               AppSpacing.lg,
               0,

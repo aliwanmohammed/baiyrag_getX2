@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'dart:async' show Completer;
 import 'dart:math' show pi, sin;
 

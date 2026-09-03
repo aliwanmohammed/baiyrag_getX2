@@ -1,4 +1,5 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
+
 enum PaymentMethod { cash, card, unknown }
 
 extension PaymentMethodExt on PaymentMethod {

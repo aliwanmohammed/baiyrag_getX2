@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app/localization/language_controller.dart';
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import '../../../app/router/app_routes.dart';
 import '../../../app/theme/app_spacing.dart';
 import '../../../app/theme/app_typography.dart';
@@ -229,7 +229,8 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     // ------------------------------------------------
                     // Language
                     // ------------------------------------------------
-                    _buildLanguageButton(languageController, isArabic, colorScheme),
+                    _buildLanguageButton(
+                        languageController, isArabic, colorScheme),
 
                     // ------------------------------------------------
                     // Skip

@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:bhm_supermarket/features/favorites/domain/repositories/favorites_repository.dart';
@@ -21,6 +21,7 @@ class FavoritesController extends GetxController {
     super.onInit();
     _loadFavorites();
   }
+
   bool _busy = false;
   final List<String> _ids = [];
   // O(1) lookup mirror of _ids — kept in sync in every mutation site.
@@ -104,7 +105,9 @@ class FavoritesController extends GetxController {
       final response = await _repository.getFavorites();
 
       if (!response.isSuccess || response.data == null) {
-        _error = response.message.isNotEmpty ? response.message : lang.t('favorites_load_error');
+        _error = response.message.isNotEmpty
+            ? response.message
+            : lang.t('favorites_load_error');
         return;
       }
 

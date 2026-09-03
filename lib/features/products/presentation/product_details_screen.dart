@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:bhm_supermarket/app/theme/app_radius.dart';
 import 'package:bhm_supermarket/app/theme/app_shadows.dart';
 import 'package:bhm_supermarket/app/theme/app_spacing.dart';
@@ -56,24 +56,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     if (product == null || selected == null) return;
 
     final offerUnit = Get.find<OffersController>().productUnitOffer(
-          productId: product.id,
-          unitId: selected.id,
-        );
+      productId: product.id,
+      unitId: selected.id,
+    );
 
     final response = await Get.find<CartController>().addItem(
-          product: product,
-          unit: selected,
-          unitPrice: offerUnit?.price ?? selected.price,
-          originalPrice: offerUnit?.oldPrice ?? selected.price,
-          quantity: controller.quantity,
-        );
+      product: product,
+      unit: selected,
+      unitPrice: offerUnit?.price ?? selected.price,
+      originalPrice: offerUnit?.oldPrice ?? selected.price,
+      quantity: controller.quantity,
+    );
 
     if (!mounted) return;
 
     if (response.isSuccess) {
       AppMessage.success(
         context,
-        lang.t('product_added_dynamic', {'product': product.name, 'quantity': controller.quantity}),
+        lang.t('product_added_dynamic',
+            {'product': product.name, 'quantity': controller.quantity}),
       );
       Navigator.pop(context);
     } else {
@@ -83,10 +84,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<ProductController>(
-    builder: (_) => GetBuilder<FavoritesController>(
-    builder: (_) => GetBuilder<OffersController>(
-    builder: (_) => _buildGetX0(context))));
+    return GetBuilder<ProductController>(
+        builder: (_) => GetBuilder<FavoritesController>(
+            builder: (_) => GetBuilder<OffersController>(
+                builder: (_) => _buildGetX0(context))));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -132,8 +133,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           );
 
     final favoritesController = Get.find<FavoritesController>();
-    final isFav =
-        currentProduct != null && favoritesController.isFavorite(currentProduct.id);
+    final isFav = currentProduct != null &&
+        favoritesController.isFavorite(currentProduct.id);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
@@ -181,7 +182,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 },
                           icon: AppIcon(
                             isFav ? Icons.favorite : Icons.favorite_border,
-                            color: isFav ? AppColors.error : Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: isFav
+                                ? AppColors.error
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                           ),
                         ),
                       ),
@@ -194,7 +199,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       children: [
                         Container(color: Theme.of(context).colorScheme.surface),
                         Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(30, 90, 30, 50),
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(30, 90, 30, 50),
                           child: Hero(
                             tag: 'product_${widget.productId}',
                             child: (currentProduct == null ||
@@ -202,7 +208,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 ? Icon(
                                     Icons.inventory_2_outlined,
                                     size: 130,
-                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
                                   )
                                 : AppCachedImage(
                                     imageUrl: currentProduct.image,
@@ -216,11 +224,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 if (currentProduct != null)
                   SliverToBoxAdapter(
-                    child: AppConstrainedContent(
-                      child: Padding(
-                        padding: EdgeInsets.all(AppSpacing.lg),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      child: AppConstrainedContent(
+                    child: Padding(
+                      padding: EdgeInsets.all(AppSpacing.lg),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           //-----------------------------------------------------
                           // Category
@@ -366,7 +374,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: units.length,
-                              minItemWidth: 160.0, // Intentional component dimension to fit 2 on mobile
+                              minItemWidth:
+                                  160.0, // Intentional component dimension to fit 2 on mobile
                               childAspectRatio: 2.4,
                               spacing: AppSpacing.md,
                               runSpacing: AppSpacing.md,
@@ -381,8 +390,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   ),
                                   onTap: () {
                                     Get.find<ProductController>().selectUnit(
-                                          i,
-                                        );
+                                      i,
+                                    );
                                   },
                                   child: AnimatedContainer(
                                     duration: Duration(milliseconds: 250),
@@ -424,7 +433,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                               .copyWith(
                                             color: selectedUnit
                                                 ? AppColors.primary
-                                                : Theme.of(context).colorScheme.onSurface,
+                                                : Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface,
                                           ),
                                         ),
                                         SizedBox(height: AppSpacing.xs),
@@ -447,7 +458,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ],
 
                           if (currentProduct.description.isNotEmpty) ...[
-                            Text(lang.t('product_description'), style: AppTypography.titleLarge),
+                            Text(lang.t('product_description'),
+                                style: AppTypography.titleLarge),
                             SizedBox(height: AppSpacing.md),
                             Container(
                               width: double.infinity,

@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_typography.dart';
@@ -20,16 +20,14 @@ class ProductInfo extends StatelessWidget {
     final rtl = Directionality.of(context) == TextDirection.rtl;
     final defaultUnit = product.units.isEmpty ? null : product.units.first;
 
-
-
     final price = defaultUnit != null && defaultUnit.finalPrice > 0
         ? defaultUnit.finalPrice
         : (defaultUnit?.price ?? product.price);
 
-    final double? oldPrice = defaultUnit != null && defaultUnit.originalPrice > price
-        ? defaultUnit.originalPrice
-        : null;
-
+    final double? oldPrice =
+        defaultUnit != null && defaultUnit.originalPrice > price
+            ? defaultUnit.originalPrice
+            : null;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -44,7 +42,8 @@ class ProductInfo extends StatelessWidget {
             height: 1.2,
           ),
         ),
-        if (oldPrice != null || (defaultUnit != null && defaultUnit.quantity > 0))
+        if (oldPrice != null ||
+            (defaultUnit != null && defaultUnit.quantity > 0))
           Padding(
             padding: const EdgeInsets.only(top: 2.0, bottom: 2.0),
             child: Row(
@@ -62,12 +61,15 @@ class ProductInfo extends StatelessWidget {
                       fontSize: 10,
                     ),
                   ),
-                if (oldPrice != null && defaultUnit != null && defaultUnit.quantity > 0)
+                if (oldPrice != null &&
+                    defaultUnit != null &&
+                    defaultUnit.quantity > 0)
                   const SizedBox(width: 8),
                 if (defaultUnit != null && defaultUnit.quantity > 0)
                   Flexible(
                     child: Text(
-                      lang.t('quantity_value', {'quantity': defaultUnit.quantity}),
+                      lang.t(
+                          'quantity_value', {'quantity': defaultUnit.quantity}),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppTypography.caption.copyWith(

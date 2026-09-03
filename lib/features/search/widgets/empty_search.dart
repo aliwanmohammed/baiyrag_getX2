@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import '../../../core/design_system/components/feedback/app_empty_state.dart';
 

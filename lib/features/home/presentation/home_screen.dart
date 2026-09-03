@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -65,8 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<AdsController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<AdsController>(builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -75,46 +74,46 @@ class _HomeScreenState extends State<HomeScreen> {
         addHorizontalPadding: false,
         child: SafeArea(
           child: NestedScrollView(
-          physics: BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics(),
-          ),
-          headerSliverBuilder: (
-            BuildContext context,
-            bool innerBoxIsScrolled,
-          ) {
-            final hasAds = Get.find<AdsController>().ads.isNotEmpty;
+            physics: BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            headerSliverBuilder: (
+              BuildContext context,
+              bool innerBoxIsScrolled,
+            ) {
+              final hasAds = Get.find<AdsController>().ads.isNotEmpty;
 
-            return [
-              SliverToBoxAdapter(
-                child: hasAds
-                    ? HomeBanner()
-                    : Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          AppSpacing.lg,
-                          8,
-                          AppSpacing.lg,
-                          8,
+              return [
+                SliverToBoxAdapter(
+                  child: hasAds
+                      ? HomeBanner()
+                      : Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            AppSpacing.lg,
+                            8,
+                            AppSpacing.lg,
+                            8,
+                          ),
+                          child: HomeHeader(isOverlay: false),
                         ),
-                        child: HomeHeader(isOverlay: false),
-                      ),
-              ),
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: _SearchDelegate(),
-              ),
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: _CategoriesDelegate(),
-              ),
-            ];
-          },
-          body: RefreshIndicator(
-            displacement: 50,
-            onRefresh: _refreshHome,
-            child: _HomeBody(),
+                ),
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: _SearchDelegate(),
+                ),
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: _CategoriesDelegate(),
+                ),
+              ];
+            },
+            body: RefreshIndicator(
+              displacement: 50,
+              onRefresh: _refreshHome,
+              child: _HomeBody(),
+            ),
           ),
         ),
-      ),
       ),
     );
   }
@@ -144,7 +143,8 @@ class _HomeBody extends StatelessWidget {
       );
     }
 
-    if (controller.state == HomeLoadState.error && controller.products.isEmpty) {
+    if (controller.state == HomeLoadState.error &&
+        controller.products.isEmpty) {
       return CustomScrollView(
         physics: BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),

@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -30,8 +30,8 @@ class _AdminReportsScreenState extends State<AdminReportsScreen> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<AdminReportsController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<AdminReportsController>(
+        builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -105,7 +105,8 @@ class _ReportsBody extends StatelessWidget {
           locations: controller.locations,
         ),
         SizedBox(height: 24),
-        if (controller.orders != null) _OrdersSection(report: controller.orders!),
+        if (controller.orders != null)
+          _OrdersSection(report: controller.orders!),
         SizedBox(height: 24),
         _DriversSection(
           controller: controller,
@@ -413,7 +414,8 @@ class _DriversSection extends StatelessWidget {
                 style: AppTypography.titleSmall,
               ),
               subtitle: Text(
-                lang.t('delivered_orders_count', {'count': driver.deliveredOrders}),
+                lang.t('delivered_orders_count',
+                    {'count': driver.deliveredOrders}),
               ),
               trailing: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/design_system/components/app_button.dart';
@@ -59,7 +59,10 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFE8F8F0), Color(0xFFE3F4FB)], // INTENTIONAL VISUAL EXCEPTION
+              colors: [
+                Color(0xFFE8F8F0),
+                Color(0xFFE3F4FB)
+              ], // INTENTIONAL VISUAL EXCEPTION
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -130,7 +133,8 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                             decoration: BoxDecoration(
                               color: colorScheme.surface,
                               borderRadius: BorderRadius.circular(AppRadius.md),
-                              border: Border.all(color: colorScheme.outlineVariant),
+                              border:
+                                  Border.all(color: colorScheme.outlineVariant),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -177,7 +181,8 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
                         children: [
                           Text(
                             lang.t('what_happens_now'),
-                            style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
+                            style: AppTypography.titleMedium
+                                .copyWith(fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: AppSpacing.md),
                           _Step(
@@ -206,7 +211,8 @@ class _OrderSuccessScreenState extends State<OrderSuccessScreen>
 
                     AppButton(
                       onPressed: () => context.go(AppRoutes.orders),
-                      icon: AppIcon(Icons.location_on_outlined, size: AppIconSize.medium),
+                      icon: AppIcon(Icons.location_on_outlined,
+                          size: AppIconSize.medium),
                       text: lang.t('track_order'),
                       size: AppButtonSize.large,
                     ),

@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:get/get.dart';
 import '../../../core/models/product_model.dart';
 import '../../products/domain/repositories/product_repository.dart';
@@ -90,7 +90,9 @@ class BarcodeScannerController extends GetxController {
         page: 1,
       );
 
-      if (!response.isSuccess || response.data == null || response.data!.items.isEmpty) {
+      if (!response.isSuccess ||
+          response.data == null ||
+          response.data!.items.isEmpty) {
         _state = ScannerState.notFound;
         _errorMessage = lang.t('no_product_for_barcode', {'barcode': barcode});
         _scannedProduct = null;

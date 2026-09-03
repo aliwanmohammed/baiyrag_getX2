@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
@@ -15,14 +15,16 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<AuthController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<AuthController>(builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {
     final user = Get.find<AuthController>().user;
-    final textColor = isOverlay ? Colors.white : Theme.of(context).colorScheme.onSurface;
-    final hintColor = isOverlay ? Colors.white.withValues(alpha: 0.90) : Theme.of(context).colorScheme.onSurfaceVariant;
+    final textColor =
+        isOverlay ? Colors.white : Theme.of(context).colorScheme.onSurface;
+    final hintColor = isOverlay
+        ? Colors.white.withValues(alpha: 0.90)
+        : Theme.of(context).colorScheme.onSurfaceVariant;
 
     return SizedBox(
       height: 56,

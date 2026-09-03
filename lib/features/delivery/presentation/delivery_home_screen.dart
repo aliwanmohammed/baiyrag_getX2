@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -321,9 +321,9 @@ class _DeliveryHomeScreenState extends State<DeliveryHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<AuthController>(
-    builder: (_) => GetBuilder<DeliveryController>(
-    builder: (_) => _buildGetX0(context)));
+    return GetBuilder<AuthController>(
+        builder: (_) => GetBuilder<DeliveryController>(
+            builder: (_) => _buildGetX0(context)));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -592,7 +592,8 @@ class _AvailableOrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    lang.t('order_number_dynamic', {'number': order.orderNumber}),
+                    lang.t(
+                        'order_number_dynamic', {'number': order.orderNumber}),
                     style: AppTypography.titleMedium.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -733,7 +734,8 @@ class _MyOrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    lang.t('order_number_dynamic', {'number': order.orderNumber}),
+                    lang.t(
+                        'order_number_dynamic', {'number': order.orderNumber}),
                     style: AppTypography.titleMedium.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_spacing.dart';
@@ -63,66 +63,69 @@ class NotificationsScreen extends StatelessWidget {
                 },
                 color: colorScheme.primary,
                 child: ListView.separated(
-                physics: AlwaysScrollableScrollPhysics(),
-                padding: EdgeInsets.all(AppSpacing.md),
-                itemCount: notifications.length,
-                separatorBuilder: (_, __) => SizedBox(height: AppSpacing.sm),
-                itemBuilder: (context, index) {
-                  final n = notifications[index];
-                  return Card(
-                    clipBehavior: Clip.antiAlias,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      side: BorderSide(
-                        color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                  physics: AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.all(AppSpacing.md),
+                  itemCount: notifications.length,
+                  separatorBuilder: (_, __) => SizedBox(height: AppSpacing.sm),
+                  itemBuilder: (context, index) {
+                    final n = notifications[index];
+                    return Card(
+                      clipBehavior: Clip.antiAlias,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(
+                          color:
+                              colorScheme.outlineVariant.withValues(alpha: 0.5),
+                        ),
                       ),
-                    ),
-                    color: colorScheme.surface,
-                    margin: EdgeInsets.zero,
-                    child: Material(
-                      color: n.read ? Colors.transparent : colorScheme.primary.withValues(alpha: 0.06),
-                      child: ListTile(
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: AppSpacing.md,
-                          vertical: AppSpacing.xs,
-                        ),
-                        leading: AppIcon(
-                          Icons.notifications_outlined,
-                          color: colorScheme.primary,
-                          size: AppIconSize.medium,
-                        ),
-                        title: Text(
-                          n.title,
-                          style: AppTypography.titleMedium.copyWith(
-                            fontWeight: FontWeight.bold,
+                      color: colorScheme.surface,
+                      margin: EdgeInsets.zero,
+                      child: Material(
+                        color: n.read
+                            ? Colors.transparent
+                            : colorScheme.primary.withValues(alpha: 0.06),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: AppSpacing.md,
+                            vertical: AppSpacing.xs,
                           ),
-                        ),
-                        subtitle: Padding(
-                          padding: EdgeInsets.only(top: AppSpacing.xs),
-                          child: Text(
-                            n.body,
-                            style: AppTypography.bodyMedium.copyWith(
-                              color: colorScheme.onSurfaceVariant,
+                          leading: AppIcon(
+                            Icons.notifications_outlined,
+                            color: colorScheme.primary,
+                            size: AppIconSize.medium,
+                          ),
+                          title: Text(
+                            n.title,
+                            style: AppTypography.titleMedium.copyWith(
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
+                          subtitle: Padding(
+                            padding: EdgeInsets.only(top: AppSpacing.xs),
+                            child: Text(
+                              n.body,
+                              style: AppTypography.bodyMedium.copyWith(
+                                color: colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                          trailing: !n.read
+                              ? Container(
+                                  width: 10,
+                                  height: 10,
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.primary,
+                                    shape: BoxShape.circle,
+                                  ),
+                                )
+                              : null,
                         ),
-                        trailing: !n.read
-                            ? Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  color: colorScheme.primary,
-                                  shape: BoxShape.circle,
-                                ),
-                              )
-                            : null,
                       ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
                 ),
+              ),
       ),
     );
   }

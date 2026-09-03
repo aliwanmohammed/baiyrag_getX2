@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_spacing.dart';
@@ -73,7 +73,8 @@ class DeliveryEarningsScreen extends StatelessWidget {
                 alignment: AlignmentDirectional.centerStart,
                 child: Text(
                   lang.t('last_7_days'),
-                  style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
+                  style: AppTypography.titleMedium
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
               SizedBox(height: AppSpacing.md),
@@ -103,7 +104,7 @@ class _EarningsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -154,7 +155,8 @@ class _DayRow extends StatelessWidget {
             width: 70,
             child: Text(
               day,
-              style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+              style: AppTypography.bodyMedium
+                  .copyWith(fontWeight: FontWeight.w600),
             ),
           ),
           Expanded(
@@ -171,12 +173,14 @@ class _DayRow extends StatelessWidget {
           SizedBox(width: AppSpacing.md),
           Text(
             amount,
-            style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold),
+            style:
+                AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold),
           ),
           SizedBox(width: AppSpacing.sm),
           Text(
             '($deliveries)',
-            style: AppTypography.labelSmall.copyWith(color: colorScheme.onSurfaceVariant),
+            style: AppTypography.labelSmall
+                .copyWith(color: colorScheme.onSurfaceVariant),
           ),
         ],
       ),

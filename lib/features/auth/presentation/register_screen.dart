@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
@@ -403,7 +403,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     children: [
                                       TextSpan(
                                         text: lang.t('login'),
-                                        style: AppTypography.bodyMedium.copyWith(
+                                        style:
+                                            AppTypography.bodyMedium.copyWith(
                                           color: colorScheme.primary,
                                           fontWeight: FontWeight.bold,
                                         ),

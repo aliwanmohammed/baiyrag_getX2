@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:bhm_supermarket/features/orders/utils/payment_method_text.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +21,8 @@ class OrderCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+      margin: EdgeInsets.symmetric(
+          horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadius.card),
@@ -34,7 +35,8 @@ class OrderCard extends StatelessWidget {
           children: [
             Text(
               order.orderNumber,
-              style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
+              style: AppTypography.titleMedium
+                  .copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: AppSpacing.sm),
             Row(

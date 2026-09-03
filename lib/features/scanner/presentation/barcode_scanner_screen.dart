@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -133,8 +133,8 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<BarcodeScannerController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<BarcodeScannerController>(
+        builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -178,24 +178,6 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
               ),
               child: Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.5),
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      icon: AppIcon(
-                        Icons.arrow_forward_rounded,
-                        color: Colors.white,
-                        size: AppIconSize.medium,
-                      ),
-                      onPressed: () {
-                        if (Navigator.of(context).canPop()) {
-                          Navigator.of(context).pop();
-                        }
-                      },
-                    ),
-                  ),
                   SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Column(
@@ -226,7 +208,9 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
                     ),
                     child: IconButton(
                       icon: AppIcon(
-                        _isTorchOn ? Icons.flash_on_rounded : Icons.flash_off_rounded,
+                        _isTorchOn
+                            ? Icons.flash_on_rounded
+                            : Icons.flash_off_rounded,
                         color: _isTorchOn ? AppColors.accent : Colors.white,
                         size: AppIconSize.medium,
                       ),

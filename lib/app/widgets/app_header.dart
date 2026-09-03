@@ -37,7 +37,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
                 NavigationHelper.back(context);
               },
               icon: const AppIcon(
-                Icons.arrow_back_ios_new_rounded,
+                Icons.arrow_back_ios_rounded,
                 color: AppColors.textPrimary,
                 size: AppIconSize.medium,
                 directionSensitive: true,

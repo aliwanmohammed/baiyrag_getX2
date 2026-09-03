@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:bhm_supermarket/features/products/models/product_unit_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -73,19 +73,19 @@ class ProductCartControl extends StatelessWidget {
                 final offerUnit = selectedUnit == null
                     ? null
                     : Get.find<OffersController>().productUnitOffer(
-                          productId: product.id,
-                          unitId: selectedUnit.id,
-                        );
+                        productId: product.id,
+                        unitId: selectedUnit.id,
+                      );
 
                 final response = selectedUnit == null
                     ? ApiResponse.failure(lang.t('unit_not_selected'))
                     : await Get.find<CartController>().addItem(
-                          product: product,
-                          unit: selectedUnit,
-                          unitPrice: offerUnit?.price ?? selectedUnit.price,
-                          originalPrice:
-                              offerUnit?.oldPrice ?? selectedUnit.price,
-                        );
+                        product: product,
+                        unit: selectedUnit,
+                        unitPrice: offerUnit?.price ?? selectedUnit.price,
+                        originalPrice:
+                            offerUnit?.oldPrice ?? selectedUnit.price,
+                      );
 
                 if (!context.mounted) {
                   return;
@@ -113,7 +113,9 @@ class ProductCartControl extends StatelessWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: .08), // Intentional Exception to retain specific blur
+                  color: Colors.black.withValues(
+                      alpha:
+                          .08), // Intentional Exception to retain specific blur
                   blurRadius: 10,
                   offset: Offset(0, 3),
                 ),
@@ -164,9 +166,9 @@ class ProductCartControl extends StatelessWidget {
                 ? null
                 : () {
                     final index = Get.find<CartController>().getCartItemIndex(
-                          product.id,
-                          unitId,
-                        );
+                      product.id,
+                      unitId,
+                    );
 
                     if (index != -1) {
                       Get.find<CartController>().increase(index);
@@ -207,9 +209,9 @@ class ProductCartControl extends StatelessWidget {
                 ? null
                 : () {
                     final index = Get.find<CartController>().getCartItemIndex(
-                          product.id,
-                          unitId,
-                        );
+                      product.id,
+                      unitId,
+                    );
 
                     if (index != -1) {
                       Get.find<CartController>().decrease(index);

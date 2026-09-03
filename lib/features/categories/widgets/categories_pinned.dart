@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../home/controllers/home_controller.dart';
@@ -11,9 +11,9 @@ class CategoriesPinned extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<CategoryController>(
-    builder: (_) => GetBuilder<HomeController>(
-    builder: (_) => _buildGetX0(context)));
+    return GetBuilder<CategoryController>(
+        builder: (_) =>
+            GetBuilder<HomeController>(builder: (_) => _buildGetX0(context)));
   }
 
   Widget _buildGetX0(BuildContext context) {

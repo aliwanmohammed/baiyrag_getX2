@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -71,10 +71,10 @@ class HomeController extends GetxController {
 
     try {
       final response = await _repository.getProducts(
-        categoryId: _selectedCategory.isEmpty ||
-                _selectedCategory == 'special_offers'
-            ? null
-            : _selectedCategory,
+        categoryId:
+            _selectedCategory.isEmpty || _selectedCategory == 'special_offers'
+                ? null
+                : _selectedCategory,
         page: 1,
       );
 
@@ -102,9 +102,7 @@ class HomeController extends GetxController {
         }
       }
 
-      _state = _products.isEmpty
-          ? HomeLoadState.empty
-          : HomeLoadState.success;
+      _state = _products.isEmpty ? HomeLoadState.empty : HomeLoadState.success;
     } catch (e, stackTrace) {
       if (request != _requestId) return;
 
@@ -129,10 +127,10 @@ class HomeController extends GetxController {
 
     try {
       final response = await _repository.getProducts(
-        categoryId: _selectedCategory.isEmpty ||
-                _selectedCategory == 'special_offers'
-            ? null
-            : _selectedCategory,
+        categoryId:
+            _selectedCategory.isEmpty || _selectedCategory == 'special_offers'
+                ? null
+                : _selectedCategory,
         page: nextPage,
       );
 
@@ -178,7 +176,9 @@ class HomeController extends GetxController {
     _products = _products
         .map((product) {
           final offerUnits = product.units
-              .where((unit) => unit.offer != null && _isOfferActive(unit.offer!.startDate, unit.offer!.endDate))
+              .where((unit) =>
+                  unit.offer != null &&
+                  _isOfferActive(unit.offer!.startDate, unit.offer!.endDate))
               .toList();
           return offerUnits.isEmpty
               ? null
@@ -194,7 +194,8 @@ class HomeController extends GetxController {
     final start = startDate == null ? null : DateTime.tryParse(startDate);
     final end = endDate == null ? null : DateTime.tryParse(endDate);
 
-    if (start != null && date.isBefore(DateTime(start.year, start.month, start.day))) {
+    if (start != null &&
+        date.isBefore(DateTime(start.year, start.month, start.day))) {
       return false;
     }
     if (end != null && date.isAfter(DateTime(end.year, end.month, end.day))) {

@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:bhm_supermarket/features/orders/controllers/orders_controller.dart';
 import 'package:flutter/material.dart';
 import '../../../core/design_system/components/feedback/app_empty_state.dart';
@@ -49,8 +49,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<OrdersController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<OrdersController>(builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -63,7 +62,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
         fallbackRoute: AppRoutes.home,
       ),
       body: SafeArea(
-        child: GetBuilder<OrdersController>(builder: (controller) {
+        child: GetBuilder<OrdersController>(
+          builder: (controller) {
             if (controller.loading) {
               return AppLoading.fullPage(message: lang.t('loading_orders'));
             }
@@ -93,7 +93,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   controller: _scrollController,
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
-                  itemCount: controller.orders.length + (controller.loadingMore ? 1 : 0),
+                  itemCount: controller.orders.length +
+                      (controller.loadingMore ? 1 : 0),
                   itemBuilder: (_, index) {
                     if (index == controller.orders.length) {
                       return Padding(

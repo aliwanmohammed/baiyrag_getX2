@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -50,8 +50,7 @@ class _AddressManagementScreenState extends State<AddressManagementScreen> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<AddressController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<AddressController>(builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -71,9 +70,10 @@ class _AddressManagementScreenState extends State<AddressManagementScreen> {
           _showAddressDialog(context);
         },
       ),
-      body: GetBuilder<AddressController>(builder: (controller) {
+      body: GetBuilder<AddressController>(
+        builder: (controller) {
           if (controller.loading) {
-              return Center(child: AppLoading());
+            return Center(child: AppLoading());
           }
 
           if (controller.addresses.isEmpty) {
@@ -93,7 +93,8 @@ class _AddressManagementScreenState extends State<AddressManagementScreen> {
                       width: double.infinity,
                       height: 48,
                       child: AppButton(
-                        icon: AppIcon(Icons.add_location_alt, size: AppIconSize.medium),
+                        icon: AppIcon(Icons.add_location_alt,
+                            size: AppIconSize.medium),
                         text: lang.t('add_address'),
                         onPressed: () {
                           _showAddressDialog(context);
@@ -479,7 +480,9 @@ class _AddressFormSheetState extends State<_AddressFormSheet> {
         child: Column(
           children: [
             Text(
-              widget.existing == null ? lang.t('add_address') : lang.t('edit_address'),
+              widget.existing == null
+                  ? lang.t('add_address')
+                  : lang.t('edit_address'),
               style: AppTypography.titleLarge,
             ),
             SizedBox(height: 20),

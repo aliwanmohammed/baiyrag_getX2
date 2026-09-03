@@ -43,7 +43,9 @@ class AppBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
     final resolvedIcon = icon ??
-        (isRtl ? Icons.arrow_back_ios_rounded : Icons.arrow_back_ios_rounded);
+        (isRtl
+            ? Icons.arrow_forward_ios_rounded
+            : Icons.arrow_back_ios_rounded);
     final resolvedIconColor =
         iconColor ?? IconTheme.of(context).color ?? AppColors.textPrimary;
 
@@ -62,7 +64,10 @@ class AppBackButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: Center(
-              child: AppIcon(resolvedIcon, size: AppIconSize.small, color: resolvedIconColor, directionSensitive: true),
+              child: AppIcon(resolvedIcon,
+                  size: AppIconSize.small,
+                  color: resolvedIconColor,
+                  directionSensitive: true),
             ),
           ),
         ),
@@ -115,7 +120,11 @@ class AppBackButtonOverlay extends StatelessWidget {
               ),
             ],
           ),
-          child: Center(child: AppIcon(icon, size: AppIconSize.small, color: iconColor, directionSensitive: true)),
+          child: Center(
+              child: AppIcon(icon,
+                  size: AppIconSize.small,
+                  color: iconColor,
+                  directionSensitive: true)),
         ),
       ),
     );

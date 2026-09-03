@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_typography.dart';
@@ -267,14 +267,13 @@ class CategoryChip extends StatelessWidget {
                       ? Color(0xFFD97706)
                       : (isSpecialOffers && selected
                           ? Color(0xFFE53935)
-                          : (selected
-                              ? Color(0xFFD97706)
-                              : Color(0xFFEEEEEE))),
+                          : (selected ? Color(0xFFD97706) : Color(0xFFEEEEEE))),
                   width: selected ? 1.5 : 1,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: selected ? 0.08 : 0.03),
+                    color:
+                        Colors.black.withValues(alpha: selected ? 0.08 : 0.03),
                     blurRadius: 8,
                     offset: Offset(0, 2),
                   ),

@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../core/models/product_model.dart';
@@ -380,7 +380,9 @@ class ProductController extends GetxController {
     _products = _products
         .map((product) {
           final offerUnits = product.units
-              .where((unit) => unit.offer != null && _isOfferActive(unit.offer!.startDate, unit.offer!.endDate))
+              .where((unit) =>
+                  unit.offer != null &&
+                  _isOfferActive(unit.offer!.startDate, unit.offer!.endDate))
               .toList();
           return offerUnits.isEmpty
               ? null
@@ -395,7 +397,8 @@ class ProductController extends GetxController {
     final today = DateTime(now.year, now.month, now.day);
     final start = startDate == null ? null : DateTime.tryParse(startDate);
     final end = endDate == null ? null : DateTime.tryParse(endDate);
-    if (start != null && today.isBefore(DateTime(start.year, start.month, start.day))) {
+    if (start != null &&
+        today.isBefore(DateTime(start.year, start.month, start.day))) {
       return false;
     }
     if (end != null && today.isAfter(DateTime(end.year, end.month, end.day))) {
@@ -403,5 +406,4 @@ class ProductController extends GetxController {
     }
     return true;
   }
-
 }

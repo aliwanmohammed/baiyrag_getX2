@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -70,252 +70,271 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             onRefresh: _refresh,
             color: colorScheme.primary,
             child: ListView(
-            physics: AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.all(AppSpacing.md),
-            children: [
-              // ================================================================
-              // معلومات الطلب الأساسية
-              // ================================================================
-              Container(
-                decoration: BoxDecoration(
-                  color: colorScheme.surface,
-                  borderRadius: BorderRadius.circular(AppRadius.card),
-                  border: Border.all(color: colorScheme.outlineVariant),
-                ),
-                child: ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
-                  title: Text(
-                    _order.orderNumber,
-                    style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
+              physics: AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.all(AppSpacing.md),
+              children: [
+                // ================================================================
+                // معلومات الطلب الأساسية
+                // ================================================================
+                Container(
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                    borderRadius: BorderRadius.circular(AppRadius.card),
+                    border: Border.all(color: colorScheme.outlineVariant),
                   ),
-                  subtitle: Text(_order.createdAt, style: AppTypography.bodyMedium),
-                  trailing: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.md,
-                      vertical: 6,
+                  child: ListTile(
+                    contentPadding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+                    title: Text(
+                      _order.orderNumber,
+                      style: AppTypography.titleMedium
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
-                    decoration: BoxDecoration(
-                      color: _order.statusEnum.color.withValues(
-                        alpha: .15,
+                    subtitle:
+                        Text(_order.createdAt, style: AppTypography.bodyMedium),
+                    trailing: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md,
+                        vertical: 6,
                       ),
-                      borderRadius: BorderRadius.circular(AppRadius.xxl),
-                    ),
-                    child: Text(
-                      _order.statusEnum.label,
-                      style: AppTypography.labelLarge.copyWith(
-                        color: _order.statusEnum.color,
-                        fontWeight: FontWeight.bold,
+                      decoration: BoxDecoration(
+                        color: _order.statusEnum.color.withValues(
+                          alpha: .15,
+                        ),
+                        borderRadius: BorderRadius.circular(AppRadius.xxl),
+                      ),
+                      child: Text(
+                        _order.statusEnum.label,
+                        style: AppTypography.labelLarge.copyWith(
+                          color: _order.statusEnum.color,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
 
-              // ================================================================
-              // حالة الطلب
-              // ================================================================
-              Text(
-                lang.t('order_status'),
-                style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
-              ),
-
-              SizedBox(height: AppSpacing.md),
-
-              OrderProgress(
-                status: _order.status,
-              ),
-
-              SizedBox(height: AppSpacing.xl),
-
-              // ================================================================
-              // معلومات الطلب
-              // ================================================================
-              Container(
-                decoration: BoxDecoration(
-                  color: colorScheme.surface,
-                  borderRadius: BorderRadius.circular(AppRadius.card),
-                  border: Border.all(color: colorScheme.outlineVariant),
+                // ================================================================
+                // حالة الطلب
+                // ================================================================
+                Text(
+                  lang.t('order_status'),
+                  style: AppTypography.titleMedium
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.all(AppSpacing.md),
-                  child: Column(
-                    children: [
-                      _infoRow(
-                        lang.t('order_number'),
-                        _order.orderNumber,
-                        colorScheme,
-                      ),
-                      _infoRow(
-                        lang.t('payment_method'),
-                        paymentMethodText(_order.paymentMethod),
-                        colorScheme,
-                      ),
-                      _infoRow(
-                        lang.t('payment_status'),
-                        _order.paymentStatus.toLowerCase() == 'pending'
-                            ? lang.t('pending')
-                            : _order.paymentStatus,
-                        colorScheme,
-                      ),
-                      _infoRow(
-                        lang.t('address'),
-                        _order.location.address,
-                        colorScheme,
-                      ),
-                      if (_order.notes != null && _order.notes!.trim().isNotEmpty)
+
+                SizedBox(height: AppSpacing.md),
+
+                OrderProgress(
+                  status: _order.status,
+                ),
+
+                SizedBox(height: AppSpacing.xl),
+
+                // ================================================================
+                // معلومات الطلب
+                // ================================================================
+                Container(
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                    borderRadius: BorderRadius.circular(AppRadius.card),
+                    border: Border.all(color: colorScheme.outlineVariant),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(AppSpacing.md),
+                    child: Column(
+                      children: [
                         _infoRow(
-                          lang.t('notes'),
-                          _order.notes!,
+                          lang.t('order_number'),
+                          _order.orderNumber,
                           colorScheme,
                         ),
-                    ],
+                        _infoRow(
+                          lang.t('payment_method'),
+                          paymentMethodText(_order.paymentMethod),
+                          colorScheme,
+                        ),
+                        _infoRow(
+                          lang.t('payment_status'),
+                          _order.paymentStatus.toLowerCase() == 'pending'
+                              ? lang.t('pending')
+                              : _order.paymentStatus,
+                          colorScheme,
+                        ),
+                        _infoRow(
+                          lang.t('address'),
+                          _order.location.address,
+                          colorScheme,
+                        ),
+                        if (_order.notes != null &&
+                            _order.notes!.trim().isNotEmpty)
+                          _infoRow(
+                            lang.t('notes'),
+                            _order.notes!,
+                            colorScheme,
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              SizedBox(height: AppSpacing.xl),
+                SizedBox(height: AppSpacing.xl),
 
-              // ================================================================
-              // المنتجات
-              // ================================================================
-              Text(
-                lang.t('products'),
-                style: AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold),
-              ),
+                // ================================================================
+                // المنتجات
+                // ================================================================
+                Text(
+                  lang.t('products'),
+                  style: AppTypography.titleMedium
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
 
-              SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
 
-              ..._order.items.map(
-                (item) => Padding(
-                  padding: EdgeInsets.only(bottom: AppSpacing.sm),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: colorScheme.surface,
-                      borderRadius: BorderRadius.circular(AppRadius.card),
-                      border: Border.all(color: colorScheme.outlineVariant),
-                    ),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(AppSpacing.sm),
-                      leading: CircleAvatar(
-                        backgroundColor: item.isGift ? AppColors.success.withValues(alpha: 0.1) : colorScheme.surfaceContainerHighest,
-                        child: Icon(
-                          item.isGift ? Icons.card_giftcard : Icons.shopping_bag_outlined,
-                          color: item.isGift ? AppColors.success : colorScheme.onSurfaceVariant,
-                        ),
+                ..._order.items.map(
+                  (item) => Padding(
+                    padding: EdgeInsets.only(bottom: AppSpacing.sm),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: colorScheme.surface,
+                        borderRadius: BorderRadius.circular(AppRadius.card),
+                        border: Border.all(color: colorScheme.outlineVariant),
                       ),
-                      title: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              item.product?.nameAr ?? lang.t('product_unavailable'),
-                              style: AppTypography.bodyLarge,
-                            ),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(AppSpacing.sm),
+                        leading: CircleAvatar(
+                          backgroundColor: item.isGift
+                              ? AppColors.success.withValues(alpha: 0.1)
+                              : colorScheme.surfaceContainerHighest,
+                          child: Icon(
+                            item.isGift
+                                ? Icons.card_giftcard
+                                : Icons.shopping_bag_outlined,
+                            color: item.isGift
+                                ? AppColors.success
+                                : colorScheme.onSurfaceVariant,
                           ),
-                          if (item.isGift)
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                              margin: EdgeInsetsDirectional.only(start: AppSpacing.xs),
-                              decoration: BoxDecoration(
-                                color: AppColors.success,
-                                borderRadius: BorderRadius.circular(AppRadius.sm),
-                              ),
+                        ),
+                        title: Row(
+                          children: [
+                            Expanded(
                               child: Text(
-                                lang.t('gift'),
-                                style: AppTypography.labelSmall.copyWith(color: Colors.white),
+                                item.product?.nameAr ??
+                                    lang.t('product_unavailable'),
+                                style: AppTypography.bodyLarge,
                               ),
                             ),
-                        ],
-                      ),
-                      subtitle: Padding(
-                        padding: EdgeInsets.only(top: AppSpacing.xs),
-                        child: Text(
-                          '${item.unit?.unitName ?? lang.t('unknown')} • ${item.price} ر.ي',
-                          style: AppTypography.bodyMedium,
+                            if (item.isGift)
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 2),
+                                margin: EdgeInsetsDirectional.only(
+                                    start: AppSpacing.xs),
+                                decoration: BoxDecoration(
+                                  color: AppColors.success,
+                                  borderRadius:
+                                      BorderRadius.circular(AppRadius.sm),
+                                ),
+                                child: Text(
+                                  lang.t('gift'),
+                                  style: AppTypography.labelSmall
+                                      .copyWith(color: Colors.white),
+                                ),
+                              ),
+                          ],
                         ),
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '× ${item.quantity}',
-                            style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 2),
-                          Text(
-                            '${item.total} ر.ي',
+                        subtitle: Padding(
+                          padding: EdgeInsets.only(top: AppSpacing.xs),
+                          child: Text(
+                            '${item.unit?.unitName ?? lang.t('unknown')} • ${item.price} ر.ي',
                             style: AppTypography.bodyMedium,
                           ),
-                        ],
+                        ),
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '× ${item.quantity}',
+                              style: AppTypography.bodyMedium
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              '${item.total} ر.ي',
+                              style: AppTypography.bodyMedium,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              SizedBox(height: AppSpacing.lg),
+                SizedBox(height: AppSpacing.lg),
 
-              // ================================================================
-              // ملخص الأسعار
-              // ================================================================
-              Container(
-                decoration: BoxDecoration(
-                  color: colorScheme.surface,
-                  borderRadius: BorderRadius.circular(AppRadius.card),
-                  border: Border.all(color: colorScheme.outlineVariant),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(AppSpacing.md),
-                  child: Column(
-                    children: [
-                      // المجموع قبل الخصم
-                      _priceRow(
-                        lang.t('subtotal'),
-                        _order.subtotal,
-                      ),
-
-                      // رسوم التوصيل
-                      _priceRow(
-                        lang.t('delivery_fee'),
-                        _order.deliveryFee,
-                      ),
-
-                      // الخصم العام
-                      if (_order.discount > 0)
+                // ================================================================
+                // ملخص الأسعار
+                // ================================================================
+                Container(
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                    borderRadius: BorderRadius.circular(AppRadius.card),
+                    border: Border.all(color: colorScheme.outlineVariant),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(AppSpacing.md),
+                    child: Column(
+                      children: [
+                        // المجموع قبل الخصم
                         _priceRow(
-                          lang.t('discount'),
-                          -_order.discount,
-                          color: AppColors.success,
+                          lang.t('subtotal'),
+                          _order.subtotal,
                         ),
 
-                      // خصم الكوبون
-                      if (_order.couponDiscount > 0)
+                        // رسوم التوصيل
                         _priceRow(
-                          lang.t('coupon_discount'),
-                          -_order.couponDiscount,
-                          color: AppColors.success,
+                          lang.t('delivery_fee'),
+                          _order.deliveryFee,
                         ),
 
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
-                        child: Divider(),
-                      ),
+                        // الخصم العام
+                        if (_order.discount > 0)
+                          _priceRow(
+                            lang.t('discount'),
+                            -_order.discount,
+                            color: AppColors.success,
+                          ),
 
-                      // الإجمالي النهائي القادم من Backend
-                      _priceRow(
-                        lang.t('total'),
-                        _order.total,
-                        bold: true,
-                      ),
-                    ],
+                        // خصم الكوبون
+                        if (_order.couponDiscount > 0)
+                          _priceRow(
+                            lang.t('coupon_discount'),
+                            -_order.couponDiscount,
+                            color: AppColors.success,
+                          ),
+
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                          child: Divider(),
+                        ),
+
+                        // الإجمالي النهائي القادم من Backend
+                        _priceRow(
+                          lang.t('total'),
+                          _order.total,
+                          bold: true,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              SizedBox(height: AppSpacing.xxl),
-            ],
-          ),
+                SizedBox(height: AppSpacing.xxl),
+              ],
+            ),
           ),
         ),
       ),
@@ -351,7 +370,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           Expanded(
             child: Text(
               value,
-              style: AppTypography.bodyMedium.copyWith(color: colorScheme.onSurface),
+              style: AppTypography.bodyMedium
+                  .copyWith(color: colorScheme.onSurface),
             ),
           ),
         ],

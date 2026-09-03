@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -28,15 +28,15 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<CategoryController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<CategoryController>(builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {
     final controller = Get.find<CategoryController>();
 
     if (controller.isLoading) {
-      return Scaffold(body: AppLoading.fullPage(message: lang.t('loading_categories')));
+      return Scaffold(
+          body: AppLoading.fullPage(message: lang.t('loading_categories')));
     }
 
     if (controller.error != null) {
@@ -84,63 +84,65 @@ class CategoriesScreen extends StatelessWidget {
               onRefresh: controller.reload,
               color: Theme.of(context).colorScheme.primary,
               child: GridView.builder(
-              padding: EdgeInsets.all(AppSpacing.lg),
-              physics: BouncingScrollPhysics(),
-              itemCount: categories.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                crossAxisSpacing: AppSpacing.md,
-                mainAxisSpacing: AppSpacing.md,
-                childAspectRatio: .92,
-              ),
-              itemBuilder: (_, index) {
-                final category = categories[index];
+                padding: EdgeInsets.all(AppSpacing.lg),
+                physics: BouncingScrollPhysics(),
+                itemCount: categories.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: AppSpacing.md,
+                  mainAxisSpacing: AppSpacing.md,
+                  childAspectRatio: .92,
+                ),
+                itemBuilder: (_, index) {
+                  final category = categories[index];
 
-                return Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
-                    onTap: () => _open(context, category),
-                    child: Ink(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(AppRadius.xl),
-                        boxShadow: AppShadows.card,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(AppSpacing.lg),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Hero(
-                                tag: 'cat_${category.id}',
-                                child: category.imageUrl.isNotEmpty
-                                    ? AppCachedImage(
-                                        imageUrl: category.imageUrl,
-                                        fit: BoxFit.contain,
-                                      )
-                                    : Icon(
-                                        Icons.category_rounded,
-                                        size: 42,
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
+                  return Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      onTap: () => _open(context, category),
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(AppRadius.xl),
+                          boxShadow: AppShadows.card,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(AppSpacing.lg),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Hero(
+                                  tag: 'cat_${category.id}',
+                                  child: category.imageUrl.isNotEmpty
+                                      ? AppCachedImage(
+                                          imageUrl: category.imageUrl,
+                                          fit: BoxFit.contain,
+                                        )
+                                      : Icon(
+                                          Icons.category_rounded,
+                                          size: 42,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                        ),
+                                ),
                               ),
-                            ),
-                            SizedBox(height: AppSpacing.md),
-                            Text(
-                              category.name,
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: AppTypography.titleMedium,
-                            ),
-                          ],
+                              SizedBox(height: AppSpacing.md),
+                              Text(
+                                category.name,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTypography.titleMedium,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
               ),
             );
           },

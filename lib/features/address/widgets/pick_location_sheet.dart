@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import '../../../core/design_system/components/app_icon.dart';
 import '../../../core/design_system/components/feedback/app_loading.dart';
@@ -330,12 +330,14 @@ class _IconCircleButton extends StatelessWidget {
       child: Material(
         color: colorScheme.surface,
         elevation: 2,
-        shadowColor: Colors.black.withValues(alpha: 0.12), // INTENTIONAL VISUAL EXCEPTION (Elevation mapping)
+        shadowColor: Colors.black.withValues(
+            alpha: 0.12), // INTENTIONAL VISUAL EXCEPTION (Elevation mapping)
         borderRadius: BorderRadius.circular(AppRadius.pill),
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.pill),
           onTap: onPressed,
-          child: AppIcon(icon, size: AppIconSize.small, color: colorScheme.onSurface),
+          child: AppIcon(icon,
+              size: AppIconSize.small, color: colorScheme.onSurface),
         ),
       ),
     );
@@ -540,7 +542,8 @@ class _BottomCard extends StatelessWidget {
         color: colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06), // INTENTIONAL VISUAL EXCEPTION
+            color: Colors.black
+                .withValues(alpha: 0.06), // INTENTIONAL VISUAL EXCEPTION
             blurRadius: 16,
             offset: Offset(0, -4),
           ),
@@ -605,7 +608,9 @@ class _BottomCard extends StatelessWidget {
                     )
                   : AppIcon(Icons.check_rounded, size: AppIconSize.small),
               label: Text(
-                confirming ? lang.t('resolving_address') : lang.t('confirm_location'),
+                confirming
+                    ? lang.t('resolving_address')
+                    : lang.t('confirm_location'),
                 style: AppTypography.labelLarge.copyWith(
                   color: colorScheme.onPrimary,
                   fontWeight: FontWeight.w700,

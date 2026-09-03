@@ -1,10 +1,12 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:bhm_supermarket/app/theme/app_colors.dart';
 import 'package:bhm_supermarket/app/theme/app_radius.dart';
 import 'package:bhm_supermarket/app/theme/app_spacing.dart';
 import 'package:bhm_supermarket/core/design_system/components/app_icon.dart';
-import 'package:bhm_supermarket/core/design_system/patterns/app_responsive.dart';import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
-import 'package:flutter/material.dart';import 'package:get/get.dart';
+import 'package:bhm_supermarket/core/design_system/patterns/app_responsive.dart';
+import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../controllers/product_controller.dart';
 import '../../../core/models/product_model.dart';
 import '../../../core/design_system/components/feedback/app_empty_state.dart';
@@ -72,8 +74,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     if (_searchQuery.isNotEmpty) {
       filtered = filtered
           .where(
-            (p) =>
-                p.name.toLowerCase().contains(_searchQuery.toLowerCase()),
+            (p) => p.name.toLowerCase().contains(_searchQuery.toLowerCase()),
           )
           .toList();
     }
@@ -95,8 +96,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<ProductController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<ProductController>(builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -105,7 +105,10 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     // final products = controller.products;
     // final isLoading = controller.isLoading;
     // final error = controller.error;
-    final title = widget.categoryName ?? (widget.categoryId == 'special_offers' ? lang.t('offers') : lang.t('products'));
+    final title = widget.categoryName ??
+        (widget.categoryId == 'special_offers'
+            ? lang.t('offers')
+            : lang.t('products'));
 
     return Scaffold(
       appBar: AppPageHeader(
@@ -115,8 +118,10 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
             icon: AppIcon(Icons.sort_rounded, size: AppIconSize.medium),
             onSelected: (val) => setState(() => _sortBy = val),
             itemBuilder: (_) => [
-              PopupMenuItem(value: 'default', child: Text(lang.t('sort_default'))),
-              PopupMenuItem(value: 'price_asc', child: Text(lang.t('price_low_high'))),
+              PopupMenuItem(
+                  value: 'default', child: Text(lang.t('sort_default'))),
+              PopupMenuItem(
+                  value: 'price_asc', child: Text(lang.t('price_low_high'))),
               PopupMenuItem(
                 value: 'price_desc',
                 child: Text(lang.t('price_high_low')),
@@ -128,12 +133,14 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(56),
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.md),
+            padding: EdgeInsetsDirectional.fromSTEB(
+                AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.md),
             child: TextField(
               onChanged: (val) => setState(() => _searchQuery = val),
               decoration: InputDecoration(
                 hintText: lang.t('search_in_category'),
-                prefixIcon: AppIcon(Icons.search_rounded, size: AppIconSize.medium),
+                prefixIcon:
+                    AppIcon(Icons.search_rounded, size: AppIconSize.medium),
                 isDense: true,
                 filled: true,
                 fillColor: AppColors.surfaceVariant,
@@ -155,7 +162,8 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   Widget _buildBody(ProductController controller) {
     if (widget.categoryId == 'special_offers') {
       if (controller.isLoading && controller.products.isEmpty) {
-        return Center(child: AppLoading.fullPage(message: lang.t('loading_products')));
+        return Center(
+            child: AppLoading.fullPage(message: lang.t('loading_products')));
       }
 
       if (controller.error != null && controller.products.isEmpty) {
@@ -170,9 +178,8 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
 
       final List<ProductModel> offerProducts = controller.products
           .map((product) {
-            final offerUnits = product.units
-                .where((unit) => unit.offer != null)
-                .toList();
+            final offerUnits =
+                product.units.where((unit) => unit.offer != null).toList();
             return offerUnits.isEmpty
                 ? null
                 : product.copyWith(units: offerUnits);
@@ -243,7 +250,8 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     }
 
     if (controller.isLoading && controller.products.isEmpty) {
-      return Center(child: AppLoading.fullPage(message: lang.t('loading_products')));
+      return Center(
+          child: AppLoading.fullPage(message: lang.t('loading_products')));
     }
 
     if (controller.error != null && controller.products.isEmpty) {
@@ -264,7 +272,8 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
 
     if (filtered.isEmpty) {
       return RefreshIndicator(
-        onRefresh: () => controller.loadCategory(widget.categoryId, refresh: true),
+        onRefresh: () =>
+            controller.loadCategory(widget.categoryId, refresh: true),
         color: Theme.of(context).colorScheme.primary,
         child: ListView(
           physics: AlwaysScrollableScrollPhysics(),
@@ -283,30 +292,31 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     }
 
     return RefreshIndicator(
-      onRefresh: () => controller.loadCategory(widget.categoryId, refresh: true),
+      onRefresh: () =>
+          controller.loadCategory(widget.categoryId, refresh: true),
       color: Theme.of(context).colorScheme.primary,
       child: Column(
-      children: [
-        Expanded(
-          child: ProductsGrid(
-            products: filtered,
-            controller: _scrollController,
-            physics: AlwaysScrollableScrollPhysics(),
-            shrinkWrap: false,
-          ),
-        ),
-        if (controller.isFetchingMore)
-          Padding(
-            padding: EdgeInsets.all(AppSpacing.lg),
-            child: Center(
-              child: SizedBox(
-                height: 24,
-                width: 24,
-                child: AppLoading(size: 24),
-              ),
+        children: [
+          Expanded(
+            child: ProductsGrid(
+              products: filtered,
+              controller: _scrollController,
+              physics: AlwaysScrollableScrollPhysics(),
+              shrinkWrap: false,
             ),
           ),
-      ],
+          if (controller.isFetchingMore)
+            Padding(
+              padding: EdgeInsets.all(AppSpacing.lg),
+              child: Center(
+                child: SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: AppLoading(size: 24),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -60,8 +60,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         _ensureTabCreated(initialTab);
 
         Get.find<NavigationController>().changeTab(
-              initialTab,
-            );
+          initialTab,
+        );
       });
     }
   }
@@ -208,8 +208,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           _ensureTabCreated(index);
 
           Get.find<NavigationController>().changeTab(
-                index,
-              );
+            index,
+          );
         },
       );
 
@@ -220,8 +220,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     _ensureTabCreated(index);
 
     Get.find<NavigationController>().changeTab(
-          index,
-        );
+      index,
+    );
   }
 }
 
@@ -366,7 +366,8 @@ class _ScannerCenterBtn extends StatelessWidget {
                 child: Center(
                   child: AppIcon(
                     Icons.qr_code_scanner_rounded,
-                    color: selected ? colorScheme.onPrimary : colorScheme.primary,
+                    color:
+                        selected ? colorScheme.onPrimary : colorScheme.primary,
                     size: AppIconSize.medium,
                   ),
                 ),
@@ -455,8 +456,10 @@ class _CartNavItem extends StatelessWidget {
                         top: -4,
                         end: -8,
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
-                          constraints: BoxConstraints(minWidth: 16, minHeight: 16),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                          constraints:
+                              BoxConstraints(minWidth: 16, minHeight: 16),
                           decoration: BoxDecoration(
                             color: colorScheme.error,
                             borderRadius: BorderRadius.circular(AppRadius.pill),

@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'package:bhm_supermarket/core/services/secure_storage_service.dart';
 

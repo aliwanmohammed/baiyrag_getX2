@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_spacing.dart';
@@ -37,7 +37,8 @@ class OrderTrackingScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      appBar: AppPageHeader(title: lang.t('track_order_dynamic', {'number': orderNumber})),
+      appBar: AppPageHeader(
+          title: lang.t('track_order_dynamic', {'number': orderNumber})),
       body: SafeArea(
         child: AppConstrainedContent(
           child: Padding(
@@ -58,7 +59,8 @@ class OrderTrackingScreen extends StatelessWidget {
                             // العمود الأيمن: أيقونة + خط
                             Column(
                               children: [
-                                _stepCircle(stages[i], isDone, isActive, colorScheme),
+                                _stepCircle(
+                                    stages[i], isDone, isActive, colorScheme),
                                 if (!isLast)
                                   Container(
                                     width: 2,
@@ -92,10 +94,12 @@ class OrderTrackingScreen extends StatelessWidget {
                                     ),
                                     if (isActive)
                                       Padding(
-                                        padding: EdgeInsets.only(top: AppSpacing.xs),
+                                        padding:
+                                            EdgeInsets.only(top: AppSpacing.xs),
                                         child: Text(
                                           lang.t('current_stage'),
-                                          style: AppTypography.labelMedium.copyWith(
+                                          style: AppTypography.labelMedium
+                                              .copyWith(
                                             color: colorScheme.primary,
                                           ),
                                         ),
@@ -116,13 +120,15 @@ class OrderTrackingScreen extends StatelessWidget {
     );
   }
 
-  Widget _stepCircle(OrderStatus status, bool isDone, bool isActive, ColorScheme colorScheme) {
+  Widget _stepCircle(
+      OrderStatus status, bool isDone, bool isActive, ColorScheme colorScheme) {
     return Container(
       width: 44,
       height: 44,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: isDone ? colorScheme.primary : colorScheme.surfaceContainerHighest,
+        color:
+            isDone ? colorScheme.primary : colorScheme.surfaceContainerHighest,
         border:
             isActive ? Border.all(color: colorScheme.primary, width: 3) : null,
       ),
@@ -143,12 +149,14 @@ class OrderTrackingScreen extends StatelessWidget {
           SizedBox(height: AppSpacing.md),
           Text(
             lang.t('order_cancelled'),
-            style: AppTypography.headlineSmall.copyWith(fontWeight: FontWeight.bold),
+            style: AppTypography.headlineSmall
+                .copyWith(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: AppSpacing.sm),
           Text(
             lang.t('order_number_dynamic2', {'number': orderNumber}),
-            style: AppTypography.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant),
+            style: AppTypography.bodyMedium
+                .copyWith(color: colorScheme.onSurfaceVariant),
           ),
         ],
       ),

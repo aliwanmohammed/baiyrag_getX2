@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import '../../../core/design_system/components/feedback/app_empty_state.dart';
 import '../../../core/design_system/components/feedback/app_error_state.dart';
@@ -230,10 +230,12 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
     return SafeArea(
       child: Material(
         color: cs.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
         clipBehavior: Clip.antiAlias,
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * .9),
+          constraints:
+              BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * .9),
           child: Column(
             children: [
               _buildHandle(),
@@ -265,7 +267,8 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.md, AppSpacing.sm, AppSpacing.sm),
+      padding: EdgeInsetsDirectional.fromSTEB(
+          AppSpacing.lg, AppSpacing.md, AppSpacing.sm, AppSpacing.sm),
       child: Row(
         children: [
           Expanded(
@@ -276,14 +279,16 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
           ),
           if (_selected.isNotEmpty)
             Container(
-              padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 5),
+              padding:
+                  EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 5),
               decoration: BoxDecoration(
                 color: AppColors.primaryExtraLight,
                 borderRadius: BorderRadius.circular(AppRadius.chip),
               ),
               child: Text(
                 lang.t('selected_count', {'count': _selected.length}),
-                style: AppTypography.badge.copyWith(color: AppColors.primaryDark),
+                style:
+                    AppTypography.badge.copyWith(color: AppColors.primaryDark),
               ),
             ),
           SizedBox(width: AppSpacing.xs),
@@ -299,7 +304,8 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
 
   Widget _buildSearch() {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.md),
+      padding: EdgeInsetsDirectional.fromSTEB(
+          AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.md),
       child: TextField(
         controller: _searchController,
         textInputAction: TextInputAction.search,
@@ -333,7 +339,8 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
     return SizedBox(
       height: 54,
       child: ListView.separated(
-        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.xs),
+        padding: EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg, vertical: AppSpacing.xs),
         scrollDirection: Axis.horizontal,
         itemCount: _selected.length,
         separatorBuilder: (_, __) => SizedBox(width: AppSpacing.xs),
@@ -341,7 +348,8 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
           final selection = _selected.values.elementAt(index);
 
           return InputChip(
-            avatar: AppIcon(Icons.inventory_2_outlined, size: AppIconSize.small),
+            avatar:
+                AppIcon(Icons.inventory_2_outlined, size: AppIconSize.small),
             label: Text(
               '${selection.product.name} • ${selection.unit.unitName}',
               overflow: TextOverflow.ellipsis,
@@ -374,13 +382,15 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
       onRefresh: () => _loadProducts(reset: true),
       child: ListView.builder(
         controller: _scrollController,
-        padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.xs, AppSpacing.lg, AppSpacing.lg),
+        padding: EdgeInsetsDirectional.fromSTEB(
+            AppSpacing.lg, AppSpacing.xs, AppSpacing.lg, AppSpacing.lg),
         itemCount: _products.length + (_loadingMore ? 1 : 0),
         itemBuilder: (_, index) {
           if (index >= _products.length) {
             return Padding(
               padding: EdgeInsets.all(AppSpacing.lg),
-              child: Center(child: AppLoading(type: AppLoadingType.ring, size: 24)),
+              child: Center(
+                  child: AppLoading(type: AppLoadingType.ring, size: 24)),
             );
           }
 
@@ -455,7 +465,8 @@ class _ProductUnitPickerSheetState extends State<ProductUnitPickerSheet> {
           label: Text(
             _selected.isEmpty
                 ? lang.t('select_at_least_one_unit')
-                : lang.t('confirm_selection_count', {'count': _selected.length}),
+                : lang
+                    .t('confirm_selection_count', {'count': _selected.length}),
           ),
         ),
       ),
@@ -537,10 +548,10 @@ class _ProductPickerCardState extends State<_ProductPickerCard> {
                           overflow: TextOverflow.ellipsis,
                           style: AppTypography.labelLarge,
                         ),
-
                         SizedBox(height: 6),
                         Text(
-                          lang.t('available_units_count', {'count': units.length}),
+                          lang.t(
+                              'available_units_count', {'count': units.length}),
                           style: AppTypography.labelSmall.copyWith(
                             color: widget.isSelected
                                 ? AppColors.primary
@@ -553,7 +564,8 @@ class _ProductPickerCardState extends State<_ProductPickerCard> {
                   AnimatedRotation(
                     turns: _expanded ? .5 : 0,
                     duration: Duration(milliseconds: 200),
-                    child: AppIcon(Icons.keyboard_arrow_down_rounded, size: AppIconSize.medium),
+                    child: AppIcon(Icons.keyboard_arrow_down_rounded,
+                        size: AppIconSize.medium),
                   ),
                 ],
               ),
@@ -640,7 +652,8 @@ class _UnitOption extends StatelessWidget {
                 ),
               ),
               child: selected
-                  ? AppIcon(Icons.check_rounded, size: AppIconSize.small, color: Colors.white)
+                  ? AppIcon(Icons.check_rounded,
+                      size: AppIconSize.small, color: Colors.white)
                   : null,
             ),
             SizedBox(width: 12),
@@ -695,7 +708,9 @@ class _ProductImage extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: image.isEmpty
-          ? AppIcon(Icons.inventory_2_outlined, color: Theme.of(context).colorScheme.onSurfaceVariant, size: AppIconSize.large)
+          ? AppIcon(Icons.inventory_2_outlined,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              size: AppIconSize.large)
           : AppCachedImage(imageUrl: image, fit: BoxFit.contain),
     );
   }

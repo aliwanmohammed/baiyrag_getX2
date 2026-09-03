@@ -1,4 +1,4 @@
-import '../../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -45,8 +45,7 @@ class _DeliveryOrderDetailsSheetState extends State<DeliveryOrderDetailsSheet> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<DeliveryController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<DeliveryController>(builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -138,7 +137,8 @@ class _DeliveryOrderDetailsSheetState extends State<DeliveryOrderDetailsSheet> {
                   ),
                   SizedBox(height: AppSpacing.xl),
                   _SectionTitle(
-                    lang.t('products_count', {'count': currentOrder.items.length}),
+                    lang.t(
+                        'products_count', {'count': currentOrder.items.length}),
                   ),
                   ...currentOrder.items.map(
                     (item) => _buildOrderItem(item, colorScheme),
@@ -1049,13 +1049,15 @@ class _PriceRow extends StatelessWidget {
           Text(
             title,
             style: isTotal
-                ? AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold)
+                ? AppTypography.titleMedium
+                    .copyWith(fontWeight: FontWeight.bold)
                 : AppTypography.bodyMedium,
           ),
           Text(
             '${amount.toStringAsFixed(2)} ر.س',
             style: isTotal
-                ? AppTypography.titleMedium.copyWith(fontWeight: FontWeight.bold)
+                ? AppTypography.titleMedium
+                    .copyWith(fontWeight: FontWeight.bold)
                 : AppTypography.bodyMedium.copyWith(
                     color: isDiscount ? colorScheme.error : null,
                   ),

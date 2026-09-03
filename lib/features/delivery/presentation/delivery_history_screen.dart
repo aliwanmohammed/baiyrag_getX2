@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'dart:async';
 
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
@@ -259,8 +259,7 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen>
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<DeliveryController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<DeliveryController>(builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -464,7 +463,9 @@ class _HistoryTile extends StatelessWidget {
                         ),
                         SizedBox(width: 4),
                         Text(
-                          isDelivered ? lang.t('delivered') : lang.t('cancelled'),
+                          isDelivered
+                              ? lang.t('delivered')
+                              : lang.t('cancelled'),
                           style: AppTypography.labelSmall.copyWith(
                             color: badgeColor,
                             fontWeight: FontWeight.bold,
@@ -495,7 +496,8 @@ class _HistoryTile extends StatelessWidget {
                     ),
                   ],
                 ),
-              if (order.customerName.isNotEmpty) SizedBox(height: AppSpacing.sm),
+              if (order.customerName.isNotEmpty)
+                SizedBox(height: AppSpacing.sm),
               if (order.address.isNotEmpty)
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,

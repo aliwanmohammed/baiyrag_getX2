@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:bhm_supermarket/features/address/controllers/address_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -46,11 +46,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<AuthController>(
-    builder: (_) => GetBuilder<OrdersController>(
-    builder: (_) => GetBuilder<AddressController>(
-    builder: (_) => GetBuilder<FavoritesController>(
-    builder: (_) => _buildGetX0(context)))));
+    return GetBuilder<AuthController>(
+        builder: (_) => GetBuilder<OrdersController>(
+            builder: (_) => GetBuilder<AddressController>(
+                builder: (_) => GetBuilder<FavoritesController>(
+                    builder: (_) => _buildGetX0(context)))));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -71,14 +71,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).padding.top + 20, // Content dimension
+                  top: MediaQuery.of(context).padding.top +
+                      20, // Content dimension
                   bottom: AppSpacing.xxl,
                   left: AppSpacing.xl,
                   right: AppSpacing.xl,
                 ),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [AppColors.primaryLight, AppColors.primaryDark], // Intentional visual identity exception
+                    colors: [
+                      AppColors.primaryLight,
+                      AppColors.primaryDark
+                    ], // Intentional visual identity exception
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                   ),
@@ -130,14 +134,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        _StatBadge('${ordersController.orders.length}', lang.t('order')),
+                        _StatBadge('${ordersController.orders.length}',
+                            lang.t('order')),
                         SizedBox(width: AppSpacing.md),
                         _StatBadge(
                           '${addressController.addresses.length}',
                           lang.t('addresses'),
                         ),
                         SizedBox(width: AppSpacing.md),
-                        _StatBadge('${favoritesController.ids.length}', lang.t('favorites')),
+                        _StatBadge('${favoritesController.ids.length}',
+                            lang.t('favorites')),
                       ],
                     ),
                   ],
@@ -153,7 +159,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _MenuItem(
                         Icons.receipt_long_outlined,
                         lang.t('orders'),
-                        AppColors.info, // Semantic colors that match specific info roles
+                        AppColors
+                            .info, // Semantic colors that match specific info roles
                         () => context.push(AppRoutes.orders),
                       ),
                       _MenuItem(
@@ -257,7 +264,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         child: Row(
                           children: [
-                            AppIcon(Icons.logout_rounded, color: colorScheme.error, size: AppIconSize.medium),
+                            AppIcon(Icons.logout_rounded,
+                                color: colorScheme.error,
+                                size: AppIconSize.medium),
                             SizedBox(width: AppSpacing.sm),
                             Text(
                               lang.t('logout'),
@@ -298,7 +307,8 @@ class _StatBadge extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+      padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       decoration: BoxDecoration(
         color: colorScheme.onPrimary.withValues(alpha: 0.2),
         borderRadius: AppRadius.mdRadius,
@@ -345,7 +355,8 @@ class _MenuSection extends StatelessWidget {
       children: [
         Padding(
           // CRITICAL FIX: Replaced `only(right: 4)` with directional start padding
-          padding: EdgeInsetsDirectional.only(start: AppSpacing.xs, bottom: AppSpacing.sm),
+          padding: EdgeInsetsDirectional.only(
+              start: AppSpacing.xs, bottom: AppSpacing.sm),
           child: Text(
             title,
             style: AppTypography.labelLarge.copyWith(
@@ -376,9 +387,11 @@ class _MenuSection extends StatelessWidget {
                         height: 38,
                         decoration: BoxDecoration(
                           color: item.color.withValues(alpha: 0.1),
-                          borderRadius: AppRadius.smRadius, // Slightly rounded for inner items
+                          borderRadius: AppRadius
+                              .smRadius, // Slightly rounded for inner items
                         ),
-                        child: AppIcon(item.icon, color: item.color, size: AppIconSize.small),
+                        child: AppIcon(item.icon,
+                            color: item.color, size: AppIconSize.small),
                       ),
                       title: Text(
                         item.label,

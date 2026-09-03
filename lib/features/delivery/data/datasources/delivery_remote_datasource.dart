@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 // import 'package:flutter/foundation.dart';
 // import 'package:bhm_supermarket/core/network/dio_exception_mapper.dart';
 // import 'package:dio/dio.dart';

@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -32,8 +32,6 @@ class CategoryController extends GetxController {
   /// Returns main categories sorted by sortOrder.
   /// Result is cached; no allocation on repeated calls.
   List<CategoryModel> get mainCategories => _cachedMainCategories;
-
-
 
   Future<void> loadCategories({bool showLoading = true}) async {
     // ──────────────────────────────────────────────────────────────────────
@@ -84,7 +82,10 @@ class CategoryController extends GetxController {
         _categories = response.data!;
         _error = null;
       } else {
-        _error = AppErrorMessage.from(message: response.message, statusCode: response.statusCode, fallback: lang.t('categories_load_error_retry'));
+        _error = AppErrorMessage.from(
+            message: response.message,
+            statusCode: response.statusCode,
+            fallback: lang.t('categories_load_error_retry'));
       }
     } catch (e) {
       stopwatch.stop();

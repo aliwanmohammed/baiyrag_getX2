@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../app/theme/app_radius.dart';
@@ -24,9 +24,9 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final offeredUnit = product.units.cast<ProductUnitModel?>().firstWhere(
-      (unit) => unit?.offer != null,
-      orElse: () => null,
-    );
+          (unit) => unit?.offer != null,
+          orElse: () => null,
+        );
     final offer = offeredUnit?.offer;
 
     return ProductCardContainer(
@@ -124,7 +124,8 @@ class ProductCard extends StatelessWidget {
                       onTap: () {
                         AuthGate.check(
                           context,
-                          onAuthenticated: () => favoritesController.toggle(product.id),
+                          onAuthenticated: () =>
+                              favoritesController.toggle(product.id),
                         );
                       },
                     );
@@ -144,6 +145,4 @@ class ProductCard extends StatelessWidget {
       ),
     );
   }
-
-
 }

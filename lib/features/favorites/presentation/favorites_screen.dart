@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -40,8 +40,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<FavoritesController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<FavoritesController>(
+        builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -76,7 +76,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             if (favProducts.isNotEmpty) ...[
               SizedBox(width: AppSpacing.sm),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
+                padding: EdgeInsets.symmetric(
+                    horizontal: AppSpacing.sm, vertical: 2),
                 decoration: BoxDecoration(
                   color: colorScheme.error,
                   borderRadius: BorderRadius.circular(10),
@@ -99,10 +100,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 for (final p in favProducts) {
                   final unit = p.units.isEmpty ? null : p.units.first;
                   if (unit != null) {
-                    final offerUnit = Get.find<OffersController>().productUnitOffer(
-                          productId: p.id,
-                          unitId: unit.id,
-                        );
+                    final offerUnit =
+                        Get.find<OffersController>().productUnitOffer(
+                      productId: p.id,
+                      unitId: unit.id,
+                    );
                     cartProv.addItem(
                       product: p,
                       unit: unit,
@@ -113,10 +115,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 }
                 AppMessage.success(
                   context,
-                  lang.t('favorites_added_count', {'count': favProducts.length}),
+                  lang.t(
+                      'favorites_added_count', {'count': favProducts.length}),
                 );
               },
-              icon: AppIcon(Icons.shopping_cart_outlined, size: AppIconSize.small),
+              icon: AppIcon(Icons.shopping_cart_outlined,
+                  size: AppIconSize.small),
               label: Text(
                 lang.t('move_all_to_cart'),
                 style: AppTypography.labelLarge,

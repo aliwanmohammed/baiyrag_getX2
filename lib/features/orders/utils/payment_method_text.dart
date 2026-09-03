@@ -1,4 +1,5 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
+
 String paymentMethodText(String value) {
   switch (value) {
     case "cash":

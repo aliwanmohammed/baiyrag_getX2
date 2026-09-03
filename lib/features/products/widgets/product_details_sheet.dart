@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import '../../../core/widgets/loading_widget.dart';
 import 'package:go_router/go_router.dart';
@@ -98,8 +98,12 @@ class _ProductDetailsSheetState extends State<ProductDetailsSheet> {
       return;
     }
 
-    final unitPrice = selectedUnit.finalPrice > 0 ? selectedUnit.finalPrice : selectedUnit.price;
-    final originalPrice = selectedUnit.originalPrice > unitPrice ? selectedUnit.originalPrice : unitPrice;
+    final unitPrice = selectedUnit.finalPrice > 0
+        ? selectedUnit.finalPrice
+        : selectedUnit.price;
+    final originalPrice = selectedUnit.originalPrice > unitPrice
+        ? selectedUnit.originalPrice
+        : unitPrice;
 
     final response = await cart.addItem(
       product: widget.product,
@@ -136,15 +140,16 @@ class _ProductDetailsSheetState extends State<ProductDetailsSheet> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<ProductController>(
-    builder: (_) => GetBuilder<FavoritesController>(
-    builder: (_) => GetBuilder<CartController>(
-    builder: (_) => _buildGetX0(context))));
+    return GetBuilder<ProductController>(
+        builder: (_) => GetBuilder<FavoritesController>(
+            builder: (_) => GetBuilder<CartController>(
+                builder: (_) => _buildGetX0(context))));
   }
 
   Widget _buildGetX0(BuildContext context) {
     final controller = Get.find<ProductController>();
-    final isFavorite = Get.find<FavoritesController>().isFavorite(widget.product.id);
+    final isFavorite =
+        Get.find<FavoritesController>().isFavorite(widget.product.id);
 
     final units = controller.units;
     final selectedUnit = controller.selectedUnit;
@@ -210,7 +215,8 @@ class _ProductDetailsSheetState extends State<ProductDetailsSheet> {
                     ),
 
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, 0),
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          AppSpacing.lg, AppSpacing.md, AppSpacing.lg, 0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -226,15 +232,15 @@ class _ProductDetailsSheetState extends State<ProductDetailsSheet> {
                             style: AppTypography.headlineSmall,
                           ),
 
-
-
                           // الوصف
                           if (widget.product.description.isNotEmpty) ...[
                             SizedBox(height: 12),
                             Text(
                               widget.product.description,
                               style: AppTypography.bodyMedium.copyWith(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                                 height: 1.65,
                               ),
                             ),
@@ -271,8 +277,13 @@ class _ProductDetailsSheetState extends State<ProductDetailsSheet> {
             if (selectedUnit != null)
               _BottomBar(
                 selectedUnit: selectedUnit,
-                price: selectedUnit.finalPrice > 0 ? selectedUnit.finalPrice : selectedUnit.price,
-                oldPrice: selectedUnit.originalPrice > (selectedUnit.finalPrice > 0 ? selectedUnit.finalPrice : selectedUnit.price)
+                price: selectedUnit.finalPrice > 0
+                    ? selectedUnit.finalPrice
+                    : selectedUnit.price,
+                oldPrice: selectedUnit.originalPrice >
+                        (selectedUnit.finalPrice > 0
+                            ? selectedUnit.finalPrice
+                            : selectedUnit.price)
                     ? selectedUnit.originalPrice
                     : null,
                 quantity: cartQuantity,
@@ -556,7 +567,8 @@ class _UnitsSection extends StatelessWidget {
           final unit = units[i];
           final offer = unit.offer;
           final price = unit.finalPrice > 0 ? unit.finalPrice : unit.price;
-          final oldPrice = unit.originalPrice > price ? unit.originalPrice : null;
+          final oldPrice =
+              unit.originalPrice > price ? unit.originalPrice : null;
 
           return _UnitCard(
             unit: unit,
@@ -600,7 +612,9 @@ class _UnitCard extends StatelessWidget {
         margin: EdgeInsets.only(bottom: AppSpacing.sm),
         padding: EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primaryExtraLight : AppColors.surfaceVariant,
+          color: isSelected
+              ? AppColors.primaryExtraLight
+              : AppColors.surfaceVariant,
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(
             color: isSelected ? AppColors.primary : Colors.transparent,
@@ -624,7 +638,8 @@ class _UnitCard extends StatelessWidget {
                     color: isSelected ? AppColors.primary : Colors.transparent,
                   ),
                   child: isSelected
-                      ? AppIcon(Icons.check_rounded, size: AppIconSize.small, color: Colors.white)
+                      ? AppIcon(Icons.check_rounded,
+                          size: AppIconSize.small, color: Colors.white)
                       : null,
                 ),
                 SizedBox(width: AppSpacing.sm),
@@ -639,14 +654,17 @@ class _UnitCard extends StatelessWidget {
                               unit.unitName,
                               overflow: TextOverflow.ellipsis,
                               style: AppTypography.titleSmall.copyWith(
-                                color: isSelected ? AppColors.primaryDark : Theme.of(context).colorScheme.onSurface,
+                                color: isSelected
+                                    ? AppColors.primaryDark
+                                    : Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ),
                           if (promoOffer != null) ...[
                             SizedBox(width: 6),
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 4, vertical: 1),
                               decoration: BoxDecoration(
                                 color: promoOffer!.isGift
                                     ? Theme.of(context).colorScheme.tertiary
@@ -673,7 +691,8 @@ class _UnitCard extends StatelessWidget {
                       ),
                       if (unit.quantity > 1) ...[
                         SizedBox(height: 2),
-                        Text('${unit.quantity}', style: AppTypography.bodySmall),
+                        Text('${unit.quantity}',
+                            style: AppTypography.bodySmall),
                       ],
                     ],
                   ),
@@ -692,7 +711,9 @@ class _UnitCard extends StatelessWidget {
                     Text(
                       '${price.toStringAsFixed(2)} ر.ي',
                       style: AppTypography.priceMedium.copyWith(
-                        color: isSelected ? AppColors.primaryDark : AppColors.price,
+                        color: isSelected
+                            ? AppColors.primaryDark
+                            : AppColors.price,
                         fontSize: 17,
                       ),
                     ),
@@ -705,7 +726,8 @@ class _UnitCard extends StatelessWidget {
               SizedBox(height: AppSpacing.sm),
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
+                padding: EdgeInsets.symmetric(
+                    horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.tertiaryContainer,
                   borderRadius: BorderRadius.circular(AppRadius.sm),
@@ -724,7 +746,8 @@ class _UnitCard extends StatelessWidget {
                         '${promoOffer!.giftUnitName.isNotEmpty ? ' (${promoOffer!.giftUnitName})' : ''}'
                         '${promoOffer!.giftQuantity > 0 ? ' × ${promoOffer!.giftQuantity}' : ''}',
                         style: AppTypography.bodySmall.copyWith(
-                          color: Theme.of(context).colorScheme.onTertiaryContainer,
+                          color:
+                              Theme.of(context).colorScheme.onTertiaryContainer,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -936,7 +959,9 @@ class _QtyButton extends StatelessWidget {
         child: AppIcon(
           icon,
           size: AppIconSize.small,
-          color: onTap != null ? AppColors.primary : Theme.of(context).colorScheme.onSurfaceVariant,
+          color: onTap != null
+              ? AppColors.primary
+              : Theme.of(context).colorScheme.onSurfaceVariant,
         ),
       ),
     );
@@ -983,7 +1008,8 @@ class _UnitsErrorState extends StatelessWidget {
       ),
       child: Row(
         children: [
-          AppIcon(Icons.error_outline_rounded, color: AppColors.error, size: AppIconSize.medium),
+          AppIcon(Icons.error_outline_rounded,
+              color: AppColors.error, size: AppIconSize.medium),
           SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
@@ -1011,7 +1037,8 @@ class _NoUnitsWarning extends StatelessWidget {
       ),
       child: Row(
         children: [
-          AppIcon(Icons.info_outline_rounded, color: AppColors.warning, size: AppIconSize.medium),
+          AppIcon(Icons.info_outline_rounded,
+              color: AppColors.warning, size: AppIconSize.medium),
           SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
@@ -1032,7 +1059,8 @@ class _UnavailableBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
     return Container(
-      padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, bottomPadding + AppSpacing.md),
+      padding: EdgeInsetsDirectional.fromSTEB(AppSpacing.lg, AppSpacing.md,
+          AppSpacing.lg, bottomPadding + AppSpacing.md),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
@@ -1046,11 +1074,14 @@ class _UnavailableBottomBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AppIcon(Icons.block_rounded, color: Theme.of(context).colorScheme.onSurfaceVariant, size: AppIconSize.small),
+          AppIcon(Icons.block_rounded,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              size: AppIconSize.small),
           SizedBox(width: AppSpacing.xs),
           Text(
             lang.t('product_unavailable_purchase'),
-            style: AppTypography.bodyMedium.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+            style: AppTypography.bodyMedium.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
         ],
       ),

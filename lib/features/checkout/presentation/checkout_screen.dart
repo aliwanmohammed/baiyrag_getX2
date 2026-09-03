@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:bhm_supermarket/app/router/app_routes.dart';
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,6 @@ import '../controllers/checkout_controller.dart';
 
 import '../models/coupon_totals.dart';
 import '../widgets/payment_method_selector.dart';
-
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -62,7 +61,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
 
     if (controller.addressRequired) {
-      final created = await context.push<bool>(AppRoutes.addresses, extra: true);
+      final created =
+          await context.push<bool>(AppRoutes.addresses, extra: true);
       if (!mounted) return;
       if (created == true) {
         await Get.find<AddressController>().loadAddresses();
@@ -138,11 +138,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       width: double.infinity,
                       child: AppButton(
                         variant: AppButtonVariant.outlined,
-                        icon: AppIcon(Icons.edit_location_alt, size: AppIconSize.small),
+                        icon: AppIcon(Icons.edit_location_alt,
+                            size: AppIconSize.small),
                         text: lang.t('change_or_add_address'),
                         size: AppButtonSize.large,
                         onPressed: () async {
-                          final addressController = Get.find<AddressController>();
+                          final addressController =
+                              Get.find<AddressController>();
 
                           final result = await context.push<bool>(
                             AppRoutes.addresses,
@@ -170,7 +172,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         children: [
                           Row(
                             children: [
-                              AppIcon(Icons.location_off, color: colorScheme.onSurfaceVariant, size: AppIconSize.medium),
+                              AppIcon(Icons.location_off,
+                                  color: colorScheme.onSurfaceVariant,
+                                  size: AppIconSize.medium),
                               SizedBox(width: AppSpacing.sm),
                               Expanded(
                                 child: Text(
@@ -245,18 +249,22 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           textDirection: TextDirection.ltr,
                           decoration: InputDecoration(
                             hintText: lang.t('enter_coupon'),
-                            hintStyle: TextStyle(color: colorScheme.onSurfaceVariant),
+                            hintStyle:
+                                TextStyle(color: colorScheme.onSurfaceVariant),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(AppRadius.md),
-                              borderSide: BorderSide(color: colorScheme.outlineVariant),
+                              borderSide:
+                                  BorderSide(color: colorScheme.outlineVariant),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(AppRadius.md),
-                              borderSide: BorderSide(color: colorScheme.outlineVariant),
+                              borderSide:
+                                  BorderSide(color: colorScheme.outlineVariant),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(AppRadius.md),
-                              borderSide: BorderSide(color: colorScheme.primary, width: 2),
+                              borderSide: BorderSide(
+                                  color: colorScheme.primary, width: 2),
                             ),
                             contentPadding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.md,
@@ -270,7 +278,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         width: 100,
                         height: 52, // Intentional component dimension
                         child: ElevatedButton(
-                          onPressed: checkout.couponLoading ? null : _applyCoupon,
+                          onPressed:
+                              checkout.couponLoading ? null : _applyCoupon,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: colorScheme.primary,
                             foregroundColor: colorScheme.onPrimary,
@@ -293,7 +302,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     SizedBox(height: AppSpacing.xs),
                     Text(
                       lang.t('cart_changed_reapply_coupon'),
-                      style: AppTypography.labelMedium.copyWith(color: colorScheme.error),
+                      style: AppTypography.labelMedium
+                          .copyWith(color: colorScheme.error),
                     ),
                   ],
 
@@ -313,7 +323,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       children: [
                         ...cart.items.map(
                           (item) => Padding(
-                            padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                            padding:
+                                EdgeInsets.symmetric(vertical: AppSpacing.xs),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -334,7 +345,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         ),
                         ...giftRewards.map(
                           (reward) => Padding(
-                            padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                            padding:
+                                EdgeInsets.symmetric(vertical: AppSpacing.xs),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -350,14 +362,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                                 Text(
                                   '0 ر.ي',
-                                  style: AppTypography.bodyMedium.copyWith(color: AppColors.success),
+                                  style: AppTypography.bodyMedium
+                                      .copyWith(color: AppColors.success),
                                 ),
                               ],
                             ),
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                          padding:
+                              EdgeInsets.symmetric(vertical: AppSpacing.sm),
                           child: Divider(),
                         ),
                         _summaryRow(lang.t('subtotal'), cart.subtotal),
@@ -368,21 +382,28 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             color: AppColors.success,
                           ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                          padding:
+                              EdgeInsets.symmetric(vertical: AppSpacing.xs),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(lang.t('delivery_fee'), style: AppTypography.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant)),
-                              Text(lang.t('delivery_fee_at_order'), style: AppTypography.bodySmall.copyWith(color: colorScheme.onSurfaceVariant)),
+                              Text(lang.t('delivery_fee'),
+                                  style: AppTypography.bodyMedium.copyWith(
+                                      color: colorScheme.onSurfaceVariant)),
+                              Text(lang.t('delivery_fee_at_order'),
+                                  style: AppTypography.bodySmall.copyWith(
+                                      color: colorScheme.onSurfaceVariant)),
                             ],
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                          padding:
+                              EdgeInsets.symmetric(vertical: AppSpacing.sm),
                           child: Divider(),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                          padding:
+                              EdgeInsets.symmetric(vertical: AppSpacing.xs),
                           child: Center(
                             child: Text(
                               lang.t('final_total_in_details'),
@@ -414,15 +435,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       hintStyle: TextStyle(color: colorScheme.onSurfaceVariant),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(AppRadius.md),
-                        borderSide: BorderSide(color: colorScheme.outlineVariant),
+                        borderSide:
+                            BorderSide(color: colorScheme.outlineVariant),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(AppRadius.md),
-                        borderSide: BorderSide(color: colorScheme.outlineVariant),
+                        borderSide:
+                            BorderSide(color: colorScheme.outlineVariant),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(AppRadius.md),
-                        borderSide: BorderSide(color: colorScheme.primary, width: 2),
+                        borderSide:
+                            BorderSide(color: colorScheme.primary, width: 2),
                       ),
                       contentPadding: EdgeInsets.all(AppSpacing.md),
                       alignLabelWithHint: true,
@@ -488,17 +512,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: AppTypography.bodyMedium.copyWith(
-            fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-            color: color,
-          )),
-          Text(
-            '${value.toStringAsFixed(0)} ر.ي',
-            style: AppTypography.bodyMedium.copyWith(
-              fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-              color: color,
-            )
-          ),
+          Text(label,
+              style: AppTypography.bodyMedium.copyWith(
+                fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+                color: color,
+              )),
+          Text('${value.toStringAsFixed(0)} ر.ي',
+              style: AppTypography.bodyMedium.copyWith(
+                fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+                color: color,
+              )),
         ],
       ),
     );

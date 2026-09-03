@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:bhm_supermarket/core/widgets/app_page_header.dart';
 import 'package:bhm_supermarket/features/navigation/controllers/navigation_controller.dart';
 import 'package:flutter/material.dart';
@@ -45,9 +45,9 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<CartController>(
-    builder: (_) => GetBuilder<OffersController>(
-    builder: (_) => _buildGetX0(context)));
+    return GetBuilder<CartController>(
+        builder: (_) =>
+            GetBuilder<OffersController>(builder: (_) => _buildGetX0(context)));
   }
 
   Widget _buildGetX0(BuildContext context) {
@@ -195,7 +195,8 @@ class _CartScreenState extends State<CartScreen> {
                       borderRadius: BorderRadius.circular(AppRadius.xl),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.06), // Intentional shadow
+                          color: Colors.black
+                              .withValues(alpha: 0.06), // Intentional shadow
                           blurRadius: 20,
                           offset: Offset(0, -4),
                         ),
@@ -207,7 +208,6 @@ class _CartScreenState extends State<CartScreen> {
                           lang.t('subtotal'),
                           '${cart.originalSubtotal.toStringAsFixed(0)} ر.ي',
                         ),
-
                         if (cart.offerDiscount > 0) ...[
                           SizedBox(height: AppSpacing.xs),
                           _SummaryRow(
@@ -216,12 +216,11 @@ class _CartScreenState extends State<CartScreen> {
                             valueColor: AppColors.success,
                           ),
                         ],
-
                         Padding(
-                          padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                          padding:
+                              EdgeInsets.symmetric(vertical: AppSpacing.sm),
                           child: Divider(),
                         ),
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -240,7 +239,6 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           ],
                         ),
-
                         SizedBox(height: AppSpacing.md),
                         AppButton(
                           onPressed: () {
@@ -283,7 +281,9 @@ class _SummaryRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: AppTypography.bodyMedium.copyWith(color: colorScheme.onSurfaceVariant)),
+        Text(label,
+            style: AppTypography.bodyMedium
+                .copyWith(color: colorScheme.onSurfaceVariant)),
         Text(
           value,
           style: AppTypography.labelLarge.copyWith(color: valueColor),

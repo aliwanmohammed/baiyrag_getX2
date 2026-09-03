@@ -1,5 +1,4 @@
-import '../../../app/localization/lang.dart';
-
+import 'package:bhm_supermarket/app/localization/lang.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,18 +30,18 @@ class ProductAddButton extends StatelessWidget {
           final offerUnit = selectedUnit == null
               ? null
               : Get.find<OffersController>().productUnitOffer(
-                    productId: product.id,
-                    unitId: selectedUnit.id,
-                  );
+                  productId: product.id,
+                  unitId: selectedUnit.id,
+                );
 
           final response = selectedUnit == null
               ? ApiResponse.failure(lang.t('unit_not_selected'))
               : await Get.find<CartController>().addItem(
-                    product: product,
-                    unit: selectedUnit,
-                    unitPrice: offerUnit?.price ?? selectedUnit.price,
-                    originalPrice: offerUnit?.oldPrice ?? selectedUnit.price,
-                  );
+                  product: product,
+                  unit: selectedUnit,
+                  unitPrice: offerUnit?.price ?? selectedUnit.price,
+                  originalPrice: offerUnit?.oldPrice ?? selectedUnit.price,
+                );
 
           if (!context.mounted) {
             return;

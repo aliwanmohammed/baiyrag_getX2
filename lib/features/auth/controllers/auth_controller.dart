@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:get/get.dart';
 import 'package:bhm_supermarket/app/router/app_routes.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +43,8 @@ class AuthController extends GetxController {
 
     try {
       _user = await _repository.loadStoredUser();
-    debugPrint('RESTORED USER => ${_user?.email}');
-    debugPrint('ROLE => ${_user?.role}');
+      debugPrint('RESTORED USER => ${_user?.email}');
+      debugPrint('ROLE => ${_user?.role}');
       _sessionInitialized = true;
       update();
     } finally {

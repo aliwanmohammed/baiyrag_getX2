@@ -1,4 +1,4 @@
-import '../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,8 +12,8 @@ class RecentSearches extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  return GetBuilder<ProductSearchController>(
-    builder: (_) => _buildGetX0(context));
+    return GetBuilder<ProductSearchController>(
+        builder: (_) => _buildGetX0(context));
   }
 
   Widget _buildGetX0(BuildContext context) {

@@ -1,4 +1,4 @@
-import '../../../../app/localization/lang.dart';
+import 'package:bhm_supermarket/app/localization/lang.dart';
 import 'package:flutter/material.dart';
 import '../../../app/theme/app_spacing.dart';
 import '../../../app/theme/app_radius.dart';
@@ -41,7 +41,9 @@ class CartItemCard extends StatelessWidget {
               color: colorScheme.surfaceContainerHighest,
               child: item.product.image.isEmpty
                   ? Center(
-                      child: Text('🛍️', style: TextStyle(fontSize: 32)), // Intentional component dimension
+                      child: Text('🛍️',
+                          style: TextStyle(
+                              fontSize: 32)), // Intentional component dimension
                     )
                   : AppCachedImage(
                       imageUrl: item.product.image,
@@ -120,7 +122,8 @@ class CartItemCard extends StatelessWidget {
                             semanticLabel: lang.t('decrease_quantity'),
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+                            padding:
+                                EdgeInsets.symmetric(horizontal: AppSpacing.sm),
                             child: Text(
                               '${item.quantity}',
                               style: AppTypography.titleSmall.copyWith(
